@@ -37,6 +37,9 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   multi_split_view: ^2.1.0
+  connectivity_plus: ^2.3.5
+  internet_connection_checker_plus: ^1.0.1
+  
 
 dev_dependencies:
   flutter_test:
