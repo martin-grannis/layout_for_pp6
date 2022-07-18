@@ -39,6 +39,11 @@ dependencies:
   multi_split_view: ^2.1.0
   connectivity_plus: ^2.3.5
   internet_connection_checker_plus: ^1.0.1
+  multicast_dns: ^0.3.2+1
+  flutter_secure_storage: ^5.0.2
+  web_socket_channel: ^2.2.0
+  chalkdart: ^2.0.8
+  loading_indicator: ^3.1.0
   
 
 dev_dependencies:

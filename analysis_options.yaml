@@ -21,7 +21,29 @@ linter:
   # or a specific dart file by using the `// ignore: name_of_lint` and
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
+
+
   rules:
+    prefer_const_constructors : false
+    camel_case_types: false
+    unnecessary_this: false
+    avoid_print: false
+    non_constant_identifier_names: false
+    file_names: false
+    unnecessary_type_check: false
+    sort_child_properties_lase: false
+    unnecessary_new: false
+
+
+analyzer:
+  errors:
+    todo: ignore
+
+  
+  
+
+  
+
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 

@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:pp6_layout/pages/library_panel.dart';
-import 'package:pp6_layout/pages/playlists_panel.dart';
+
+import 'package:pp6_layout/pages/subPanels/library_panel.dart';
+import 'package:pp6_layout/pages/subPanels/playlists_panel.dart';
 
 class LeftPanelTabbedLeft extends StatefulWidget {
   const LeftPanelTabbedLeft({Key? key}) : super(key: key);
