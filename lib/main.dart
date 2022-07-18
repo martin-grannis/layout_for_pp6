@@ -6,6 +6,7 @@ import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/network/network_bloc.dart';
 import 'package:pp6_layout/blocs/playlists_listing/playlists_listing_bloc.dart';
+import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
 import 'package:pp6_layout/dialogs/network_down.dart';
 import 'package:pp6_layout/myApp.dart';
 import 'package:pp6_layout/pages/connected_to_server_page.dart';
@@ -34,6 +35,10 @@ void main() => runApp(
           BlocProvider(
             create: (context) =>
                 PP6_ConnectionBloc(connectionRepository: connectionRepository),
+          ),
+          BlocProvider(
+            create: (context) =>
+                PresentationBloc(connectionRepository: connectionRepository),
           ),
         ],
         child: MyApp(
