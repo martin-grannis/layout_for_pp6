@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:pp6_layout/pages/subPanels/library_panel.dart';
-import 'package:pp6_layout/pages/subPanels/playlists_panel.dart';
+import 'package:pp6_layout/pages/subPanels/library_listing.dart';
+import 'package:pp6_layout/pages/subPanels/playlists_listing.dart';
 
 class LeftPanelTabbedLeft extends StatefulWidget {
   const LeftPanelTabbedLeft({Key? key}) : super(key: key);
@@ -69,8 +69,8 @@ class _LeftPanelTabbedLeftState extends State<LeftPanelTabbedLeft>
       body: TabBarView(
         controller: _tabController,
         children: [
-          const LibraryPanel(),
-          const PlaylistPanel(),
+          const LibraryListing(),
+          const PlaylistsListing(),
         ],
       ),
     );

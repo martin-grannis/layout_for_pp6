@@ -1,0 +1,50 @@
+import 'dart:convert';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:pp6_layout/models/library.dart';
+import 'package:pp6_layout/repositories/connnection_repository.dart';
+
+part 'library_event.dart';
+part 'library_state.dart';
+
+class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
+  final ConnectionRepository _connectionRepository;
+  LibraryBloc({required ConnectionRepository connectionRepository})
+      : _connectionRepository = connectionRepository,
+        super(LibraryInitial()) {
+    on<LoadLibraryfromAPI>((event, emit) async {
+      // one off load of data into Library
+      dynamic lr = await _connectionRepository.getLibrary();
+      Library processedLibData = process_library_request(lr);
+      print("about to emit libraryLoaded");
+      emit(LibraryLoaded(library: processedLibData, currentSong:""));
+      //emit(library);
+    });
+  }
+}
+
+Library process_library_request(dynamic json) {
+  var scanData_decoded = jsonDecode(json)['library'];
+  List<String>? library =
+      scanData_decoded != null ? List.from(scanData_decoded) : null;
+
+  Library ll = Library(lib: []);
+  ;
+
+  try {
+    //for (var i = 0; i < library!.length; i++) {
+    for (var name in library!) {
+      // print(name);
+      // if (name == "Your hand, O God, has guided.pro6") {
+      //   String stop = "12";
+      // }
+      ll.lib.add(LibraryItems(itemName: name));
+      //newMap['inCache'] = false;
+    }
+  } catch (e) {
+    print(e.toString());
+  }
+
+  return ll;
+}

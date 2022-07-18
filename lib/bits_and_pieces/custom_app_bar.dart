@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
+import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
@@ -81,6 +82,28 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.play_arrow, color: Colors.orange),
+            onPressed: () {
+              // //pretend login
+              // streamController.add(ConnectedState(
+              //     "server", "192.168.4.56", "4433", "vikings", true)); //
+              // test set bloc onnected stated eto connected
+              BlocProvider.of<LayoutBloc>(context)
+                  .add(LayoutEventChangeLayout(newLayout: 0));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.play_arrow, color: Colors.purple),
+            onPressed: () {
+              // //pretend login
+              // streamController.add(ConnectedState(
+              //     "server", "192.168.4.56", "4433", "vikings", true)); //
+              // test set bloc onnected stated eto connected
+              BlocProvider.of<LayoutBloc>(context)
+                  .add(LayoutEventChangeLayout(newLayout: 1));
+            },
+          ),
           IconButton(
             icon: Icon(Icons.play_arrow, color: Colors.green),
             onPressed: () {

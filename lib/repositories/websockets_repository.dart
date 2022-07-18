@@ -112,8 +112,10 @@ class WebsocketService {
   }
 
   void dropConnection() {
-    channel.sink.close();
-    channel_initialised = false;
+    if (channel_initialised) {
+      channel.sink.close();
+      channel_initialised = false;
+    }
   }
 
   Future<String> presentationRequest(String this_song) async {
@@ -212,7 +214,6 @@ dynamic waitForReply(IOWebSocketChannel channel) async {
   //   print(
   //       "reply: gotPresentationCurrent - presentationName = ${o['presentation']['presentationName']}  \n\n");
   // }
-
 
   //print("reply: ${o}  \n\n");
   return scanData;

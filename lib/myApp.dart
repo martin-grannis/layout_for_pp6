@@ -46,6 +46,7 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       navigatorKey: _navigatorKey,
       builder: (context, child) {
