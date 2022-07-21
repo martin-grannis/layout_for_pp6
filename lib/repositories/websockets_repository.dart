@@ -8,7 +8,7 @@ late IOWebSocketChannel channel;
 bool channel_initialised = false;
 var streamController = StreamController.broadcast();
 
-//final IP = "192.168.1.108";
+//final IP = "192.168.1.10";
 
 class WebsocketService {
   Future<String> authenticateWS(
@@ -38,7 +38,7 @@ class WebsocketService {
 // KLUDGE
 // for debugging we need to ensure channel has been initilaised
     if (!channel_initialised) {
-      makeConnection("192.168.1.108", "49442");
+      makeConnection("192.168.1.10", "49442");
       channel_initialised = true;
       sendData(channel,
           '{"action": "authenticate","protocol": "600","password": "sunshine"}');
@@ -70,7 +70,7 @@ class WebsocketService {
 // KLUDGE
 // for debugging we need to ensure channel has been initilaised
     // if (!channel_initialised) {
-    //   makeConnection("192.168.1.108", "49442");
+    //   makeConnection("192.168.1.10", "49442");
     //   channel_initialised = true;
     //   sendData(channel,
     //       '{"action": "authenticate","protocol": "600","password": "sunshine"}');

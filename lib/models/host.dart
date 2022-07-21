@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:pp6_layout/models/remembered_hosts.dart';
 import 'package:pp6_layout/services/mdns.dart';
 
-
 //import 'package:user_repository/src/mdns.dart';
 //import 'package:user_repository/src/models/remembered_hosts.dart';
 
@@ -64,5 +63,5 @@ class Host extends Equatable {
 
   static const empty = Host('', '', '', false, '', false);
   static const sampler = Host(
-      'DESKTOP-0LJ2HL8', '192.168.1.108', '49442', false, 'sunshine', false);
+      'DESKTOP-0LJ2HL8', '192.168.1.10', '49442', false, 'sunshine', false);
 }

@@ -16,7 +16,9 @@ var factory =
 
 Future<List<Host>> getMDNS(List<Remembered_Hosts> known_hosts_details) async {
   const String name = '_pro6proremote._tcp.local';
-  final MDnsClient client = MDnsClient(rawDatagramSocketFactory: factory);
+
+  //final MDnsClient client = MDnsClient(rawDatagramSocketFactory: factory);
+  final MDnsClient client = MDnsClient();
 
   List<Host> tempHosts = [];
 

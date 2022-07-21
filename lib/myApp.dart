@@ -6,7 +6,7 @@ import 'package:pp6_layout/pages/connected_to_server_page.dart';
 import 'package:pp6_layout/pages/find_server_page.dart';
 import 'package:pp6_layout/pages/splash_page.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
-import 'package:pp6_layout/sample_home_page.dart';
+//import 'package:pp6_layout/sample_home_page.dart';
 import 'package:pp6_layout/theme/app_theme.dart';
 
 class MyApp extends StatelessWidget {

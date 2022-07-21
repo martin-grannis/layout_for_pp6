@@ -1,4 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+//import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
