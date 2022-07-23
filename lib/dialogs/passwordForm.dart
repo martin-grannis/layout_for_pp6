@@ -7,7 +7,6 @@ import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 import 'package:pp6_layout/services/secure_storage_impl.dart';
 
-
 class PasswordForm extends StatefulWidget {
   PasswordForm({Key? key, required this.thisHost}) : super(key: key);
   final Host thisHost;
@@ -107,8 +106,13 @@ class _PasswordFormState extends State<PasswordForm> {
     // //formState.save();
 
     try {
-      await RepositoryProvider.of<ConnectionRepository>(context)
-          .logIn(host: h, hostPassword: password);
+      //await RepositoryProvider.of<ConnectionRepository>(context)
+      //    .logIn(host: h, hostPassword: password);
+
+      var mbp = BlocProvider.of<PP6_ConnectionBloc>(context);
+      //await BlocProvider.of<PP6_ConnectionBloc>(context);
+      await mbp.connectionRepositoryInstance.logIn(host: h, hostPassword: password);
+      // _connectionRepository.logIn(host: h, hostPassword: password);
 
       Navigator.pop(context);
       Navigator.pop(parentContext);

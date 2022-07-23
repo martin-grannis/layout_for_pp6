@@ -7,7 +7,7 @@ class NetworkFailurePage extends StatefulWidget {
   State<NetworkFailurePage> createState() => _NetworkFailurePageState();
 }
 
-final scaffoldKey = GlobalKey<ScaffoldState>();
+// final scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _NetworkFailurePageState extends State<NetworkFailurePage>
     with SingleTickerProviderStateMixin {

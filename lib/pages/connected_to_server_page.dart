@@ -22,9 +22,10 @@ class ConnectToServerPage extends StatefulWidget {
   State<ConnectToServerPage> createState() => _ConnectToServerPageState();
 }
 
-final scaffoldKey = GlobalKey<ScaffoldState>();
+
 
 class _ConnectToServerPageState extends State<ConnectToServerPage> {
+final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

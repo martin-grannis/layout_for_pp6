@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -13,6 +14,23 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   LibraryBloc({required ConnectionRepository connectionRepository})
       : _connectionRepository = connectionRepository,
         super(LibraryInitial()) {
+
+
+/// listeners
+   
+  // StreamSubscription<PP6_ConnectionStatus>? _PP6_ConnectionStatusSubscription;
+  //     _PP6_ConnectionStatusSubscription = _connectionRepository.statusREPO.listen(
+  //       //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
+  //       (status) {
+  //     //catchMe();
+  //      add(ResetLibraryToInitial());
+  //   });
+  
+
+    
+//final ConnectionRepository _connectionRepository;
+
+    /// handlers
     on<LoadLibraryfromAPI>((event, emit) async {
       // one off load of data into Library
       dynamic lr = await _connectionRepository.getLibrary();
@@ -20,6 +38,9 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       print("about to emit libraryLoaded");
       emit(LibraryLoaded(library: processedLibData, currentSong:""));
       //emit(library);
+    });
+    on<ResetLibraryToInitial>((event, emit) async {
+      emit(LibraryInitial());
     });
   }
 }

@@ -6,29 +6,38 @@ import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/models/remembered_hosts.dart';
 import 'package:pp6_layout/services/secure_storage_impl.dart';
 
-
-
 var factory =
     (dynamic host, int port, {bool? reuseAddress, bool? reusePort, int? ttl}) {
   return RawDatagramSocket.bind(host, port,
-      reuseAddress: true, reusePort: false, ttl: 10);
-  };
+      reuseAddress: true, reusePort: true, ttl: 255);
+};
 
 Future<List<Host>> getMDNS(List<Remembered_Hosts> known_hosts_details) async {
-  const String name = '_pro6proremote._tcp.local';
+  //const String name = '_pro6proremote._tcp.local';
+  const String name = '_pro6proremote._tcp';
 
-  //final MDnsClient client = MDnsClient(rawDatagramSocketFactory: factory);
-  final MDnsClient client = MDnsClient();
+
+
+ MDnsClient client = MDnsClient(rawDatagramSocketFactory: factory);
+
 
   List<Host> tempHosts = [];
-
-  var factoryI = (myInterfaces) async {
+  Host tmpHost;
+  factoryI(myInterfaces) async {
     var interf = await client.allInterfacesFactory(myInterfaces);
     var iList = interf.toList();
     iList.removeWhere(
         (item) => item.addresses[0].address.startsWith('169.254.'));
     return iList;
-  };
+  }
+
+  // var factoryI = (myInterfaces) async {
+  //   var interf = await client.allInterfacesFactory(myInterfaces);
+  //   var iList = interf.toList();
+  //   iList.removeWhere(
+  //       (item) => item.addresses[0].address.startsWith('169.254.'));
+  //   return iList;
+  // };
 
   await client.start(interfacesFactory: factoryI);
 
@@ -48,18 +57,22 @@ Future<List<Host>> getMDNS(List<Remembered_Hosts> known_hosts_details) async {
         String fave = await hss.getDefaultHost();
 
         //String fave = "Martins-MacBook-Air";
+        tmpHost = Host(Hostname, ip.address.address, srv.port.toString(),
+            password != "", password, fave == Hostname);
 
-        tempHosts.add(
-          Host(Hostname, ip.address.address, srv.port.toString(),
-              password != "", password, fave == Hostname),
-        ); // last arg is "known"
+        if (!tempHosts.contains(tmpHost)) {
+          tempHosts.add(
+            Host(Hostname, ip.address.address, srv.port.toString(),
+                password != "", password, fave == Hostname),
+          );
+        }
       }
-
-      //print(srv.target);
     }
   }
   client.stop();
   return tempHosts;
+
+  throw ("Error finding mdns hosts");
 }
 
 String areWeKnown(String hostname, List<Remembered_Hosts> khd) {

@@ -9,7 +9,7 @@ class LeftPanelListing extends StatefulWidget {
   State<LeftPanelListing> createState() => _LeftPanelListingState();
 }
 
-final scaffoldKey = GlobalKey<ScaffoldState>();
+
 
 class _LeftPanelListingState extends State<LeftPanelListing>
     //with SingleTickerProviderStateMixin {
@@ -19,6 +19,7 @@ class _LeftPanelListingState extends State<LeftPanelListing>
   //   Tab(text: "Left"),
   //   Tab(text: "Right"),
   // ];
+final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {

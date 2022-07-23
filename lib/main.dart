@@ -34,7 +34,7 @@ void main() => runApp(
           ),
           BlocProvider(
             create: (context) =>
-                PP6_ConnectionBloc(connectionRepository: connectionRepository),
+                PP6_ConnectionBloc(connectionRepository: connectionRepository)..add(PP6_Initialise()),
           ),
           BlocProvider(
             create: (context) =>
@@ -46,3 +46,5 @@ void main() => runApp(
         ),
       ),
     );
+    
+   

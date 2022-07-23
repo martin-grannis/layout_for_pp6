@@ -8,7 +8,6 @@ import 'package:pp6_layout/services/secure_storage_impl.dart';
 
 //import 'package:secure_repository/secure_repository.dart';
 
-
 class FindServerPage extends StatefulWidget {
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => const FindServerPage());
@@ -17,7 +16,7 @@ class FindServerPage extends StatefulWidget {
   const FindServerPage({Key? key}) : super(key: key);
 
   @override
-   State<FindServerPage> createState() => _FindServerPageState();
+  State<FindServerPage> createState() => _FindServerPageState();
 }
 
 class _FindServerPageState extends State<FindServerPage> {
@@ -50,6 +49,7 @@ class _FindServerPageState extends State<FindServerPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: scaffoldKey,
       //backgroundColor: Colors.red,
@@ -74,17 +74,18 @@ class _FindServerPageState extends State<FindServerPage> {
                 ).image,
               ),
             ),
-            alignment: const AlignmentDirectional(0, 0),
+            //alignment: const AlignmentDirectional(0, 0),
             child: Align(
-              alignment: const AlignmentDirectional(0, 0),
+              alignment: Alignment.topCenter,
+              //alignment: const AlignmentDirectional(0, 0),
               child: Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -100,15 +101,18 @@ class _FindServerPageState extends State<FindServerPage> {
                               Brightness.dark))
                             Image.asset(
                               'assets/images/topLogo_light.png',
-                              width: 200,
-                              height: 230,
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              //width: MediaQuery.of(context).size.width,
+                              //width: 200,
+                              //height: 230,
                               fit: BoxFit.fitWidth,
                             ),
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +120,10 @@ class _FindServerPageState extends State<FindServerPage> {
                         children: [
                           Text(
                             'Available Connections',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontSize: size.width * .02),
                           ),
                         ],
                       ),
@@ -126,29 +133,29 @@ class _FindServerPageState extends State<FindServerPage> {
                       children: [
                         const Spacer(flex: 7),
                         Expanded(
-                          flex: 9,
-                          child: Text(
-                            "Computer",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        //SizedBox(width: 9),
+                            flex: 9,
+                            child: Text("Computer",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: size.width *
+                                            .02))), //SizedBox(width: 9),
                         Expanded(
-                          flex: 3,
-                          child: Text("known",
+                            flex: 3,
+                            child: Text(
+                              "known",
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
                                   ?.copyWith(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                        ),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: size.width * .02),
+                            )),
                         const Spacer(),
                       ],
                     ),

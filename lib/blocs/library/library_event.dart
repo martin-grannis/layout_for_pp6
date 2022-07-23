@@ -8,3 +8,5 @@ abstract class LibraryEvent extends Equatable {
 }
 
 class LoadLibraryfromAPI extends LibraryEvent {}
+
+class ResetLibraryToInitial extends LibraryEvent {}

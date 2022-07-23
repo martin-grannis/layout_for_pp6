@@ -15,25 +15,27 @@ class MyApp extends StatelessWidget {
     required this.connectionRepository,
   }) : super(key: key);
 
-
   final ConnectionRepository connectionRepository;
 
-   @override
+  //  @override
+  // Widget build(BuildContext context) {
+  //   return RepositoryProvider.value(
+  //     value: connectionRepository,
+  //     child: BlocProvider(
+  //       create: (_) => PP6_ConnectionBloc(
+  //           connectionRepository: connectionRepository),
+  //       child: AppView(),
+  //     ),
+  //   );
+  // }
+
+  @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: connectionRepository,
-      child: BlocProvider(
-        create: (_) => PP6_ConnectionBloc(
-            connectionRepository: connectionRepository),
-        child: AppView(),
-      ),
-    );
+    return AppView();
   }
 }
 
 class AppView extends StatefulWidget {
-
-
   @override
   _AppViewState createState() => _AppViewState();
 }
@@ -46,7 +48,6 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       navigatorKey: _navigatorKey,
       builder: (context, child) {
@@ -91,4 +92,3 @@ class _AppViewState extends State<AppView> {
     );
   }
 }
-

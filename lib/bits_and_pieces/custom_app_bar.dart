@@ -1,12 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
-
-
 
 //import 'package:web_socket_demo/constants/constants.dart';
 
@@ -111,6 +108,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
               // streamController.add(ConnectedState(
               //     "server", "192.168.4.56", "4433", "vikings", true)); //
               // test set bloc onnected stated eto connected
+              context.read<PP6_ConnectionBloc>().add(
+                  const PP6_ConnectionStatusChanged(
+                      PP6_ConnectionStatus.disconnected, Host.empty));
+
               context.read<PP6_ConnectionBloc>().add(
                   const PP6_ConnectionStatusChanged(
                       PP6_ConnectionStatus.connected, Host.sampler));

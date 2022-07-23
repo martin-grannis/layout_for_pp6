@@ -12,7 +12,7 @@ class LeftPanelTabbedLeft extends StatefulWidget {
   State<LeftPanelTabbedLeft> createState() => _LeftPanelTabbedLeftState();
 }
 
-final scaffoldKey = GlobalKey<ScaffoldState>();
+
 
 class _LeftPanelTabbedLeftState extends State<LeftPanelTabbedLeft>
     //with SingleTickerProviderStateMixin {
@@ -22,6 +22,7 @@ class _LeftPanelTabbedLeftState extends State<LeftPanelTabbedLeft>
   //   Tab(text: "Left"),
   //   Tab(text: "Right"),
   // ];
+final scaffoldKey = GlobalKey<ScaffoldState>();
 
   late TabController _tabController;
 

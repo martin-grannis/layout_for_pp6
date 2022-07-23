@@ -11,20 +11,29 @@ import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/models/presentation.dart';
 import 'package:pp6_layout/repositories/websockets_repository.dart';
 
-
 enum PP6_ConnectionStatus { unknown, connected, disconnected }
+
+class PP6_ConnectionStatusMessage {
+  PP6_ConnectionStatus stat;
+  Host host;
+  
+  PP6_ConnectionStatusMessage(
+    this.stat,
+    this.host,
+  );
+}
 
 class ConnectionRepository {
   //late final WebsocketService _wss;
-  final _controller = StreamController<PP6_ConnectionStatus>();
+  final _controller = StreamController<PP6_ConnectionStatusMessage>.broadcast();
 
   final _controller2 = StreamController<SinkMessage>.broadcast();
 
   final WebsocketService _wss = WebsocketService();
 
-  Stream<PP6_ConnectionStatus> get statusREPO async* {
-    yield PP6_ConnectionStatus.disconnected;
-    yield* _controller.stream;
+  Stream<PP6_ConnectionStatusMessage> get statusREPO async* {
+    //yield PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty);
+  //  yield* _controller.stream;
   }
 
   Stream<SinkMessage> get Updates async* {
@@ -70,19 +79,24 @@ class ConnectionRepository {
     //await _wss.disconnectWS();
     String result =
         await _wss.authenticateWS(host.ip_address, host.port, hostPassword);
-    if (result == "OK") return result;
+    if (result == "OK") {
+     // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.connected, host));
+      return result;
+    }
+
     throw Exception('Failed'); // value ignored - but indicates error
   }
 
   void logOut() {
-    _controller.add(PP6_ConnectionStatus.disconnected);
+   // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty));
   }
 
   void dropConnection() {
+   // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty));
     _wss.dropConnection();
   }
 
-  void dispose() => _controller.close();
+  void dispose() => _controller2.close();
 
   Future<Presentation?> getPresentation(String this_song) async {
     // is it in the cache?

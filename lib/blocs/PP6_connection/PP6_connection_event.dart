@@ -20,3 +20,6 @@ class PP6_ConnectionStatusChanged extends PP6_ConnectionEvent {
 }
 
 class PP6_ConnectionDisconnectRequested extends PP6_ConnectionEvent {}
+
+// used as we need to use listener for main screen and that works onl.y after initial state changes
+class PP6_Initialise extends PP6_ConnectionEvent {}
