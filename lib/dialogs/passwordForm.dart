@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
+import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/forms/validator_extension.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
@@ -19,32 +20,37 @@ class _PasswordFormState extends State<PasswordForm> {
   final _formKey = GlobalKey<FormState>();
   final handle_secure_storage hss = handle_secure_storage();
   String? _errorMsg = "";
+  bool _isTryingConnection = false;
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(children: [
-        Align(
-          alignment: const Alignment(0, -1 / 3),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Password for ${widget.thisHost.name}?')],
+      child: _isTryingConnection
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(children: [
+              Align(
+                alignment: const Alignment(0, -1 / 3),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('Password for ${widget.thisHost.name}?')],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
+                      child: Builder(builder: (context1) {
+                        return _Password_Field(widget.thisHost, context);
+                      }),
+                    ),
+                    SubmitButton(widget.thisHost),
+                  ],
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
-                child: Builder(builder: (context1) {
-                  return _Password_Field(widget.thisHost, context);
-                }),
-              ),
-              SubmitButton(widget.thisHost),
-            ],
-          ),
-        ),
-      ]),
+            ]),
     );
   }
 
@@ -104,6 +110,9 @@ class _PasswordFormState extends State<PasswordForm> {
     // if (!formState!.validate()) return;
 
     // //formState.save();
+        setState(() {
+        _isTryingConnection = true;
+      });
 
     try {
       //await RepositoryProvider.of<ConnectionRepository>(context)
@@ -111,13 +120,15 @@ class _PasswordFormState extends State<PasswordForm> {
 
       var mbp = BlocProvider.of<PP6_ConnectionBloc>(context);
       //await BlocProvider.of<PP6_ConnectionBloc>(context);
-      await mbp.connectionRepositoryInstance.logIn(host: h, hostPassword: password);
+      await mbp.connectionRepositoryInstance
+          .logIn(host: h, hostPassword: password);
       // _connectionRepository.logIn(host: h, hostPassword: password);
 
       Navigator.pop(context);
       Navigator.pop(parentContext);
 
 // somehow update the connectionrepository status to donnected
+      context.read<LibraryBloc>().add(ResetLibraryToInitial());
       context
           .read<PP6_ConnectionBloc>()
           .add(PP6_ConnectionStatusChanged(PP6_ConnectionStatus.connected, h));
@@ -126,7 +137,8 @@ class _PasswordFormState extends State<PasswordForm> {
       // if (true) throw ("wrong password guv");
     } catch (e) {
       setState(() {
-        _errorMsg = "Wrong flippin password innit!";
+        _isTryingConnection = false;
+              _errorMsg = "Wrong flippin password innit!";
       });
     }
   }

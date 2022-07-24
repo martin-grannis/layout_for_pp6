@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pp6_layout/dialogs/get_host_dialog_form.dart';
+import 'package:pp6_layout/dialogs/get_manual_connection_details_dialog.dart';
 
 import '../models/host.dart';
 
@@ -41,19 +42,22 @@ class hosts_list_widget extends StatelessWidget {
                             ),
                           ),
                           SafeArea(
-                            child: Column(
-                              mainAxisSize: MainAxisSize
-                                  .min, // makes dialog shrink to fit contents
-                              children: [
-                                SizedBox(height: 150),
-                                Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  //elevation: 16,
-                                  child: get_host_dialog_widget(
-                                      this_host: hosts[index]),
-                                ),
-                              ],
+                            child: Container(
+                              width: size.width*.6,
+                              child: Column(
+                                mainAxisSize: MainAxisSize
+                                    .min, // makes dialog shrink to fit contents
+                                children: [
+                                  SizedBox(height: 150),
+                                  Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    //elevation: 16,
+                                    child: get_host_dialog_widget(
+                                        this_host: hosts[index]),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ]);
@@ -103,6 +107,7 @@ class hosts_list_widget extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
           child: Container(
             color: Color.fromARGB(255, 135, 192, 242),
+            height: 40,
             child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -113,7 +118,44 @@ class hosts_list_widget extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Show manual connection form
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return Stack(
+                                    // centre the dialog box
+                                    alignment: Alignment.center,
+                                    children: [
+                                      const IgnorePointer(
+                                        child: Scaffold(
+                                          backgroundColor: Colors.transparent,
+                                        ),
+                                      ),
+                                      SafeArea(
+                                        child:  Column(
+                                              mainAxisSize: MainAxisSize
+                                                  .min, // makes dialog shrink to fit contents
+                                              children: [
+                                                SizedBox(height: 0),
+                                                Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  //elevation: 16,
+                                                  child: get_manual_connection_details_dialog(
+                                                      //this_host: hosts[index]),
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                                                                 
+                                      ),
+                                    ]);
+                              });
+                        },
                         style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size(50, 30),

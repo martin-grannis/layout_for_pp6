@@ -100,7 +100,7 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                 child: ListView.builder(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     scrollDirection: Axis.vertical,
-                    primary: true,
+                    primary: false,
                     itemCount: state.library.lib.length > 0
                         ? state.library.lib.length
                         : 0,

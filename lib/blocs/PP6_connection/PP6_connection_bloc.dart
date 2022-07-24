@@ -30,22 +30,22 @@ class PP6_ConnectionBloc
     on<PP6_ConnectionDisconnectRequested>(_onPP6_ConnectionDisconnectRequested);
 
     //gets repo stream and adds the default statusREPO
-    _PP6_ConnectionStatusSubscription = _connectionRepository.statusREPO.listen(
-        //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
-        (status) {
-      String s = "stopMe";
-      //catchMe();
-      // if (status.stat == PP6_ConnectionStatus.disconnected) {
-      //   add(PP6_ConnectionStatusChanged(
-      //       //PP6_ConnectionStatus.connected, Host.sampler));
-      //       PP6_ConnectionStatus.disconnected,
-      //       Host.empty));
-      // } else {
-      // add(PP6_ConnectionStatusChanged(
-      //         PP6_ConnectionStatus.connected, Host.sampler)
-          // PP6_ConnectionStatus.connected, status.host));
-          //);
-    });
+    // _PP6_ConnectionStatusSubscription = _connectionRepository.statusREPO.listen(
+    //     //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
+    //     (status) {
+    //   String s = "stopMe";
+    //   //catchMe();
+    //   // if (status.stat == PP6_ConnectionStatus.disconnected) {
+    //   //   add(PP6_ConnectionStatusChanged(
+    //   //       //PP6_ConnectionStatus.connected, Host.sampler));
+    //   //       PP6_ConnectionStatus.disconnected,
+    //   //       Host.empty));
+    //   // } else {
+    //   // add(PP6_ConnectionStatusChanged(
+    //   //         PP6_ConnectionStatus.connected, Host.sampler)
+    //       // PP6_ConnectionStatus.connected, status.host));
+    //       //);
+    // });
   }
 
   get connectionRepositoryInstance => _connectionRepository;
@@ -58,8 +58,8 @@ class PP6_ConnectionBloc
 
   final ConnectionRepository _connectionRepository;
   //final HostRepository _hostRepository;
-  StreamSubscription<PP6_ConnectionStatusMessage>?
-      _PP6_ConnectionStatusSubscription;
+  // StreamSubscription<PP6_ConnectionStatusMessage>?
+  //     _PP6_ConnectionStatusSubscription;
 
   @override
   Future<void> close() {
