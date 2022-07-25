@@ -23,7 +23,7 @@ class _FindServerPageState extends State<FindServerPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
 // state
-  List<Remembered_Hosts> remembered_hosts = [];
+  //List<Host> remembered_hosts = [];
   List<Host> available_hosts = [];
   bool _isLoading = true;
 
@@ -36,15 +36,18 @@ class _FindServerPageState extends State<FindServerPage> {
   handle_secure_storage hss = handle_secure_storage();
 
   Future<void> _getRememberedHosts() async {
-    final List<Remembered_Hosts> rh = await hss.DummySetupStorage();
-    final List<Host> foundHosts = await Host.find_available_hosts(rh);
-    if (mounted) {
-      setState(() {
-        remembered_hosts = rh.toList(growable: false);
-        available_hosts = foundHosts;
-        _isLoading = false;
-      });
-    }
+    List<Host> foundHosts = [];
+    final List<Host> rh = await hss.retrieve_remembered_hosts();
+    foundHosts = await Host.find_available_hosts(rh);
+
+    //if (mounted) {
+    setState(() {
+      //remembered_hosts = foundHosts.toList(growable: false);
+      available_hosts = foundHosts;
+      _isLoading = false;
+//      });
+    });
+    //return _hosts;
   }
 
   @override

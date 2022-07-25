@@ -22,11 +22,6 @@ class get_manual_connection_details_dialog extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  //get this_host => this.this_host;
-
-  // for state to get var via widget
-  //Host get this_host => this_host;
-
   @override
   State<get_manual_connection_details_dialog> createState() =>
       _get_manual_connection_details_dialogState();
@@ -39,7 +34,10 @@ class _get_manual_connection_details_dialogState
   String ipAddress = "";
   String portN = "";
   String serverPW = "";
+  String nickName = "";
+  bool savedTicked = false;
   bool _isTryingConnection = false;
+
   late TextEditingController textController;
   //late bool passwordVisibility;
   //final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -67,7 +65,7 @@ class _get_manual_connection_details_dialogState
           //crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              width: size.width *.25,
+              width: size.width * .25,
               child: FormCustomAppBar("Manual connection details"),
             ),
             _isTryingConnection
@@ -107,8 +105,24 @@ class _get_manual_connection_details_dialogState
                                         0, 5, 10, 0),
                                     child: SizedBox(
                                         width: 200,
-                                        child: _IPaddress_Field(
-                                            context, ipAddress)),
+                                        child: _nickName_Field(context)),
+                                  ),
+                                ]),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 0, 20, 8),
+                            child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 5, 10, 0),
+                                    child: SizedBox(
+                                        width: 200,
+                                        child: _IPaddress_Field(context)),
                                   ),
                                 ]),
                           ),
@@ -125,8 +139,7 @@ class _get_manual_connection_details_dialogState
                                         0, 5, 10, 0),
                                     child: SizedBox(
                                         width: 200,
-                                        child:
-                                            _portNumberField(context, portN)),
+                                        child: _portNumberField(context)),
                                   ),
                                 ]),
                           ),
@@ -143,8 +156,24 @@ class _get_manual_connection_details_dialogState
                                         0, 5, 10, 0),
                                     child: SizedBox(
                                         width: 200,
-                                        child:
-                                            _passwordField(context, serverPW)),
+                                        child: _passwordField(context)),
+                                  ),
+                                ]),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 0, 20, 8),
+                            child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 5, 10, 0),
+                                    child: SizedBox(
+                                        width: 200,
+                                        child: _rememberMe_Field(context)),
                                   ),
                                 ]),
                           ),
@@ -174,7 +203,68 @@ class _get_manual_connection_details_dialogState
     );
   }
 
-  TextFormField _IPaddress_Field(BuildContext context, String field) {
+  CheckboxListTile _rememberMe_Field(BuildContext context) {
+    return CheckboxListTile(
+      title: Text("Save"),
+      value: savedTicked,
+      onChanged: (newValue) {
+        setState(() {
+          savedTicked = newValue!;
+        });
+      },
+      controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+    );
+  }
+
+  TextFormField _nickName_Field(BuildContext context) {
+    //final TextEditingController textController = TextEditingController();
+    return TextFormField(
+      initialValue: "Myh PP6",
+      //controller: textController,
+      onSaved: (String? value) {
+        nickName = value!;
+        //field = value!;
+        //Host thisHost =
+        //Host("name", ipAddre//ss, "iuy", false, "password", false);
+        //    _authenticateOnServer(thisHost, value!, parentContext),
+      },
+      decoration: InputDecoration(
+        labelText: 'Nickname',
+        labelStyle: TextStyle(
+            color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.purple),
+        ),
+        enabledBorder: new UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.0)),
+      ),
+      //initialValue: '192.168.1.45',
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      onChanged: (_) {
+        //ipAddress = textController.text;
+        setState(() {
+          _errorMsg = "";
+        });
+      },
+      // inputFormatters: [
+      //   FilteringTextInputFormatter.allow(
+      //     RegExp(r"(((0|1)?[0-9][0-9]?|2[0-4][0-9]|25[0-5])[.]){3}((0|1)?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$"),
+      //   )
+      // ],
+      validator: (val) {
+        if (!val!.isRequired) {
+          return 'Please provide you own name for this system';
+        }
+        // if (_errorMsg != "") {
+        //   return (_errorMsg);
+        // }
+
+        return null;
+      },
+    );
+  }
+
+  TextFormField _IPaddress_Field(BuildContext context) {
     //final TextEditingController textController = TextEditingController();
     return TextFormField(
       initialValue: "192.168.1.109",
@@ -199,7 +289,7 @@ class _get_manual_connection_details_dialogState
       //initialValue: '192.168.1.45',
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (_) {
-        ipAddress = textController.text;
+        //ipAddress = textController.text;
         setState(() {
           _errorMsg = "";
         });
@@ -222,7 +312,7 @@ class _get_manual_connection_details_dialogState
     );
   }
 
-  TextFormField _portNumberField(BuildContext context, String field) {
+  TextFormField _portNumberField(BuildContext context) {
     return TextFormField(
       initialValue: "49442",
       onSaved: (String? value) {
@@ -265,14 +355,13 @@ class _get_manual_connection_details_dialogState
     );
   }
 
-  TextFormField _passwordField(BuildContext context, String field) {
+  TextFormField _passwordField(BuildContext context) {
     return TextFormField(
       initialValue: "sunshine",
       onSaved: (String? value) {
         serverPW = value!;
         Host hostDetails =
-            Host("name", ipAddress, portN, false, serverPW, false);
-
+            Host(nickName, ipAddress, portN, false, serverPW, false);
         _authenticateOnServer(hostDetails, value, context);
       },
       obscureText: true,
@@ -331,41 +420,31 @@ class _get_manual_connection_details_dialogState
 
   Future<void> _authenticateOnServer(
       Host h, String password, parentContext) async {
-// clear any message
-    // setState(() {
-    //   _errorMsg = "";
-    // });
+    var mbp = BlocProvider.of<PP6_ConnectionBloc>(context);
 
-    // final formState = _formKey.currentState;
-    // if (!formState!.validate()) return;
-
-    // //formState.save();
+    Host tempName = Host(
+        h.name, h.ip_address, h.port, h.known, h.password, h.favourite);
+    
+    if (savedTicked) {
+    try {
+      await mbp.connectionRepositoryInstance.hostNameSave(tempName);
+      }
+      catch(e){};
+    }
     setState(() {
       _isTryingConnection = true;
     });
 
     try {
-      //await RepositoryProvider.of<ConnectionRepository>(context)
-      //    .logIn(host: h, hostPassword: password);
-
-      var mbp = BlocProvider.of<PP6_ConnectionBloc>(context);
-      //await BlocProvider.of<PP6_ConnectionBloc>(context);
       await mbp.connectionRepositoryInstance
           .logIn(host: h, hostPassword: password);
-      // _connectionRepository.logIn(host: h, hostPassword: password);
 
       Navigator.pop(context);
       Navigator.pop(parentContext);
 
-// somehow update the connectionrepository status to donnected
       context.read<LibraryBloc>().add(ResetLibraryToInitial());
-      Host tempName = Host(
-          h.ip_address, h.ip_address, h.port, h.known, h.password, h.favourite);
       context.read<PP6_ConnectionBloc>().add(PP6_ConnectionStatusChanged(
           PP6_ConnectionStatus.connected, tempName));
-
-      // Future.delayed(const Duration(seconds: 2));
-      // if (true) throw ("wrong password guv");
     } catch (e) {
       setState(() {
         _isTryingConnection = false;

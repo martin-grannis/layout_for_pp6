@@ -1,7 +1,7 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:pp6_layout/models/remembered_hosts.dart';
+//import 'package:pp6_layout/models/remembered_hosts.dart';
 import 'package:pp6_layout/services/mdns.dart';
 
 //import 'package:user_repository/src/mdns.dart';
@@ -18,32 +18,44 @@ class Host extends Equatable {
   const Host(this.name, this.ip_address, this.port, this.known, this.password,
       this.favourite);
 
-  Map<String, dynamic> toJson() {
-    return {
-      "name": this.name,
-      "ip_address": this.ip_address,
-      "port": this.port,
-      "known": this.known,
-      "password": this.password,
-      "favourite": this.favourite,
-    };
+  factory Host.fromJson(Map<String, dynamic> json) {
+    return Host(json['name'], json['ipAddress'], json['port'], json['known'],
+        json['password'], json['favourite']);
   }
 
-  static List<Remembered_Hosts> Remembered_HostsFromJson(String str) =>
-      List<Remembered_Hosts>.from(
-          json.decode(str).map((x) => Host.fromJson(x)));
+  Map<String, dynamic> toJson() => {
+        'name': this.name,
+        'ipAddress': this.ip_address,
+        'port': this.port,
+        'known': this.known,
+        'password': this.password,
+        'favourite': this.favourite,
+      };
 
-// named constructor
-  factory Host.fromJson(Map<String, dynamic> json) => Host(
-      json["name"],
-      json['ip_addressage'],
-      json['port'],
-      json['password'],
-      json['favourite'],
-      json['known']);
+//   Map<String, dynamic> toJson() {
+//     return {
+//       "name": this.name,
+//       "ip_address": this.ip_address,
+//       "port": this.port,
+//       "known": this.known,
+//       "password": this.password,
+//       "favourite": this.favourite,
+//     };
+//   }
 
-  static Future<List<Host>> find_available_hosts(
-      List<Remembered_Hosts> lrh) async {
+//   static List<Remembered_Hosts> Remembered_HostsFromJson(String str) =>
+//       json.decode(str).map((x) => Host.fromJson(x));
+
+// // named constructor
+//   factory Host.fromJson(Map<String, dynamic> json) => Host(
+//       json["name"],
+//       json['ip_addressage'],
+//       json['port'],
+//       json['password'],
+//       json['favourite'],
+//       json['known']);
+
+  static Future<List<Host>> find_available_hosts(List<Host> lrh) async {
     List<Host> hosts = await getMDNS(lrh);
 
     return hosts;
@@ -59,7 +71,7 @@ class Host extends Equatable {
 
   @override
   List<Object> get props =>
-      [this.name, this.ip_address, this.port, this.known, this.password];
+      [name, ip_address, this.port, this.known, this.password];
 
   static const empty = Host('', '', '', false, '', false);
   static const sampler = Host(

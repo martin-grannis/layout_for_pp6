@@ -109,11 +109,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
               //     "server", "192.168.4.56", "4433", "vikings", true)); //
               // test set bloc onnected stated eto connected
               context.read<PP6_ConnectionBloc>().add(
-                  const PP6_ConnectionStatusChanged(
+                  PP6_ConnectionStatusChanged(
                       PP6_ConnectionStatus.disconnected, Host.empty));
 
               context.read<PP6_ConnectionBloc>().add(
-                  const PP6_ConnectionStatusChanged(
+                   PP6_ConnectionStatusChanged(
                       PP6_ConnectionStatus.connected, Host.sampler));
             },
           ),
@@ -123,7 +123,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               //   streamController.add(ConnectedState(
               //       "", "", "", "", false)); //
               context.read<PP6_ConnectionBloc>().add(
-                  const PP6_ConnectionStatusChanged(
+                  PP6_ConnectionStatusChanged(
                       PP6_ConnectionStatus.disconnected, Host.empty));
             },
           ),

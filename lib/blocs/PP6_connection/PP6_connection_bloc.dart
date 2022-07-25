@@ -23,7 +23,7 @@ class PP6_ConnectionBloc
         //  _hostRepository = hostRepository,
 
         // for testing
-        super(const PP6_ConnectionState.disconnected()) {
+        super(PP6_ConnectionState.disconnected()) {
 //        super(const PP6_ConnectionState.connected(Host.sampler)) {
     on<PP6_Initialise>(_onPP6_Initialise);
     on<PP6_ConnectionStatusChanged>(_onPP6_ConnectionStatusChanged);

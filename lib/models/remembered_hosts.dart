@@ -1,40 +1,34 @@
-
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:pp6_layout/models/host.dart';
 //import 'package:flutter/material.dart';
 
 class Remembered_Hosts extends Equatable {
-  final String name;
-  final String ip_address;
-  final String port;
-  final String password;
-const Remembered_Hosts(this.name, this.ip_address, this.port, this.password);
+  final Host h;
 
+  const Remembered_Hosts(this.h);
 
- static List<Remembered_Hosts> Remembered_HostsFromJson(String str) =>
-      List<Remembered_Hosts>.from(
-          json.decode(str).map((x) => Remembered_Hosts.fromJson(x)));
+  static List<Host> Remembered_HostsFromJson(String str) => List<Host>.from(
+      json.decode(str).map((x) => Remembered_Hosts.fromJson(x)));
 
-
-  // named constructor
+  //named constructor
   factory Remembered_Hosts.fromJson(Map<String, dynamic> json) =>
-      Remembered_Hosts(
-          json["name"], json['ip_addressage'], json['port'], json['password']);
+      Remembered_Hosts(Host.fromJson(json));
 
   Map<String, dynamic> toJson() {
     return {
-      "name": this.name,
-      "ip_address": this.ip_address,
-      "port": this.port,
-      "password": this.password,
+      "name": this.h.name,
+      "ip_address": this.h.ip_address,
+      "port": this.h.port,
+      "password": this.h.password,
+      "known": this.h.known,
+      "favourite": this.h.favourite,
     };
   }
 
-
   @override
-  List<Object> get props => [this.name, this.ip_address, this.port, this.password];
+  List<Object> get props => [this.h];
 
-  static const empty = Remembered_Hosts('', '', '', '');
-
+  static const empty = Host.empty;
 }

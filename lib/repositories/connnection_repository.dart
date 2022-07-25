@@ -10,13 +10,14 @@ import 'package:flutter/painting.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/models/presentation.dart';
 import 'package:pp6_layout/repositories/websockets_repository.dart';
+import 'package:pp6_layout/services/secure_storage_impl.dart';
 
 enum PP6_ConnectionStatus { unknown, connected, disconnected }
 
 class PP6_ConnectionStatusMessage {
   PP6_ConnectionStatus stat;
   Host host;
-  
+
   PP6_ConnectionStatusMessage(
     this.stat,
     this.host,
@@ -25,6 +26,8 @@ class PP6_ConnectionStatusMessage {
 
 class ConnectionRepository {
   //late final WebsocketService _wss;
+  final handle_secure_storage hss = handle_secure_storage();
+
   final _controller = StreamController<PP6_ConnectionStatusMessage>.broadcast();
 
   final _controller2 = StreamController<SinkMessage>.broadcast();
@@ -33,7 +36,7 @@ class ConnectionRepository {
 
   Stream<PP6_ConnectionStatusMessage> get statusREPO async* {
     //yield PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty);
-  //  yield* _controller.stream;
+    //  yield* _controller.stream;
   }
 
   Stream<SinkMessage> get Updates async* {
@@ -48,6 +51,20 @@ class ConnectionRepository {
   int maxSongs = 25;
 
   ///
+
+  Future<void> hostNameSave(Host h) async {
+    List<Host> lh = await hss.retrieve_saved_hosts();
+    int l = lh.indexWhere((item) => item.name == h.name);
+    
+    if (l != -1) {
+      // remove it
+      lh.removeAt(l);
+    }
+    
+    lh.add(h);
+
+    await hss.save_saved_hosts(lh);
+  }
 
   Future<dynamic> getLibrary() async {
     try {
@@ -80,7 +97,7 @@ class ConnectionRepository {
     String result =
         await _wss.authenticateWS(host.ip_address, host.port, hostPassword);
     if (result == "OK") {
-     // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.connected, host));
+      // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.connected, host));
       return result;
     }
 
@@ -88,11 +105,11 @@ class ConnectionRepository {
   }
 
   void logOut() {
-   // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty));
+    // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty));
   }
 
   void dropConnection() {
-   // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty));
+    // _controller.sink.add(PP6_ConnectionStatusMessage(PP6_ConnectionStatus.disconnected, Host.empty));
     _wss.dropConnection();
   }
 

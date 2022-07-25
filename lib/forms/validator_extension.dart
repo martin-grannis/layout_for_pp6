@@ -18,6 +18,11 @@ extension ExtString on String {
     // return passwordRegExp.hasMatch(this);
   }
 
+   bool get isRequired {
+    // ignore: unnecessary_null_comparison
+    return this.isNotEmpty;
+  }
+
   bool get isNotNull {
     // ignore: unnecessary_null_comparison
     return this != null;

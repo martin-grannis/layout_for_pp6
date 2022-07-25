@@ -12,7 +12,7 @@ var factory =
       reuseAddress: true, reusePort: true, ttl: 255);
 };
 
-Future<List<Host>> getMDNS(List<Remembered_Hosts> known_hosts_details) async {
+Future<List<Host>> getMDNS(List<Host> known_hosts_details) async {
   //const String name = '_pro6proremote._tcp.local';
   const String name = '_pro6proremote._tcp';
 
@@ -75,7 +75,7 @@ Future<List<Host>> getMDNS(List<Remembered_Hosts> known_hosts_details) async {
   throw ("Error finding mdns hosts");
 }
 
-String areWeKnown(String hostname, List<Remembered_Hosts> khd) {
+String areWeKnown(String hostname, List<Host> khd) {
   String hName = "";
   bool found = false;
   khd.forEach((element) {
