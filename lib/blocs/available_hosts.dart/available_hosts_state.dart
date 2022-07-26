@@ -1,15 +1,17 @@
 part of 'available_hosts_bloc.dart';
 
 abstract class AvailableHostsState extends Equatable {
-  const AvailableHostsState();
+  AvailableHostsState();
 
-  @override
-  List<Object> get props => [];
+final List<Host> known_hosts =[];
+  final List<Host> saved_hosts =[];
+    @override
+  List<Object> get props => [known_hosts, saved_hosts];
+ 
 }
 
 class AvailableHostsInitial extends AvailableHostsState {
-  final List<Host> known_hosts =[];
-  final List<Host> saved_hosts = [];
+
 }
 
 class AvailableHostsLoaded extends AvailableHostsState {
@@ -17,4 +19,6 @@ class AvailableHostsLoaded extends AvailableHostsState {
   final List<Host> saved_hosts;
 
   AvailableHostsLoaded(this.known_hosts, this.saved_hosts);
+  @override
+  List<Object> get props => [known_hosts, saved_hosts];
 }

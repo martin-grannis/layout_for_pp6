@@ -68,13 +68,22 @@ class handle_secure_storage {
 
   Future forgetPassword(Host h) async {
     var kh = await retrieve_known_hosts();
-     int l = kh.indexWhere((item) => item.name == h.name);
-    
+    int l = kh.indexWhere((item) => item.name == h.name);
+
     if (l != -1) {
       // remove it
       kh.removeAt(l);
     }
     await save_known_hosts(kh);
+
+    var sh = await retrieve_saved_hosts();
+    l = sh.indexWhere((item) => item.name == h.name);
+
+    if (l != -1) {
+      // remove it
+      sh.removeAt(l);
+    }
+    await save_saved_hosts(sh);
   }
 
   Future<void> save_saved_hosts(List<Host> lh) async {

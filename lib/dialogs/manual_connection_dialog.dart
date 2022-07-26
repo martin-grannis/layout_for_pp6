@@ -32,7 +32,7 @@ class _get_manual_connection_details_dialogState
   String portN = "";
   String serverPW = "";
   String nickName = "";
-  bool savedTicked = false;
+  bool savedTicked = true;
 
   // other vars
   bool _isTryingConnection = false;
@@ -149,7 +149,7 @@ class _get_manual_connection_details_dialogState
 
   TextFormField _IPaddress_Field() {
     return TextFormField(
-      initialValue: "192.168.1.109",
+      initialValue: "192.168.1.108",
       //controller: textController,
       onSaved: (String? value) {
         ipAddress = value!;

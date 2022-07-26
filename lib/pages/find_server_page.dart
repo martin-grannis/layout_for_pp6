@@ -69,6 +69,7 @@ class _FindServerPageState extends State<FindServerPage> {
     // }
   }
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -82,6 +83,7 @@ class _FindServerPageState extends State<FindServerPage> {
           child: Container(
             width: double.infinity,
             height: double.infinity,
+            
             constraints: const BoxConstraints(
               maxWidth: double.infinity,
             ),
@@ -157,27 +159,17 @@ class _FindServerPageState extends State<FindServerPage> {
                         Expanded(
                             flex: 9,
                             child: Text("Computer",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: size.width *
-                                            .02))), //SizedBox(width: 9),
+                                 style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(color:Colors.black,fontSize: size.width * .013))),
                         Expanded(
                             flex: 3,
-                            child: Text(
-                              "known",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: size.width * .02),
-                            )),
+                            child: Text("remembered",
+                                 style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(color:Colors.black,fontSize: size.width * .013))),
                         const Spacer(),
                       ],
                     ),
