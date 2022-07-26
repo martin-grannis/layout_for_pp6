@@ -27,7 +27,7 @@ class DialogButton1 extends StatelessWidget {
         // SizedBox(width: 10),
         Text(this.title)
       ]),
-      style: getButtonStyle1(sizeInfo.size.width, sizeInfo.size.height),
+      //style: getButtonStyle1(sizeInfo.size.width, sizeInfo.size.height),
     );
   }
 }

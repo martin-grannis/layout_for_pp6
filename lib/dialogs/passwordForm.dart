@@ -1,13 +1,18 @@
+//import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/bits_and_pieces/form_custom_appbar.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
+import 'package:pp6_layout/forms/formFieldContainer_mb.dart';
 import 'package:pp6_layout/forms/validator_extension.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
-import 'package:pp6_layout/services/secure_storage_impl.dart';
 
+// import 'package:web_socket_demo/myApp.dart';
+// import 'package:web_socket_demo/pages/connected_home.dart';
+//import 'package:web_socket_demo/dialogs/get_host_password_form.dart';
 class PasswordForm extends StatefulWidget {
   PasswordForm({Key? key, required this.thisHost}) : super(key: key);
   final Host thisHost;
@@ -17,44 +22,129 @@ class PasswordForm extends StatefulWidget {
 }
 
 class _PasswordFormState extends State<PasswordForm> {
-  final _formKey = GlobalKey<FormState>();
-  final handle_secure_storage hss = handle_secure_storage();
-  String? _errorMsg = "";
+// Form field field vars
+
+  String serverPW = "";
+  bool savedTicked = false;
+
+  // other vars
   bool _isTryingConnection = false;
+
+  final _formKey = GlobalKey<FormState>();
+  String? _errorMsg = "";
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Form(
       key: _formKey,
-      child: _isTryingConnection
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(children: [
-              Align(
-                alignment: const Alignment(0, -1 / 3),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('Password for ${widget.thisHost.name}?')],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
-                      child: Builder(builder: (context1) {
-                        return _Password_Field(widget.thisHost, context);
-                      }),
-                    ),
-                    SubmitButton(widget.thisHost),
-                  ],
-                ),
-              ),
-            ]),
+      child: Column(mainAxisSize: MainAxisSize.min,
+          //crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              width: size.width * .25,
+              child: FormCustomAppBar("Password", 35),
+            ),
+            _isTryingConnection
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Visibility(
+                                    visible: _errorMsg!.isNotEmpty,
+                                    child: Text(_errorMsg!,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.red)),
+                                  )
+                                ]),
+                          ),
+                          FormFieldContainer_mb(
+                            child: _passwordField(context, widget.thisHost),
+                          ),
+                          FormFieldContainer_mb(
+                            child: _rememberMe_Field(),
+                          ),
+                          FormFieldContainer_mb(
+                            child: SubmitButton(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+          ]),
     );
   }
 
-  ElevatedButton SubmitButton(Host host) {
+  CheckboxListTile _rememberMe_Field() {
+    return CheckboxListTile(
+      title: Text("Save"),
+      value: savedTicked,
+      onChanged: (newValue) {
+        setState(() {
+          savedTicked = newValue!;
+        });
+      },
+      controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+    );
+  }
+
+  TextFormField _passwordField(BuildContext context, Host hostDetails) {
+    return TextFormField(
+      initialValue: "sunshine",
+      onSaved: (String? value) {
+        serverPW = value!;
+        _authenticateOnServerKnown(hostDetails, value, context);
+      },
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: 'Server password',
+        labelStyle: TextStyle(
+            color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.purple),
+        ),
+        enabledBorder: new UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.0)),
+      ),
+      //initialValue: '192.168.1.45',
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      //onSaved: (value) =>
+      //    _authenticateOnServer(thisHost, value!, parentContext),
+      onChanged: (_) {
+        setState(() {
+          _errorMsg = "";
+        });
+      },
+      // inputFormatters: [
+      //   FilteringTextInputFormatter.allow(
+      //     RegExp(r"(((0|1)?[0-9][0-9]?|2[0-4][0-9]|25[0-5])[.]){3}((0|1)?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$"),
+      //   )
+      // ],
+      validator: (val) {
+        if (!val!.isValidPassword) {
+          return 'Please enter server password';
+        }
+        // if (_errorMsg != "") {
+        //   return (_errorMsg);
+        // }
+
+        return null;
+      },
+    );
+  }
+
+  ElevatedButton SubmitButton() {
     return ElevatedButton(
         onPressed: () {
           //var res = _formKey.currentState!.validate();
@@ -67,78 +157,42 @@ class _PasswordFormState extends State<PasswordForm> {
             //   // use the email provided here
           }
         },
-        child: const Text("Submit"));
+        child: const Text("Connect"));
   }
 
-  TextFormField _Password_Field(Host thisHost, BuildContext parentContext) {
-    return TextFormField(
-      initialValue: 'sunshine',
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      onSaved: (value) =>
-          _authenticateOnServer(thisHost, value!, parentContext),
-      onChanged: (_) {
-        setState(() {
-          _errorMsg = "";
-        });
-      },
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(
-          RegExp(r"[a-zA-Z]+|\s"),
-        )
-      ],
-      validator: (val) {
-        if (!val!.isValidPassword) {
-          return 'Please Enter something';
-        }
-        if (_errorMsg != "") {
-          return (_errorMsg);
-        }
-
-        return null;
-      },
-    );
-  }
-
-  Future<void> _authenticateOnServer(
+  Future<void> _authenticateOnServerKnown(
       Host h, String password, parentContext) async {
-// clear any message
-    // setState(() {
-    //   _errorMsg = "";
-    // });
+    var mbp = BlocProvider.of<PP6_ConnectionBloc>(context);
 
-    // final formState = _formKey.currentState;
-    // if (!formState!.validate()) return;
+    Host tempName =
+        Host(h.name, h.ip_address, h.port, h.known, password, h.favourite);
 
-    // //formState.save();
-        setState(() {
-        _isTryingConnection = true;
-      });
+    if (savedTicked) {
+      try {
+        // TODO Update remembered servers
+        //await mbp.connectionRepositoryInstance.hostNameSave(tempName);
+        await mbp.connectionRepositoryInstance.UpdateKnownHostPassword(tempName);
+      } catch (e) {}
+      ;
+    }
+    setState(() {
+      _isTryingConnection = true;
+    });
 
     try {
-      //await RepositoryProvider.of<ConnectionRepository>(context)
-      //    .logIn(host: h, hostPassword: password);
-
-      var mbp = BlocProvider.of<PP6_ConnectionBloc>(context);
-      //await BlocProvider.of<PP6_ConnectionBloc>(context);
       await mbp.connectionRepositoryInstance
           .logIn(host: h, hostPassword: password);
-      // _connectionRepository.logIn(host: h, hostPassword: password);
 
       Navigator.pop(context);
       Navigator.pop(parentContext);
 
-// somehow update the connectionrepository status to donnected
       context.read<LibraryBloc>().add(ResetLibraryToInitial());
-      context
-          .read<PP6_ConnectionBloc>()
-          .add(PP6_ConnectionStatusChanged(PP6_ConnectionStatus.connected, h));
-
-      // Future.delayed(const Duration(seconds: 2));
-      // if (true) throw ("wrong password guv");
+      context.read<PP6_ConnectionBloc>().add(PP6_ConnectionStatusChanged(
+          PP6_ConnectionStatus.connected, tempName));
     } catch (e) {
       setState(() {
         _isTryingConnection = false;
-              _errorMsg = "Wrong flippin password innit!";
+        _errorMsg = "Can't connect with those details";
       });
     }
   }

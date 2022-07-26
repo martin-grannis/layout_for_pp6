@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/bits_and_pieces/custom_app_bar.dart';
 import 'package:pp6_layout/bits_and_pieces/hosts_list_widget.dart';
 import 'package:pp6_layout/bits_and_pieces/looking_for_servers_bouncing.dart';
+import 'package:pp6_layout/blocs/available_hosts.dart/available_hosts_bloc.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/models/remembered_hosts.dart';
 import 'package:pp6_layout/services/secure_storage_impl.dart';
@@ -10,7 +12,11 @@ import 'package:pp6_layout/services/secure_storage_impl.dart';
 
 class FindServerPage extends StatefulWidget {
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const FindServerPage());
+    return MaterialPageRoute<void>(
+        builder: (_) => BlocProvider(
+              create: (context) => AvailableHostsBloc(),
+              child: FindServerPage(),
+            ));
   }
 
   const FindServerPage({Key? key}) : super(key: key);
@@ -25,29 +31,42 @@ class _FindServerPageState extends State<FindServerPage> {
 // state
   //List<Host> remembered_hosts = [];
   List<Host> available_hosts = [];
-  bool _isLoading = true;
+  //bool _isLoading = true;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _getKnownHosts();
+  // }
+
+//   handle_secure_storage hss = handle_secure_storage();
+
+//   Future<void> _getKnownHosts() async {
+//     List<Host> foundHosts = [];
+//     final List<Host> rh = await hss.retrieve_known_hosts();
+//     foundHosts = await Host.find_available_hosts(rh);
+
+//     //if (mounted) {
+//     setState(() {
+//       //remembered_hosts = foundHosts.toList(growable: false);
+//       available_hosts = foundHosts;
+//       _isLoading = false;
+// //      });
+//     });
+//     //return _hosts;
+//   }
 
   @override
   void initState() {
     super.initState();
-    _getRememberedHosts();
-  }
 
-  handle_secure_storage hss = handle_secure_storage();
-
-  Future<void> _getRememberedHosts() async {
-    List<Host> foundHosts = [];
-    final List<Host> rh = await hss.retrieve_remembered_hosts();
-    foundHosts = await Host.find_available_hosts(rh);
-
-    //if (mounted) {
-    setState(() {
-      //remembered_hosts = foundHosts.toList(growable: false);
-      available_hosts = foundHosts;
-      _isLoading = false;
-//      });
-    });
-    //return _hosts;
+    var bp_ah = BlocProvider.of<AvailableHostsBloc>(context);
+    if (bp_ah.state is AvailableHostsInitial) {
+      bp_ah.add(RequestHostsLoad());
+    }
+    // if (!bp_l.state.isLoaded) {
+    //   bp_l.add(LibraryEventGetLibrary());
+    // }
   }
 
   @override
@@ -168,18 +187,21 @@ class _FindServerPageState extends State<FindServerPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                // decoration: BoxDecoration(
-                                //   color: Color.fromARGB(214, 145, 30, 212),
-                                // ),
-                                child: _isLoading
-                                    ? const looking_for_servers_bouncing()
-                                    : hosts_list_widget(
-                                        hosts: available_hosts)),
+                              child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            // decoration: BoxDecoration(
+                            //   color: Color.fromARGB(214, 145, 30, 212),
+                            // ),
+                            child: hosts_list_widget(),
+
+                            // _isLoading
+                            //? const looking_for_servers_bouncing()
+//                                    :
+                            // hosts_list_widget(
+                            //     hosts: available_hosts)),
                             //remembered_hosts: null),
-                          ),
+                          ))
                         ],
                       ),
                     )

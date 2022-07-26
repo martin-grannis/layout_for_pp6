@@ -52,6 +52,22 @@ class ConnectionRepository {
 
   ///
 
+Future<void> UpdateKnownHostPassword(Host h) async {
+    List<Host> lh = await hss.retrieve_known_hosts();
+    int l = lh.indexWhere((item) => item.name == h.name);
+    
+    if (l != -1) {
+      // remove it
+      lh.removeAt(l);
+    }
+    
+    lh.add(h);
+
+    await hss.save_known_hosts(lh);
+  }
+
+
+
   Future<void> hostNameSave(Host h) async {
     List<Host> lh = await hss.retrieve_saved_hosts();
     int l = lh.indexWhere((item) => item.name == h.name);

@@ -1,7 +1,6 @@
 //import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-//import 'package:pp6_layout/models/remembered_hosts.dart';
 import 'package:pp6_layout/services/mdns.dart';
 
 //import 'package:user_repository/src/mdns.dart';
@@ -32,40 +31,10 @@ class Host extends Equatable {
         'favourite': this.favourite,
       };
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       "name": this.name,
-//       "ip_address": this.ip_address,
-//       "port": this.port,
-//       "known": this.known,
-//       "password": this.password,
-//       "favourite": this.favourite,
-//     };
-//   }
-
-//   static List<Remembered_Hosts> Remembered_HostsFromJson(String str) =>
-//       json.decode(str).map((x) => Host.fromJson(x));
-
-// // named constructor
-//   factory Host.fromJson(Map<String, dynamic> json) => Host(
-//       json["name"],
-//       json['ip_addressage'],
-//       json['port'],
-//       json['password'],
-//       json['favourite'],
-//       json['known']);
-
   static Future<List<Host>> find_available_hosts(List<Host> lrh) async {
     List<Host> hosts = await getMDNS(lrh);
 
     return hosts;
-    // DUMMY
-    // return [
-    //   Host("Martin's mac 1", "192.168.1.99", "56445"),
-    //   Host("Sue's PC", "192.168.1.68", "61223"),
-    //   Host("PropresenterHost", "192.168.1.47", "18667"),
-    //   Host("LinuxHost", "192.168.1.19", "35446")
-    // ];
   }
   //
 
@@ -76,4 +45,22 @@ class Host extends Equatable {
   static const empty = Host('', '', '', false, '', false);
   static const sampler = Host(
       'DESKTOP-0LJ2HL8', '192.168.1.10', '49442', false, 'sunshine', false);
+
+  Host copyWith({
+    String? name,
+    String? ip_address,
+    String? port,
+    bool? known,
+    String? password,
+    bool? favourite,
+  }) {
+    return Host(
+      name ?? this.name,
+      ip_address ?? this.ip_address,
+      port ?? this.port,
+      known ?? this.known,
+      password ?? this.password,
+      favourite ?? this.favourite,
+    );
+  }
 }
