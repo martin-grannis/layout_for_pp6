@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pp6_layout/bits_and_pieces/form_custom_appbar.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
+import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 
 import 'package:pp6_layout/dialogs/controls/dialog_button1.dart';
@@ -70,6 +71,9 @@ class _GetHostDialogFormState extends State<GetHostDialogForm> {
                             PP6_ConnectionStatusChanged(
                                 PP6_ConnectionStatus.connected,
                                 widget.thisHost));
+context
+                            .read<LayoutBloc>()
+                            .add(LayoutEventChangeLayout(newLayout: 0));
                       } catch (e) {
                         // TODO snackbar saying cant connect with remembered password 
                         context.read<PP6_ConnectionBloc>().add(

@@ -5,6 +5,7 @@ import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/network/network_bloc.dart';
+import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
 import 'package:pp6_layout/blocs/playlists_listing/playlists_listing_bloc.dart';
 import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
 import 'package:pp6_layout/dialogs/network_down.dart';
@@ -20,6 +21,9 @@ void main() => runApp(
         providers: [
           BlocProvider(
             create: (context) => NetworkBloc()..add(ListenConnection()),
+          ),
+          BlocProvider(
+            create: (context) => PlaylistBloc(),
           ),
           BlocProvider(
             create: (context) => LayoutBloc(),

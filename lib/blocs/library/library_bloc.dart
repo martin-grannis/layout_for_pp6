@@ -51,7 +51,7 @@ Library process_library_request(dynamic json) {
       scanData_decoded != null ? List.from(scanData_decoded) : null;
 
   Library ll = Library(lib: []);
-  ;
+  
 
   try {
     //for (var i = 0; i < library!.length; i++) {

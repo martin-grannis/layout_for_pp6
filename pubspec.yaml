@@ -44,6 +44,7 @@ dependencies:
   chalkdart: ^2.0.8
   loading_indicator: ^3.1.0
   easy_debounce: ^2.0.2+1
+  google_fonts: ^3.0.1
   
 
 dev_dependencies:

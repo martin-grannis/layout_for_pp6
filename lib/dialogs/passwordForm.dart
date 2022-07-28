@@ -9,6 +9,7 @@ import 'package:pp6_layout/forms/formFieldContainer_mb.dart';
 import 'package:pp6_layout/forms/validator_extension.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // import 'package:web_socket_demo/myApp.dart';
 // import 'package:web_socket_demo/pages/connected_home.dart';
@@ -109,8 +110,10 @@ class _PasswordFormState extends State<PasswordForm> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'Server password',
-        labelStyle: TextStyle(
-            color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+        //labelStyle: GoogleFonts.lato(textStyle: TextStyle(
+          labelStyle: GoogleFonts.raleway(textStyle: TextStyle(
+            //color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLightZ'),
+            color: Colors.black87, fontSize: 17)),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.purple),
         ),

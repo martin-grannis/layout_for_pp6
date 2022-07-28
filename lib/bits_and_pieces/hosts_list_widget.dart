@@ -22,9 +22,9 @@ class hosts_list_widget extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return BlocBuilder<AvailableHostsBloc, AvailableHostsState>(
         builder: (context, state) {
-      if (state is AvailableHostsInitial)
+      if (state is AvailableHostsInitial) {
         return Center(child: CircularProgressIndicator());
-      else if (state is AvailableHostsLoaded) {
+      } else if (state is AvailableHostsLoaded) {
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -78,8 +78,8 @@ class hosts_list_widget extends StatelessWidget {
                                 ),
                               ]);
                             }).then((_) {
-                          BlocProvider.of<AvailableHostsBloc>(context)
-                              .add(UpdateKnownHostStatus(state.known_hosts[index]));
+                          BlocProvider.of<AvailableHostsBloc>(context).add(
+                              UpdateKnownHostStatus(state.known_hosts[index]));
                           //setState(() {});
                         });
                       },
@@ -152,7 +152,9 @@ class hosts_list_widget extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1
-                                      ?.copyWith(color:Colors.black,fontSize: size.width * .013)),
+                                      ?.copyWith(
+                                          color: Colors.black,
+                                          fontSize: size.width * .013)),
                             ),
                           ),
                         ),

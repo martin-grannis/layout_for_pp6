@@ -8,3 +8,10 @@ abstract class PlaylistsListingEvent extends Equatable {
 }
 
 class LoadPlaylistsFromAPI extends PlaylistsListingEvent {}
+
+class LoadPlaylistPlaylist extends PlaylistsListingEvent {
+  Playlist playlist;
+  LoadPlaylistPlaylist({
+    required this.playlist,
+  });
+}
