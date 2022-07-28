@@ -10,8 +10,15 @@ abstract class PlaylistsListingEvent extends Equatable {
 class LoadPlaylistsFromAPI extends PlaylistsListingEvent {}
 
 class LoadPlaylistPlaylist extends PlaylistsListingEvent {
-  Playlist playlist;
-  LoadPlaylistPlaylist({
-    required this.playlist,
+  final List<Playlist> playlist_list;
+  final List<Playlist> previousTop;
+  final List<Playlist> previousPreviousTop;
+  final bool calledFromTop;
+
+  const LoadPlaylistPlaylist( {
+    required this.calledFromTop,
+    required this.playlist_list,
+    required this.previousTop,
+    required this.previousPreviousTop,
   });
 }

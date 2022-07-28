@@ -147,28 +147,28 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                     // fire  playlistsBloc folderChanged (also send ifTop)- send the playlists list from this level
                     // ie the children of this item become the top level ion the pane.
 
-                    // if (state.myPlaylists[index].playlistType ==
-                    //"playlistTypeGroup")
-                    //   {
-                    //     // is a folder name
-                    //     BlocProvider.of<PlaylistsBloc>(context)
-                    //         .add(Playlist_Listing_Event_InitialLoadPlaylists(
-                    //       myPlaylists: state.myPlaylists[index].playlist,
-                    //       //index,
-                    //       isSub: true,
-                    //       calledFromTop: true,
-                    //       previousPreviousTop: state.previousTop,
-                    //       previousTop: state.myPlaylists,
-                    //       topObject: state.topObject,
-                    //       //previousTop: state.myPlaylists,
-                    //       //state.previousIndex,
-                    //     )), // true means called from top panel
-                    //}
-                    // else send a playlistgItemselected event
-                    BlocProvider.of<PlaylistBloc>(context).add(
-                        PlaylistLoad(playlist: state.playlist_list[index])),
-                    BlocProvider.of<LayoutBloc>(context)
-                        .add(LayoutEventChangeLayout(newLayout: 3)),
+                    if (state.playlist_list[index].playlistType ==
+                        "playlistTypeGroup")
+                      {
+                        //     // is a folder name
+                        BlocProvider.of<PlaylistsListingBloc>(context).add(
+                          LoadPlaylistPlaylist(
+                              playlist_list: state.playlist_list[index].playlist,
+                              calledFromTop: false,
+                              previousPreviousTop: state.previousTop,
+                              previousTop: state.playlist_list),
+                        ),
+                        BlocProvider.of<LayoutBloc>(context)
+                            .add(LayoutEventChangeLayout(newLayout: 2)), // playlist listing in left pane
+                      }
+                    else
+                      {
+                        //send a playlistgItemselected event
+                        BlocProvider.of<PlaylistBloc>(context).add(
+                            PlaylistLoad(playlist: state.playlist_list[index])),
+                        BlocProvider.of<LayoutBloc>(context)
+                            .add(LayoutEventChangeLayout(newLayout: 3)), // playlist in left pane
+                      }
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -240,13 +240,13 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
 
   Padding PlaylistsItem(state, int index) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0,0,0, 20),
-      child: Text(
-      playlist_reformatText(state.playlist_list[index], state, index),
-      style: GoogleFonts.lato(
-        textStyle: TextStyle(color: Colors.black, fontSize: 18),
-      ),
-    ));
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+        child: Text(
+          playlist_reformatText(state.playlist_list[index], state, index),
+          style: GoogleFonts.lato(
+            textStyle: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+        ));
   }
 
   String playlist_reformatText(playlistItem, state, index) {

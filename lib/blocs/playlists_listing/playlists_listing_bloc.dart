@@ -15,41 +15,19 @@ class PlaylistsListingBloc
       : _connectionRepository = connectionRepository,
         super(PlaylistsInitial()) {
     on<LoadPlaylistsFromAPI>(_loadPlaylists);
+    on<LoadPlaylistPlaylist>(_loadSubPlaylists);
   }
 
-  void _loadPlaylists(
-    LoadPlaylistsFromAPI event,
+  void _loadSubPlaylists(
+    LoadPlaylistPlaylist event,
     Emitter<PlaylistsListingState> emit,
   ) async {
-    // //var s = state;
-    // var changeSub=false;
-    // if (event.isSub) {
-    //   // get state
+    var s = state as PlaylistsLoaded;
 
-    //   if (state.topObject == event.myPlaylists) {
-    //     changeSub = true;
-    //     // this.panel = 0;
-    //     // this.switched = false;
-    //   }
-
-    //   var s = state.copyWith(
-    //       myPlaylists: event.myPlaylists,
-    //       panel: 1,
-    //       isSub: !changeSub,
-    //       previousTop: event.previousTop,
-    //       previousPreviousTop: event.previousPreviousTop);
-    //   emit(s);
-    //   // emit(Playlist_Listing_LoadedState(
-    //   //   myPlaylists: event.myPlaylists,
-    //   //   panel: 1,
-    //   //   isLoaded: true,
-    //   //   calledFromTop: event.calledFromTop,
-    //   //   isSub: event.isSub,
-    //   //   previousTop: event.previousTop,
-    //   //   previousPreviousTop: event.previousPreviousTop,
-    //   //   topObject: event.topObject,
-    //   // ));
-    // } else {
+    s.copyWith(
+        playlist_list: event.playlist_list,
+        previousTop: event.previousTop,
+        previousPreviousTop: event.previousPreviousTop);
     try {
       String pla = await _connectionRepository.getPlaylists();
       dynamic scanData_decoded = jsonDecode(pla);
@@ -57,11 +35,34 @@ class PlaylistsListingBloc
       List<Playlist>? result = tmp.playlistAll;
       print("about to emit Playlists init Loaded");
       emit(PlaylistsLoaded(
-        playlist_list: result!, isTop:true
-        // isSub: false,
-        // previousTop: result,
-        // previousPreviousTop: result,
-        
+        playlist_list: result!,
+        isTop: true,
+        previousTop: result,
+        previousPreviousTop: result,
+      ));
+      print("have emitted Playlists init Loaded");
+      return;
+    } catch (e) {
+      print(e.toString());
+      return;
+    }
+  }
+
+  void _loadPlaylists(
+    LoadPlaylistsFromAPI event,
+    Emitter<PlaylistsListingState> emit,
+  ) async {
+    try {
+      String pla = await _connectionRepository.getPlaylists();
+      dynamic scanData_decoded = jsonDecode(pla);
+      PlaylistRequestAll tmp = PlaylistRequestAll.fromJson(scanData_decoded);
+      List<Playlist>? result = tmp.playlistAll;
+      print("about to emit Playlists init Loaded");
+      emit(PlaylistsLoaded(
+        playlist_list: result!,
+        isTop: true,
+        previousTop: result,
+        previousPreviousTop: result,
       ));
       print("have emitted Playlists init Loaded");
       return;

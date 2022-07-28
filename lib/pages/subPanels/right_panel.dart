@@ -24,7 +24,7 @@ class _rightPanelState extends State<RightPanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.pink,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pp6_layout/bits_and_pieces/playlistHeadingWidget.dart';
+import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
 
 class LeftPanelPlaylist extends StatefulWidget {
@@ -19,10 +20,7 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
     //with SingleTickerProviderStateMixin {
     with
         TickerProviderStateMixin {
-  // static const List<Tab> myTabs = <Tab>[
-  //   Tab(text: "Left"),
-  //   Tab(text: "Right"),
-  // ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +35,32 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
           return Column(
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Text("Playlist: xxxxxxxxxx"),
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    onPressed: (() {
+                      // if from top layout = 1
+                      BlocProvider.of<LayoutBloc>(context)
+                          .add(LayoutEventChangeLayout(newLayout: 1));
+                      // else playlist_listing = previousList, and previouspreviouslist
+                    }),
+                    child: Text("back",
+                        style: TextStyle(decoration: TextDecoration.underline)),
+                  ),
+                ),
+                Expanded(
+                  flex: 35,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                    child: Row(
+                      children: [
+                        Text("Playlist: "),
+                        Text("${state.playlist.playlistName}",
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
                 )
               ]),
               Container(
@@ -80,13 +101,20 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(Icons.lyrics, color: Colors.orange),
-            TextButton(
-              onPressed: (() {}),
-              child: Text(
-                str,
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(color: Colors.black, fontSize: 18),
+            Spacer(flex: 2),
+            Expanded(flex: 1, child: Icon(Icons.lyrics, color: Colors.orange)),
+            Expanded(
+              flex: 20,
+              child: TextButton(
+                onPressed: (() {}),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    str,
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                  ),
                 ),
               ),
             ),
