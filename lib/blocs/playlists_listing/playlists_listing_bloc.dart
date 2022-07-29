@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/models/playlist.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
@@ -15,37 +15,40 @@ class PlaylistsListingBloc
       : _connectionRepository = connectionRepository,
         super(PlaylistsInitial()) {
     on<LoadPlaylistsFromAPI>(_loadPlaylists);
-    on<LoadPlaylistPlaylist>(_loadSubPlaylists);
+    //on<LoadPlaylistFromTop>(_loadPlaylists);
+
+    on<ResetPlaylistListingToInitial>((event, emit) async {
+      emit(PlaylistsInitial());
+    });
+
+    on<LoadPlaylistDownwards>(_loadPlaylistDownwards);
+    //on<LoadPlaylistUpwards>(_loadSubPlaylists);
   }
 
-  void _loadSubPlaylists(
-    LoadPlaylistPlaylist event,
+  void _loadPlaylistDownwards(
+    LoadPlaylistDownwards event,
     Emitter<PlaylistsListingState> emit,
-  ) async {
-    var s = state as PlaylistsLoaded;
+  ) {
+    PlaylistsLoaded s = state as PlaylistsLoaded;
 
-    s.copyWith(
-        playlist_list: event.playlist_list,
-        previousTop: event.previousTop,
-        previousPreviousTop: event.previousPreviousTop);
-    try {
-      String pla = await _connectionRepository.getPlaylists();
-      dynamic scanData_decoded = jsonDecode(pla);
-      PlaylistRequestAll tmp = PlaylistRequestAll.fromJson(scanData_decoded);
-      List<Playlist>? result = tmp.playlistAll;
-      print("about to emit Playlists init Loaded");
-      emit(PlaylistsLoaded(
-        playlist_list: result!,
-        isTop: true,
-        previousTop: result,
-        previousPreviousTop: result,
-      ));
-      print("have emitted Playlists init Loaded");
-      return;
-    } catch (e) {
-      print(e.toString());
-      return;
-    }
+    //String stopme = "YAY";
+    History old_h = s.history;
+    List<Playlist> new_playlist_list = event.playlist_list;
+    old_h.history!.add(HistoryItem(new_playlist_list, false, event.clickedItemName));
+    // gboing down needs this playlist adding to history, and becomning current - istop is false
+    emit(PlaylistsLoaded(history: old_h, playlist_list: new_playlist_list));
+    //var s = state;
+    //  History old_h = state.history;
+    //  List<Playlist> old_playlist_list = state.playlist_list;
+
+    // new history = old History + this current playlust and onop as false
+
+    // emit(PlaylistsLoaded(
+    //   playlist_list: result!,
+    //   history: History.empty,
+    // ));
+    print("have emitted Playlists init Loaded");
+    return;
   }
 
   void _loadPlaylists(
@@ -59,11 +62,8 @@ class PlaylistsListingBloc
       List<Playlist>? result = tmp.playlistAll;
       print("about to emit Playlists init Loaded");
       emit(PlaylistsLoaded(
-        playlist_list: result!,
-        isTop: true,
-        previousTop: result,
-        previousPreviousTop: result,
-      ));
+          playlist_list: result!,
+          history: History([HistoryItem(result, true, "")])));
       print("have emitted Playlists init Loaded");
       return;
     } catch (e) {

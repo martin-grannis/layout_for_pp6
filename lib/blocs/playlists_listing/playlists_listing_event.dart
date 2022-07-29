@@ -7,18 +7,35 @@ abstract class PlaylistsListingEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class ResetPlaylistListingToInitial extends PlaylistsListingEvent {}
+
+
 class LoadPlaylistsFromAPI extends PlaylistsListingEvent {}
 
-class LoadPlaylistPlaylist extends PlaylistsListingEvent {
-  final List<Playlist> playlist_list;
-  final List<Playlist> previousTop;
-  final List<Playlist> previousPreviousTop;
-  final bool calledFromTop;
+// class LoadPlaylistFromTop extends PlaylistsListingEvent {
+//   final List<Playlist> playlist_list;
 
-  const LoadPlaylistPlaylist( {
-    required this.calledFromTop,
+//   const LoadPlaylistFromTop({required this.playlist_list});
+//   //bloc will append history with this playlist_list and entry top
+//   // then emit state with that new history and playlist
+// }
+
+class LoadPlaylistDownwards extends PlaylistsListingEvent {
+  final List<Playlist> playlist_list;
+  final String? clickedItemName;
+
+  const LoadPlaylistDownwards({
+    required this.clickedItemName,
     required this.playlist_list,
-    required this.previousTop,
-    required this.previousPreviousTop,
   });
+  //bloc will append history with this playlist_list and entry not top
+  // then emit state with that new history and playlist
+}
+
+class LoadPlaylistUpwards extends PlaylistsListingEvent {
+  final List<Playlist> playlist_list;
+
+  const LoadPlaylistUpwards({required this.playlist_list});
+  //bloc will remove last history
+  // then emit state with last history and last playlist
 }

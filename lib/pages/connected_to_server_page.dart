@@ -9,6 +9,7 @@ import 'package:pp6_layout/pages/subPanels/leftPaneViews/left_panel_listing.dart
 import 'package:pp6_layout/pages/subPanels/leftPaneViews/left_panel_playlist.dart';
 import 'package:pp6_layout/pages/subPanels/leftPaneViews/left_panel_tabbed_left.dart';
 import 'package:pp6_layout/pages/subPanels/leftPaneViews/left_panel_tabbed_right.dart';
+import 'package:pp6_layout/pages/subPanels/playlists_listing.dart';
 import 'package:pp6_layout/pages/subPanels/right_panel.dart';
 
 class ConnectToServerPage extends StatefulWidget {
@@ -47,7 +48,9 @@ final scaffoldKey = GlobalKey<ScaffoldState>();
                       return const LeftPanelTabbedRight();
 
                     case 2:
-                      return const LeftPanelListing();
+                    
+                      //return const LeftPanelListing();
+                      return const PlaylistsListing();
 
                     case 3:
                       return const LeftPanelPlaylist();

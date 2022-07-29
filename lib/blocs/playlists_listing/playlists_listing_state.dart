@@ -1,47 +1,49 @@
 part of 'playlists_listing_bloc.dart';
 
 abstract class PlaylistsListingState extends Equatable {
-  const PlaylistsListingState();
-
-  //get playlist_list => this.playlist_list;
+  // get playlist_list => this.playlist_list;
 
   @override
   List<Object> get props => [];
-  
 }
 
 class PlaylistsInitial extends PlaylistsListingState {}
 
 class PlaylistsLoaded extends PlaylistsListingState {
   final List<Playlist> playlist_list;
-  final bool isTop;
-  final List<Playlist> previousTop;
-  final List<Playlist> previousPreviousTop;
+  final History history;
 
-  const PlaylistsLoaded(
-      {required this.playlist_list, required this.isTop, required this.previousPreviousTop, required this.previousTop}
-      );
+  PlaylistsLoaded(
+      {this.playlist_list = const <Playlist>[], this.history = History.empty});
 
   // get playlist_list => this.playlist_list;
+  //get playlist_list => this.playlist_list;
 
   @override
-  List<Object> get props => [playlist_list, isTop, previousTop, previousPreviousTop];
+  List<Object> get props => [playlist_list, history];
+
+  get breadcrumbs {
+    List<HistoryItem> mhi = this.history.history as List<HistoryItem>;
+    String str = "";
+
+    bool first = true;
+    for (HistoryItem hi in mhi) {
+      if (first) {
+        first = false;
+      } else {
+        str = "${str}/${hi.groupName}";
+      }
+    }
+    return str;
+  }
 
   PlaylistsLoaded copyWith({
     List<Playlist>? playlist_list,
-    bool? isTop,
-    List<Playlist>? previousTop,
-    List<Playlist>? previousPreviousTop,
+    History? history,
   }) {
     return PlaylistsLoaded(
-      
+      history: this.history,
       playlist_list: this.playlist_list,
-      isTop: this.isTop,
-      previousPreviousTop: this.previousPreviousTop,
-      previousTop: this.previousTop, 
-      
-      
-      
     );
   }
 }

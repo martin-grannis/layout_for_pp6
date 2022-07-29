@@ -50,50 +50,35 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
           return Column(
             children: [
               Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(80, 10, 80, 0),
-                      child: TextFormField(
-                        style: TextStyle(color: Colors.red),
-                        controller: textController,
-                        onChanged: (_) => EasyDebounce.debounce(
-                          'textController',
-                          Duration(milliseconds: 2000),
-                          () => {},
-                          // () => setState(() {}),
-                        ),
-                        autofocus: true,
-                        obscureText: false,
-
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          hintText: 'Search',
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          filled: true,
-                          fillColor: Color(0xFFDCD8D8),
-                          suffixIcon: textController.text.isNotEmpty
-                              ? InkWell(
-                                  onTap: () => setState(
-                                    () => textController.clear(),
-                                  ),
-                                  child: Icon(
-                                    Icons.clear,
-                                    color: Color(0xFF757575),
-                                    size: 22,
-                                  ),
-                                )
-                              : null,
-                        ),
-//                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
+                 Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    onPressed: (() {
+                      // if from top layout = 1
+                      BlocProvider.of<LayoutBloc>(context)
+                          .add(LayoutEventChangeLayout(newLayout: 1));
+                      // else playlist_listing = previousList, and previouspreviouslist
+                    }),
+                    child: Text("back",
+                        style: TextStyle(decoration: TextDecoration.underline)),
+                  ),
+                ),
+                Expanded(
+                  flex: 35,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                    child: Row(
+                      children: [
+                        Text("Playlist Folder: "),
+                        Text("${state.breadcrumbs}",
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ],
                     ),
                   ),
-                ],
+                )
+                ]
               ),
               Container(
                 //color:Colors.red,
@@ -152,11 +137,10 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                       {
                         //     // is a folder name
                         BlocProvider.of<PlaylistsListingBloc>(context).add(
-                          LoadPlaylistPlaylist(
+                          LoadPlaylistDownwards(
                               playlist_list: state.playlist_list[index].playlist,
-                              calledFromTop: false,
-                              previousPreviousTop: state.previousTop,
-                              previousTop: state.playlist_list),
+                              clickedItemName: state.playlist_list[index].playlistName,
+                              ),
                         ),
                         BlocProvider.of<LayoutBloc>(context)
                             .add(LayoutEventChangeLayout(newLayout: 2)), // playlist listing in left pane

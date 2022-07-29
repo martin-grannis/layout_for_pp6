@@ -6,6 +6,7 @@ import 'package:pp6_layout/bits_and_pieces/form_custom_appbar.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
+import 'package:pp6_layout/blocs/playlists_listing/playlists_listing_bloc.dart';
 
 import 'package:pp6_layout/dialogs/controls/dialog_button1.dart';
 import 'package:pp6_layout/dialogs/passwordForm.dart';
@@ -67,19 +68,21 @@ class _GetHostDialogFormState extends State<GetHostDialogForm> {
                         context
                             .read<LibraryBloc>()
                             .add(ResetLibraryToInitial());
+                        context
+                            .read<PlaylistsListingBloc>()
+                            .add(ResetPlaylistListingToInitial());
                         context.read<PP6_ConnectionBloc>().add(
                             PP6_ConnectionStatusChanged(
                                 PP6_ConnectionStatus.connected,
                                 widget.thisHost));
-context
+                        context
                             .read<LayoutBloc>()
                             .add(LayoutEventChangeLayout(newLayout: 0));
                       } catch (e) {
-                        // TODO snackbar saying cant connect with remembered password 
+                        // TODO snackbar saying cant connect with remembered password
                         context.read<PP6_ConnectionBloc>().add(
                             PP6_ConnectionStatusChanged(
-                                PP6_ConnectionStatus.disconnected,
-                                Host.empty));
+                                PP6_ConnectionStatus.disconnected, Host.empty));
                       }
                     } else {
                       showDialog(

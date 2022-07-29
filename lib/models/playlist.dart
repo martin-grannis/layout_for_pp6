@@ -100,6 +100,25 @@ class Playlist {
   }
 }
 
+class History {
+  final List<HistoryItem>? history;
+
+  const History(
+    this.history,
+  );
+
+  static const empty = History(<HistoryItem>[]);
+}
+
+class HistoryItem {
+  final List<Playlist>? currentPlaylist;
+  final String? groupName;
+  final bool? isTop;
+
+  HistoryItem(this.currentPlaylist, this.isTop, this.groupName);
+}
+
+
 // class PlaylistFolderOrItem extends Equatable {
 //   String? playlistItemType;
 //   String? playlistItemName;
