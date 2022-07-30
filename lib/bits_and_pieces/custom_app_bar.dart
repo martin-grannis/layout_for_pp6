@@ -23,6 +23,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     //MediaQueryData sizeInfo = MediaQuery.of(context);
     return AppBar(
+      backgroundColor: Color.fromARGB(255, 99, 99, 99),
         title: Container(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
@@ -61,19 +62,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         },
                       ),
                     ),
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: Text(
-                    //     'Hello World3',
-                    //     style: TextStyle(fontSize: 14),
-                    //   ),
-                    // ),
+                    
                   ],
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [],
-                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [],
+                // ),
               ],
             ),
           ),

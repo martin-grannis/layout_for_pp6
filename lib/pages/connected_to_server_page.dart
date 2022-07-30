@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:pp6_layout/bits_and_pieces/custom_app_bar.dart';
+import 'package:pp6_layout/bits_and_pieces/custom_app_bar2.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/network/network_bloc.dart';
 import 'package:pp6_layout/pages/network_failure_page.dart';
@@ -31,7 +32,7 @@ final scaffoldKey = GlobalKey<ScaffoldState>();
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar2(),
         body: BlocBuilder<NetworkBloc, NetworkState>(builder: (context, state) {
           if (BlocProvider.of<NetworkBloc>(context).state
               is ConnectionFailure) {
