@@ -1,7 +1,11 @@
 part of 'layout_bloc.dart';
 
 @immutable
-abstract class LayoutEvent extends Equatable {}
+abstract class LayoutEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+
+}
 
 class LayoutEventChangeLayout extends LayoutEvent {
   
@@ -17,3 +21,9 @@ class LayoutEventChangeLayout extends LayoutEvent {
   @override
   List<Object?> get props => [newLayout];
 }
+
+
+class ListenPlaylistListing extends LayoutEvent {
+
+}
+

@@ -15,6 +15,8 @@ import 'package:pp6_layout/pages/network_failure_page.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
 ConnectionRepository connectionRepository = ConnectionRepository();
+PlaylistsListingBloc _playlistListingbloc =
+    PlaylistsListingBloc(connectionRepository: connectionRepository);
 
 void main() => runApp(
       MultiBlocProvider(
@@ -26,19 +28,21 @@ void main() => runApp(
             create: (context) => PlaylistBloc(),
           ),
           BlocProvider(
-            create: (context) => LayoutBloc(),
+            create: (context) => LayoutBloc(playlistListingBloc: _playlistListingbloc)..add(ListenPlaylistListing()),
           ),
           BlocProvider(
             create: (context) =>
                 LibraryBloc(connectionRepository: connectionRepository),
           ),
           BlocProvider(
-            create: (context) => PlaylistsListingBloc(
-                connectionRepository: connectionRepository),
+            create: (context) => _playlistListingbloc
+            // create: (context) => PlaylistsListingBloc(
+            //     connectionRepository: connectionRepository),
           ),
           BlocProvider(
             create: (context) =>
-                PP6_ConnectionBloc(connectionRepository: connectionRepository)..add(PP6_Initialise()),
+                PP6_ConnectionBloc(connectionRepository: connectionRepository)
+                  ..add(PP6_Initialise()),
           ),
           BlocProvider(
             create: (context) =>
@@ -50,5 +54,3 @@ void main() => runApp(
         ),
       ),
     );
-    
-   

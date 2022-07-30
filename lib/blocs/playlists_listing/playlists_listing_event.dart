@@ -9,7 +9,6 @@ abstract class PlaylistsListingEvent extends Equatable {
 
 class ResetPlaylistListingToInitial extends PlaylistsListingEvent {}
 
-
 class LoadPlaylistsFromAPI extends PlaylistsListingEvent {}
 
 // class LoadPlaylistFromTop extends PlaylistsListingEvent {
@@ -33,9 +32,7 @@ class LoadPlaylistDownwards extends PlaylistsListingEvent {
 }
 
 class LoadPlaylistUpwards extends PlaylistsListingEvent {
-  final List<Playlist> playlist_list;
-
-  const LoadPlaylistUpwards({required this.playlist_list});
   //bloc will remove last history
   // then emit state with last history and last playlist
 }
+

@@ -108,6 +108,14 @@ class History {
   );
 
   static const empty = History(<HistoryItem>[]);
+
+  // History copyWith({
+  //   List<HistoryItem>? history,
+  // }) {
+  //   return History(
+  //     history ?? this.history,
+  //   );
+  // }
 }
 
 class HistoryItem {

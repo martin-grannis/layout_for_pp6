@@ -49,20 +49,22 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
         } else if (state is PlaylistsLoaded) {
           return Column(
             children: [
-              Row(
-                children: [
-                 Expanded(
+              Row(children: [
+                Expanded(
                   flex: 5,
-                  child: TextButton(
-                    onPressed: (() {
-                      // if from top layout = 1
-                      BlocProvider.of<LayoutBloc>(context)
-                          .add(LayoutEventChangeLayout(newLayout: 1));
-                      // else playlist_listing = previousList, and previouspreviouslist
-                    }),
-                    child: Text("back",
-                        style: TextStyle(decoration: TextDecoration.underline)),
-                  ),
+                  child: state.history.history!.length > 1
+                      ? TextButton(
+                          onPressed: (() {
+                            context
+                                .read<PlaylistsListingBloc>()
+                                .add(LoadPlaylistUpwards());
+                            // else playlist_listing = previousList, and previouspreviouslist
+                          }),
+                          child: Text("back",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline)),
+                        )
+                      : Container(),
                 ),
                 Expanded(
                   flex: 35,
@@ -78,8 +80,7 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                     ),
                   ),
                 )
-                ]
-              ),
+              ]),
               Container(
                 //color:Colors.red,
                 width: w,
@@ -138,20 +139,23 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                         //     // is a folder name
                         BlocProvider.of<PlaylistsListingBloc>(context).add(
                           LoadPlaylistDownwards(
-                              playlist_list: state.playlist_list[index].playlist,
-                              clickedItemName: state.playlist_list[index].playlistName,
-                              ),
+                            playlist_list: state.playlist_list[index].playlist,
+                            clickedItemName:
+                                state.playlist_list[index].playlistName,
+                          ),
                         ),
-                        BlocProvider.of<LayoutBloc>(context)
-                            .add(LayoutEventChangeLayout(newLayout: 2)), // playlist listing in left pane
+                        BlocProvider.of<LayoutBloc>(context).add(
+                            LayoutEventChangeLayout(
+                                newLayout: 2)), // playlist listing in left pane
                       }
                     else
                       {
                         //send a playlistgItemselected event
                         BlocProvider.of<PlaylistBloc>(context).add(
                             PlaylistLoad(playlist: state.playlist_list[index])),
-                        BlocProvider.of<LayoutBloc>(context)
-                            .add(LayoutEventChangeLayout(newLayout: 3)), // playlist in left pane
+                        BlocProvider.of<LayoutBloc>(context).add(
+                            LayoutEventChangeLayout(
+                                newLayout: 3)), // playlist in left pane
                       }
                   },
                   child: Align(

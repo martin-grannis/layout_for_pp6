@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/models/playlist.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
@@ -22,7 +24,36 @@ class PlaylistsListingBloc
     });
 
     on<LoadPlaylistDownwards>(_loadPlaylistDownwards);
-    //on<LoadPlaylistUpwards>(_loadSubPlaylists);
+    on<LoadPlaylistUpwards>(_loadPlaylistUpwards);
+  }
+
+  final StreamController<bool> streamController = StreamController.broadcast();
+  Stream<bool> get aStream => streamController.stream;
+
+// Stream<bool> get playlistListingUpdates async* {
+//     yield* _controller.stream;
+//   }
+
+  void _loadPlaylistUpwards(
+    LoadPlaylistUpwards event,
+    Emitter<PlaylistsListingState> emit,
+  ) {
+    PlaylistsLoaded s = state as PlaylistsLoaded;
+// pop the last histoyr of the bottom as that is us
+// and then load the last one
+    History old_h = s.history;
+    var l = old_h.history?.length;
+
+    old_h.history?.removeLast();
+    var lastP = old_h.history![l! - 2].currentPlaylist;
+    emit(PlaylistsLoaded(
+        history: old_h, playlist_list: lastP as List<Playlist>));
+
+    if (l == 2) {
+      streamController.sink.add(true);
+    }
+
+    return;
   }
 
   void _loadPlaylistDownwards(
@@ -34,20 +65,11 @@ class PlaylistsListingBloc
     //String stopme = "YAY";
     History old_h = s.history;
     List<Playlist> new_playlist_list = event.playlist_list;
-    old_h.history!.add(HistoryItem(new_playlist_list, false, event.clickedItemName));
-    // gboing down needs this playlist adding to history, and becomning current - istop is false
+    old_h.history!
+        .add(HistoryItem(new_playlist_list, false, event.clickedItemName));
+
     emit(PlaylistsLoaded(history: old_h, playlist_list: new_playlist_list));
-    //var s = state;
-    //  History old_h = state.history;
-    //  List<Playlist> old_playlist_list = state.playlist_list;
 
-    // new history = old History + this current playlust and onop as false
-
-    // emit(PlaylistsLoaded(
-    //   playlist_list: result!,
-    //   history: History.empty,
-    // ));
-    print("have emitted Playlists init Loaded");
     return;
   }
 

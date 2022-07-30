@@ -28,7 +28,7 @@ class PlaylistsLoaded extends PlaylistsListingState {
 
     bool first = true;
     for (HistoryItem hi in mhi) {
-      if (first) {
+      if (first && mhi.length>1) {
         first = false;
       } else {
         str = "${str}/${hi.groupName}";
