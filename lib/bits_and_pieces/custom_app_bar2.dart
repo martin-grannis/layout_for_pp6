@@ -1,7 +1,9 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/bits_and_pieces/settingsWidgetHeaderBar.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
+import 'package:pp6_layout/dialogs/settings.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
@@ -200,12 +202,16 @@ class AppBarContent extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.cancel, size: 30),
                           color: Colors.white,
-                            onPressed: () async {
-                              if (await confirm( title:Text("DISCONNECTING"), content:Text("Are you sure you want to disconnect?"), context)) {
-                                return print('pressedOK');
-                              }
-                              return print('pressedCancel');
-                            },
+                          onPressed: () async {
+                            if (await confirm(
+                                title: Text("DISCONNECTING"),
+                                content: Text(
+                                    "Are you sure you want to disconnect?"),
+                                context)) {
+                              return print('pressedOK');
+                            }
+                            return print('pressedCancel');
+                          },
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
@@ -213,10 +219,42 @@ class AppBarContent extends StatelessWidget {
                             icon: Icon(Icons.settings_outlined, size: 30),
                             color: Colors.white,
                             onPressed: () async {
-                              if (await confirm( title:Text("SETTINGS"), content:Text("Do you want to see settings now?"), context)) {
-                                return print('pressedOK');
-                              }
-                              return print('pressedCancel');
+                              Size size = MediaQuery.of(context).size;
+                              showDialog<void>(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return new Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 65, 30, 50),
+              child: new Container(
+                decoration: BoxDecoration(
+
+                            //color: Color.fromARGB(0, 255, 2, 2),
+                            //color: Color(0xFFD94E08),
+                            border: Border.all(
+                              color: Color(0xFFD94E08),
+                              width: 2,
+                            ),
+                            
+                          ),
+                
+                //height: 500,
+                width: MediaQuery.of(context).size.width*.6,
+               // color: Colors.white,
+                child: new Column(
+                  children: <Widget>[
+                    Settings(),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
                             },
                           ),
                         ),
@@ -232,3 +270,4 @@ class AppBarContent extends StatelessWidget {
     );
   }
 }
+
