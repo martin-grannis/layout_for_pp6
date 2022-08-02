@@ -245,7 +245,8 @@ class AppBarContent extends StatelessWidget {
                               ),
                     
                     //height: 500,
-                    width: MediaQuery.of(context).size.width*.6,
+                    //width: MediaQuery.of(context).size.width*.4,
+                    width: 350,
                    // color: Colors.white,
                     child: new Column(
                       children: <Widget>[

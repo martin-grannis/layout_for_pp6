@@ -4,7 +4,7 @@ import 'package:pp6_layout/bits_and_pieces/settingsWidgetHeaderBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
-  Settings({Key? key}) : super(key: key);
+  const Settings({Key? key}) : super(key: key);
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -17,8 +17,8 @@ class _SettingsState extends State<Settings> {
   int _currentSongColor = 0;
   int _disconnectIconColor = 0;
   bool _lockedSplit = true;
-  int _splitPoint = 40;
-  
+  double _splitPoint = 40;
+
 // ValueChanged<Color> callback
   void changeColor(Color color) {
     setState(() => pickerColor = color);
@@ -31,13 +31,13 @@ class _SettingsState extends State<Settings> {
     loadPrefs();
   }
 
-  Future<Null> loadPrefs() async {
+  Future<void> loadPrefs() async {
     prefs = await SharedPreferences.getInstance();
     _cachedSongColor = prefs.getInt('_cachedSongColor') ?? 0xFF76FF03;
     _currentSongColor = prefs.getInt('_currentSongColor') ?? 0xff33691e;
     _disconnectIconColor = prefs.getInt('_disconnectIconColor') ?? 0xff93291e;
     _lockedSplit = prefs.getBool('_lockedSplit') ?? true;
-    _splitPoint = prefs.getInt('_splitPoint') ?? 40;
+    _splitPoint = prefs.getDouble('_splitPoint') ?? 40;
     setState(() {});
   }
 
@@ -212,8 +212,8 @@ class _SettingsState extends State<Settings> {
                                       update_disconnectIconColor)
                                   .then((exit) {
                                 if (exit) {
-                                  savePrefInt(
-                                      "_disconnectIconColor", _disconnectIconColor);
+                                  savePrefInt("_disconnectIconColor",
+                                      _disconnectIconColor);
                                 } else {
                                   setState(
                                       () => _disconnectIconColor = savedColor);
@@ -236,7 +236,90 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
               ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 40, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text(
+                          'Locked split?',
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(6, 0, 0, 0),
+                      child: Align(
+                        alignment: AlignmentDirectional(-1, 0),
+                        child: Checkbox(
+                          value: _lockedSplit,
+                          onChanged: (val) {
+                            setState(() => _lockedSplit = val!);
+                            this.prefs.setBool("_lockedSplit", val!);
+                          },
+                        ),
+                      )),
+                ),
+              ],
+            ),
+
+
+            Visibility(
+              visible: _lockedSplit,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 40, 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: const [
+                          Text(
+                            'Split point',
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        child: Align(
+                          alignment: AlignmentDirectional(-1, 0),
+                          child: Slider.adaptive(
+                            max: 100,
+                            min: 0,
+                            value: _splitPoint,
+                            onChanged: (val) {
+                              setState(() => _splitPoint = val);
+                              this.prefs.setDouble("_splitPoint", val);
+                            },
+                          ),
+                        )),
+                  ),
+                ],
+              ),
             )
+
+
           ],
         ));
   }
@@ -245,21 +328,18 @@ class _SettingsState extends State<Settings> {
     setState(() {
       _cachedSongColor = value!;
     });
-     
   }
 
   void update_currentSongColor(int? value) {
     setState(() {
       _currentSongColor = value!;
     });
-    
   }
 
-    void update_disconnectIconColor(int? value) {
+  void update_disconnectIconColor(int? value) {
     setState(() {
       _disconnectIconColor = value!;
     });
-    
   }
 
   Future<dynamic> showColorDialog(BuildContext context, int initialColor,

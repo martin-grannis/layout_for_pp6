@@ -12,7 +12,7 @@ class SettingsWidgetHeaderBar extends StatelessWidget {
         color: Color(0xFFD94E08),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Expanded(
@@ -24,30 +24,30 @@ class SettingsWidgetHeaderBar extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: double.infinity,
+                      //width: double.infinity,
                       height: 56,
                       decoration: BoxDecoration(
                         color: Color(0xFFD94E08),
                       ),
                       child: Row(
-                        mainAxisSize: MainAxisSize.max,
+                        //mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Expanded(
-                            flex: 20,
+                            flex: 2,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
+                              children: const [
                                 Text(
                                   'MrB remote Settings',
                                   style: TextStyle(
-                                        fontFamily: 'Lato',
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w300,
-                                      ),
+                                    fontFamily: 'Lato',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w300,
+                                  ),
                                 ),
                               ],
                             ),
@@ -66,10 +66,13 @@ class SettingsWidgetHeaderBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.close,
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.close),
                   color: Colors.white,
-                  size: 30,
+                  //size: 30,
                 ),
               ],
             ),
