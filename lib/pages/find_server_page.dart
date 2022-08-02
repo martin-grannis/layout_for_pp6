@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/bits_and_pieces/custom_app_bar.dart';
+import 'package:pp6_layout/bits_and_pieces/custom_app_bar2.dart';
 import 'package:pp6_layout/bits_and_pieces/hosts_list_widget.dart';
 import 'package:pp6_layout/bits_and_pieces/looking_for_servers_bouncing.dart';
 import 'package:pp6_layout/blocs/available_hosts.dart/available_hosts_bloc.dart';
@@ -76,7 +77,7 @@ class _FindServerPageState extends State<FindServerPage> {
     return Scaffold(
       key: scaffoldKey,
       //backgroundColor: Colors.red,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar2(),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),

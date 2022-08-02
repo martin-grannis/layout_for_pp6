@@ -224,34 +224,39 @@ class AppBarContent extends StatelessWidget {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 65, 30, 50),
-              child: new Container(
-                decoration: BoxDecoration(
-
-                            //color: Color.fromARGB(0, 255, 2, 2),
-                            //color: Color(0xFFD94E08),
-                            border: Border.all(
-                              color: Color(0xFFD94E08),
-                              width: 2,
-                            ),
-                            
-                          ),
-                
-                //height: 500,
-                width: MediaQuery.of(context).size.width*.6,
-               // color: Colors.white,
-                child: new Column(
-                  children: <Widget>[
-                    Settings(),
-                  ],
-                ),
-              ),
-            )
-          ],
+        return Scaffold(
+      
+          body: Center(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 65, 30, 50),
+                  child: new Container(
+                    decoration: BoxDecoration(
+        
+                                //color: Color.fromARGB(0, 255, 2, 2),
+                                //color: Color(0xFFD94E08),
+                                border: Border.all(
+                                  color: Color(0xFFD94E08),
+                                  width: 2,
+                                ),
+                                
+                              ),
+                    
+                    //height: 500,
+                    width: MediaQuery.of(context).size.width*.6,
+                   // color: Colors.white,
+                    child: new Column(
+                      children: <Widget>[
+                        Settings(),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         );
       },
     );
