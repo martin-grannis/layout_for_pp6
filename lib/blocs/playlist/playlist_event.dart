@@ -9,7 +9,9 @@ abstract class PlaylistEvent extends Equatable {
 
 class PlaylistLoad extends PlaylistEvent {
   final Playlist playlist;
+  final bool fromTop;
   PlaylistLoad({
     required this.playlist,
+    required this.fromTop,
   });
 }

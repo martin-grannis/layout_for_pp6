@@ -9,7 +9,7 @@ part 'playlist_state.dart';
 class PlaylistBloc extends Bloc<PlaylistEvent, PlaylistState> {
   PlaylistBloc() : super(PlaylistInitial()) {
     on<PlaylistLoad>((event, emit) {
-      emit(PlaylistLoaded(playlist: event.playlist));
+      emit(PlaylistLoaded(playlist: event.playlist, fromTop: event.fromTop));
     });
   }
 }

@@ -39,9 +39,7 @@ class PlaylistHeadingWidget extends StatelessWidget {
                     child: Text(
                       text,
                       textAlign: TextAlign.start,
-                      style: GoogleFonts.lato(
-                          textStyle: TextStyle(color: Color(0xFFF10707)),
-                          fontSize: 14),
+                      
                     ),
                   ),
                 ),

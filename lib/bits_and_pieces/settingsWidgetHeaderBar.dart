@@ -43,7 +43,7 @@ class SettingsWidgetHeaderBar extends StatelessWidget {
                                 Text(
                                   'MrB remote Settings',
                                   style: TextStyle(
-                                    fontFamily: 'Lato',
+                                    
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w300,

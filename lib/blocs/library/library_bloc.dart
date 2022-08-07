@@ -14,20 +14,16 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   LibraryBloc({required ConnectionRepository connectionRepository})
       : _connectionRepository = connectionRepository,
         super(LibraryInitial()) {
+    /// listeners
 
+    // StreamSubscription<PP6_ConnectionStatus>? _PP6_ConnectionStatusSubscription;
+    //     _PP6_ConnectionStatusSubscription = _connectionRepository.statusREPO.listen(
+    //       //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
+    //       (status) {
+    //     //catchMe();
+    //      add(ResetLibraryToInitial());
+    //   });
 
-/// listeners
-   
-  // StreamSubscription<PP6_ConnectionStatus>? _PP6_ConnectionStatusSubscription;
-  //     _PP6_ConnectionStatusSubscription = _connectionRepository.statusREPO.listen(
-  //       //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
-  //       (status) {
-  //     //catchMe();
-  //      add(ResetLibraryToInitial());
-  //   });
-  
-
-    
 //final ConnectionRepository _connectionRepository;
 
     /// handlers
@@ -36,12 +32,27 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       dynamic lr = await _connectionRepository.getLibrary();
       Library processedLibData = process_library_request(lr);
       print("about to emit libraryLoaded");
-      emit(LibraryLoaded(library: processedLibData, currentSong:""));
+      emit(LibraryLoaded(library: processedLibData, currentSong: ""));
       //emit(library);
     });
     on<ResetLibraryToInitial>((event, emit) async {
       emit(LibraryInitial());
     });
+    on<SearchLibrary>((SearchLibrary event, emit) {
+      Library filtered_library = do_Filter(state.library!, event.value);
+      emit(LibraryLoaded(
+          library: filtered_library, currentSong: state.currentSong));
+    });
+  }
+}
+
+//Library do_Filter(Library l, String str) {
+Library do_Filter(Library l, String str) {
+  if (str != "") {
+    var abc = l.lib.where((i) => i.itemName!.contains(str)).toList();
+    return Library(lib: abc as List<LibraryItems>);
+  } else {
+    return l;
   }
 }
 
@@ -51,7 +62,6 @@ Library process_library_request(dynamic json) {
       scanData_decoded != null ? List.from(scanData_decoded) : null;
 
   Library ll = Library(lib: []);
-  
 
   try {
     //for (var i = 0; i < library!.length; i++) {

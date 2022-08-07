@@ -75,7 +75,7 @@ class _AppViewState extends State<AppView> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: AppTheme.textTheme,
-
+        fontFamily: 'Roboto',
 //        platform: TargetPlatform.iOS,
       ),
       darkTheme: ThemeData(

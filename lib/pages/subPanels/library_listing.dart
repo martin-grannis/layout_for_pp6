@@ -10,7 +10,7 @@ class LibraryListing extends StatefulWidget {
   const LibraryListing({Key? key}) : super(key: key);
 
   @override
-  _LibraryListingState createState() => _LibraryListingState();
+  State<LibraryListing> createState() => _LibraryListingState();
 }
 
 class _LibraryListingState extends State<LibraryListing> {
@@ -22,9 +22,9 @@ class _LibraryListingState extends State<LibraryListing> {
     super.initState();
     textController = TextEditingController();
     var bp_l = BlocProvider.of<LibraryBloc>(context);
-   if (bp_l.state is LibraryInitial) {
-       bp_l.add(LoadLibraryfromAPI());
-     }
+    if (bp_l.state is LibraryInitial) {
+      bp_l.add(LoadLibraryfromAPI());
+    }
     // if (!bp_l.state.isLoaded) {
     //   bp_l.add(LibraryEventGetLibrary());
     // }
@@ -35,10 +35,7 @@ class _LibraryListingState extends State<LibraryListing> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
 
-    // var pixelRatio = window.devicePixelRatio;
-    // var logicalScreenSize = window.physicalSize / pixelRatio;
-    // var logicalWidth = logicalScreenSize.width;
-    //double w = Horizon
+ 
 
     return BlocBuilder<LibraryBloc, LibraryState>(
       builder: (context, state) {
@@ -57,10 +54,12 @@ class _LibraryListingState extends State<LibraryListing> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.red),
                         controller: textController,
-                        onChanged: (_) => EasyDebounce.debounce(
+                        onChanged: (textValue) => EasyDebounce.debounce(
                           'textController',
                           Duration(milliseconds: 2000),
-                          () => {},
+                          () => {
+                            context.read<LibraryBloc>().add(SearchLibrary(textValue))
+                          },
                           // () => setState(() {}),
                         ),
                         autofocus: true,
@@ -127,11 +126,11 @@ class _LibraryListingState extends State<LibraryListing> {
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(60, 0, 0, 0),
               child: TextButton(
-                 onPressed: () => {
-                   context.read<PresentationBloc>().add(
+                onPressed: () => {
+                  context.read<PresentationBloc>().add(
                       PresentationEventLoadSong(
-                          state.library.lib[index].itemName, [], false))
-                 },
+                          state.library.lib[index].itemName, const [], false))
+                },
                 // onPressed: () {},
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -179,11 +178,11 @@ class _LibraryListingState extends State<LibraryListing> {
               width: 30,
               height: 30,
               decoration: BoxDecoration(
-                  color: state.library.lib[index].inCache
-                      ? Colors.green
-                      : Colors.white,
-                  shape: BoxShape.circle,
-                  ),
+                color: state.library.lib[index].inCache
+                    ? Colors.green
+                    : Colors.white,
+                shape: BoxShape.circle,
+              ),
               child: Align(
                 alignment: AlignmentDirectional(0, -0.3),
                 child: Icon(
@@ -198,7 +197,7 @@ class _LibraryListingState extends State<LibraryListing> {
       ),
     );
   }
- 
+
   Text LibraryItem(LibraryState state, int index) {
     //Color unCachedBColour = Colors.white;
     //Color CachedBColour = Colors.green.shade200;
@@ -206,7 +205,7 @@ class _LibraryListingState extends State<LibraryListing> {
     // if (state.library.lib[index].itemName == state.currentSong) {
     //return Text("playing around");
     return Text(libReformatText(state.library.lib[index]),
-       style: TextStyle(color: Colors.black));
+        style: TextStyle(color: Colors.black));
 
     // return Text(libReformatText(state.library.lib[index]),
     //     style: TextStyle(backgroundColor: unCachedBColour));

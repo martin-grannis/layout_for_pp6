@@ -1,6 +1,7 @@
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/bits_and_pieces/colours.dart';
 import 'package:pp6_layout/bits_and_pieces/settingsWidgetHeaderBar.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
 import 'package:pp6_layout/dialogs/settings.dart';
@@ -35,7 +36,8 @@ class AppBarContent extends StatelessWidget {
           width: double.infinity,
           height: 56,
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 99, 99, 99),
+            //color: Color.fromARGB(255, 99, 99, 99),
+            color: MyColors.myRed,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -56,10 +58,12 @@ class AppBarContent extends StatelessWidget {
                           width: 162,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Color(0x00FFFFFF),
-                            border: Border.all(
-                              width: 2,
-                            ),
+                            //  color: Color(0x00FFFFFF),
+                            borderRadius: BorderRadius.circular(8),
+                            //border: Border.all(
+                            //width: 2,
+                            color: Colors.white,
+                            //),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -73,8 +77,9 @@ class AppBarContent extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   //textHeightBehavior: ,
                                   style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    color: Color(0xFFD94E08),
+                                    //color: Color(0xFFD94E08),
+                                    color: MyColors.myBlue,
+
                                     fontSize: 25,
                                     fontWeight: FontWeight.normal,
                                     height: 1,
@@ -84,8 +89,7 @@ class AppBarContent extends StatelessWidget {
                               Text(
                                 ' remote',
                                 style: TextStyle(
-                                  fontFamily: 'Lato',
-                                  color: Colors.white,
+                                  color: MyColors.myBlack,
                                   fontSize: 25,
                                   fontWeight: FontWeight.normal,
                                   height: 1,
@@ -110,9 +114,7 @@ class AppBarContent extends StatelessWidget {
                         Container(
                           width: double.infinity,
                           height: 56,
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 99, 99, 99),
-                          ),
+                          decoration: BoxDecoration(color: MyColors.myRed),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -127,7 +129,6 @@ class AppBarContent extends StatelessWidget {
                                     Text(
                                       'connected to:',
                                       style: TextStyle(
-                                        fontFamily: 'Lato',
                                         color: Colors.white,
                                         fontSize: 15,
                                         fontWeight: FontWeight.w300,
@@ -145,7 +146,6 @@ class AppBarContent extends StatelessWidget {
                                           child: Text(
                                             'Mac Server 2 (spare) on part 49442',
                                             style: TextStyle(
-                                              fontFamily: 'Lato',
                                               color: Colors.white,
                                               fontSize: 15,
                                               fontWeight: FontWeight.w300,
@@ -208,7 +208,10 @@ class AppBarContent extends StatelessWidget {
                                 content: Text(
                                     "Are you sure you want to disconnect?"),
                                 context)) {
-                              return print('pressedOK');
+                              return context.read<PP6_ConnectionBloc>().add(
+                                  PP6_ConnectionStatusChanged(
+                                      PP6_ConnectionStatus.disconnected,
+                                      Host.empty));
                             }
                             return print('pressedCancel');
                           },
@@ -221,46 +224,45 @@ class AppBarContent extends StatelessWidget {
                             onPressed: () async {
                               Size size = MediaQuery.of(context).size;
                               showDialog<void>(
-      barrierDismissible: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Scaffold(
-      
-          body: Center(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 65, 30, 50),
-                  child: new Container(
-                    decoration: BoxDecoration(
-        
-                                //color: Color.fromARGB(0, 255, 2, 2),
-                                //color: Color(0xFFD94E08),
-                                border: Border.all(
-                                  color: Color(0xFFD94E08),
-                                  width: 2,
-                                ),
-                                
-                              ),
-                    
-                    //height: 500,
-                    //width: MediaQuery.of(context).size.width*.4,
-                    width: 350,
-                   // color: Colors.white,
-                    child: new Column(
-                      children: <Widget>[
-                        Settings(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Scaffold(
+                                    body: Center(
+                                      child: new Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                30, 65, 30, 50),
+                                            child: new Container(
+                                              decoration: BoxDecoration(
+                                                //color: Color.fromARGB(0, 255, 2, 2),
+                                                //color: Color(0xFFD94E08),
+                                                border: Border.all(
+                                                  color: Color(0xFFD94E08),
+                                                  width: 2,
+                                                ),
+                                              ),
+
+                                              //height: 500,
+                                              //width: MediaQuery.of(context).size.width*.4,
+                                              width: 350,
+                                              // color: Colors.white,
+                                              child: new Column(
+                                                children: <Widget>[
+                                                  Settings(),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                         ),
@@ -276,4 +278,3 @@ class AppBarContent extends StatelessWidget {
     );
   }
 }
-

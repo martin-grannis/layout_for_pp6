@@ -20,8 +20,6 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
     //with SingleTickerProviderStateMixin {
     with
         TickerProviderStateMixin {
-
-
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -39,9 +37,9 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                   flex: 5,
                   child: TextButton(
                     onPressed: (() {
-                      // if from top layout = 1
+                      var nextPage = state.fromTop ? 1 : 2; 
                       BlocProvider.of<LayoutBloc>(context)
-                          .add(LayoutEventChangeLayout(newLayout: 1));
+                          .add(LayoutEventChangeLayout(newLayout: nextPage));
                       // else playlist_listing = previousList, and previouspreviouslist
                     }),
                     child: Text("back",
@@ -111,9 +109,6 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                   alignment: Alignment.centerLeft,
                   child: Text(
                     str,
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.black, fontSize: 18),
-                    ),
                   ),
                 ),
               ),

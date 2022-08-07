@@ -11,10 +11,11 @@ class PlaylistInitial extends PlaylistState {}
 
 class PlaylistLoaded extends PlaylistState {
   final Playlist playlist;
+  bool fromTop;
   PlaylistLoaded({
     required this.playlist,
+    required this.fromTop,
   });
   @override
-  List<Object> get props => [playlist];
+  List<Object> get props => [playlist, fromTop];
 }
-

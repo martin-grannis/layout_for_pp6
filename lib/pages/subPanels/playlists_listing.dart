@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
 import 'package:pp6_layout/blocs/playlists_listing/playlists_listing_bloc.dart';
+import 'package:pp6_layout/models/playlist.dart';
 
 class PlaylistsListing extends StatefulWidget {
   const PlaylistsListing({Key? key}) : super(key: key);
@@ -152,7 +153,7 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                       {
                         //send a playlistgItemselected event
                         BlocProvider.of<PlaylistBloc>(context).add(
-                            PlaylistLoad(playlist: state.playlist_list[index])),
+                            PlaylistLoad(playlist: state.playlist_list[index], fromTop: state.history.history.length==1)),
                         BlocProvider.of<LayoutBloc>(context).add(
                             LayoutEventChangeLayout(
                                 newLayout: 3)), // playlist in left pane
@@ -231,9 +232,7 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
         padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
         child: Text(
           playlist_reformatText(state.playlist_list[index], state, index),
-          style: GoogleFonts.lato(
-            textStyle: TextStyle(color: Colors.black, fontSize: 18),
-          ),
+          
         ));
   }
 

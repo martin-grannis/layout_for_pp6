@@ -110,10 +110,7 @@ class _PasswordFormState extends State<PasswordForm> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'Server password',
-        //labelStyle: GoogleFonts.lato(textStyle: TextStyle(
-          labelStyle: GoogleFonts.raleway(textStyle: TextStyle(
-            //color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLightZ'),
-            color: Colors.black87, fontSize: 17)),
+                  
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.purple),
         ),

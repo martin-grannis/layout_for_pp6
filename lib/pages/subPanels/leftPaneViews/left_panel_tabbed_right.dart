@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:pp6_layout/bits_and_pieces/myTabBar.dart';
 import 'package:pp6_layout/pages/subPanels/library_listing.dart';
 import 'package:pp6_layout/pages/subPanels/playlists_listing.dart';
 
@@ -46,24 +47,14 @@ class _LeftPanelTabbedRightState extends State<LeftPanelTabbedRight>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(40),
+        preferredSize: const Size.fromHeight(60),
         child: Container(
-          color: const Color.fromARGB(255, 244, 244, 244),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              //padding: EdgeInsets.zero,
-              child: TabBar(
-                controller: _tabController,
-                labelPadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                labelColor: Colors.black,
-                indicatorColor: Colors.red,
-                indicatorSize: TabBarIndicatorSize.tab,
-                //padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                tabs: [const Text("Library"), const Text("Playlists")],
-              ),
-            ),
-            //SizedBox(width: 60),
+          //alignment: Alignment.center,
+          //color: const Color.fromARGB(255, 244, 244, 244),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(150, 20, 150, 0),
+            //padding: EdgeInsets.zero,
+            child: myTabBar(_tabController),
           ),
         ),
       ),
