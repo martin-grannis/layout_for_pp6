@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
+import 'package:pp6_layout/blocs/filteredLibrary/filtered_library_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/network/network_bloc.dart';
@@ -17,10 +18,19 @@ import 'package:pp6_layout/repositories/connnection_repository.dart';
 ConnectionRepository connectionRepository = ConnectionRepository();
 PlaylistsListingBloc _playlistListingbloc =
     PlaylistsListingBloc(connectionRepository: connectionRepository);
+// LibraryBloc _filteredLibraryBloc =
+//     LibraryBloc(connectionRepository: connectionRepository);
 
 void main() => runApp(
       MultiBlocProvider(
         providers: [
+          BlocProvider(
+              create: (context) =>
+                  LibraryBloc(connectionRepository: connectionRepository)),
+          BlocProvider(
+            create: (context) => FilteredLibraryBloc(
+                myLibraryBloc: BlocProvider.of<LibraryBloc>(context)),
+          ),
           BlocProvider(
             create: (context) => NetworkBloc()..add(ListenConnection()),
           ),
@@ -28,17 +38,14 @@ void main() => runApp(
             create: (context) => PlaylistBloc(),
           ),
           BlocProvider(
-            create: (context) => LayoutBloc(playlistListingBloc: _playlistListingbloc)..add(ListenPlaylistListing()),
-          ),
-          BlocProvider(
             create: (context) =>
-                LibraryBloc(connectionRepository: connectionRepository),
+                LayoutBloc(playlistListingBloc: _playlistListingbloc)
+                  ..add(ListenPlaylistListing()),
           ),
-          BlocProvider(
-            create: (context) => _playlistListingbloc
-            // create: (context) => PlaylistsListingBloc(
-            //     connectionRepository: connectionRepository),
-          ),
+          BlocProvider(create: (context) => _playlistListingbloc
+              // create: (context) => PlaylistsListingBloc(
+              //     connectionRepository: connectionRepository),
+              ),
           BlocProvider(
             create: (context) =>
                 PP6_ConnectionBloc(connectionRepository: connectionRepository)

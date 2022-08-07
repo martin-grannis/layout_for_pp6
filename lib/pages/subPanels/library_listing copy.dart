@@ -36,12 +36,11 @@ class _LibraryListingState extends State<LibraryListing> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
 
-    return BlocBuilder<FilteredLibraryBloc, FilteredLibraryState>(
-        builder: (context, state) {
-      if (state is FilteredLibraryLoadInProgress) {
+    return BlocBuilder<LibraryBloc, LibraryState>(builder: (context, state) {
+      if (state is LibraryInitial || state is LibraryLoading) {
         return Center(child: CircularProgressIndicator());
       } else {
-        if (state is FilteredLibraryLoadSuccess) {
+        if (state is LibraryLoaded) {
           return Column(
             children: [
               Row(
@@ -58,10 +57,10 @@ class _LibraryListingState extends State<LibraryListing> {
                           'textController',
                           Duration(milliseconds: 2000),
                           () => {
-                            BlocProvider.of<FilteredLibraryBloc>(context)
+                              BlocProvider.of<FilteredLibraryBloc>(context)
                                 .add(FilterUpdated(filter))
-                            // context
-                            //     .read<FilteredFilteredLibraryBloc>()
+                                                            // context
+                            //     .read<LibraryBloc>()
                             //     .add(SearchLibrary(textValue))
                           },
                           // () => setState(() {}),
@@ -77,24 +76,15 @@ class _LibraryListingState extends State<LibraryListing> {
                           focusedBorder: InputBorder.none,
                           filled: true,
                           fillColor: Color(0xFFDCD8D8),
-                          suffixIconConstraints: BoxConstraints(
-                            minWidth: 30,
-                            minHeight: 30,
-                          ),
                           suffixIcon: textController.text.isNotEmpty
                               ? InkWell(
-                                  onTap: () {
-                                    setState(
-                                      () => textController.clear(),
-                                    );
-                                    BlocProvider.of<FilteredLibraryBloc>(
-                                            context)
-                                        .add(FilterUpdated(""));
-                                  },
+                                  onTap: () => setState(
+                                    () => textController.clear(),
+                                  ),
                                   child: Icon(
                                     Icons.clear,
                                     color: Color(0xFF757575),
-                                    //size: 20,
+                                    size: 22,
                                   ),
                                 )
                               : null,
@@ -113,8 +103,8 @@ class _LibraryListingState extends State<LibraryListing> {
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     scrollDirection: Axis.vertical,
                     primary: true,
-                    itemCount: state.filteredLibrary.lib.length > 0
-                        ? state.filteredLibrary.lib.length
+                    itemCount: state.library.lib.length > 0
+                        ? state.library.lib.length
                         : 0,
                     //itemCount: 0, // testing
                     itemBuilder: (BuildContext context, int index) {
@@ -130,9 +120,8 @@ class _LibraryListingState extends State<LibraryListing> {
     });
   }
 
-  Padding myLibraryItems(
-      BuildContext context, FilteredLibraryState state, int index) {
-    var s = state as FilteredLibraryLoadSuccess;
+  Padding myLibraryItems(BuildContext context, LibraryState state, int index) {
+    var s = state as LibraryLoaded;
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
       child: Row(
@@ -146,9 +135,7 @@ class _LibraryListingState extends State<LibraryListing> {
                 onPressed: () => {
                   context.read<PresentationBloc>().add(
                       PresentationEventLoadSong(
-                          s.filteredLibrary.lib[index].itemName!,
-                          const [],
-                          false))
+                          s.library.lib[index].itemName!, const [], false))
                 },
                 // onPressed: () {},
                 child: Align(
@@ -173,8 +160,7 @@ class _LibraryListingState extends State<LibraryListing> {
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  color: state.currentSong ==
-                          state.filteredLibrary.lib[index].itemName
+                  color: state.currentSong == state.library.lib[index].itemName
                       ? Colors.red
                       : Colors.white,
                   shape: BoxShape.circle,
@@ -184,8 +170,7 @@ class _LibraryListingState extends State<LibraryListing> {
                   child: Icon(
                     Icons.tv_outlined,
                     color: Colors.white,
-                    size: state.currentSong ==
-                            state.filteredLibrary.lib[index].itemName
+                    size: state.currentSong == state.library.lib[index].itemName
                         ? 20
                         : 0,
                   ),
@@ -199,7 +184,7 @@ class _LibraryListingState extends State<LibraryListing> {
               width: 30,
               height: 30,
               decoration: BoxDecoration(
-                color: state.filteredLibrary.lib[index].inCache
+                color: state.library.lib[index].inCache
                     ? Colors.green
                     : Colors.white,
                 shape: BoxShape.circle,
@@ -209,7 +194,7 @@ class _LibraryListingState extends State<LibraryListing> {
                 child: Icon(
                   Icons.check,
                   color: Colors.white,
-                  size: state.filteredLibrary.lib[index].inCache ? 20 : 0,
+                  size: state.library.lib[index].inCache ? 20 : 0,
                 ),
               ),
             ),
@@ -219,9 +204,9 @@ class _LibraryListingState extends State<LibraryListing> {
     );
   }
 
-  Text LibraryItem(FilteredLibraryState state, int index) {
-    var s = state as FilteredLibraryLoadSuccess;
-    return Text(libReformatText(s.filteredLibrary.lib[index]),
+  Text LibraryItem(LibraryState state, int index) {
+    var s = state as LibraryLoaded;
+    return Text(libReformatText(s.library.lib[index]),
         style: TextStyle(color: Colors.black));
 
     // return Text(libReformatText(state.library.lib[index]),

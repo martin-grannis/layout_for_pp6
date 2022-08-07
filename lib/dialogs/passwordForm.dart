@@ -186,7 +186,7 @@ class _PasswordFormState extends State<PasswordForm> {
       Navigator.pop(context);
       Navigator.pop(parentContext);
 
-      context.read<LibraryBloc>().add(ResetLibraryToInitial());
+     // context.read<LibraryBloc>().add(ResetLibraryToInitial());
       context.read<PP6_ConnectionBloc>().add(PP6_ConnectionStatusChanged(
           PP6_ConnectionStatus.connected, tempName));
     } catch (e) {

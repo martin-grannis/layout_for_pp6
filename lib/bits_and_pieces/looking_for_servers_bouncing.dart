@@ -26,7 +26,7 @@ class looking_for_servers_bouncing extends StatelessWidget {
             child: LoadingIndicator(
               indicatorType: Indicator
                   .ballTrianglePathColored,
-              colors: const [
+              colors: [
                 Colors.red,
                 Colors.green,
                 Colors.blue
