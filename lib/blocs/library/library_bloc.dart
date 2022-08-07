@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pp6_layout/models/library.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
@@ -38,11 +39,11 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     on<ResetLibraryToInitial>((event, emit) async {
       emit(LibraryInitial());
     });
-    on<SearchLibrary>((SearchLibrary event, emit) {
-      Library filtered_library = do_Filter(state.library!, event.value);
-      emit(LibraryLoaded(
-          library: filtered_library, currentSong: state.currentSong));
-    });
+    // on<SearchLibrary>((SearchLibrary event, emit) {
+    //   Library filtered_library = do_Filter(state.library!, event.value);
+    //   emit(LibraryLoaded(
+    //       library: filtered_library, currentSong: state.currentSong));
+    // });
   }
 }
 

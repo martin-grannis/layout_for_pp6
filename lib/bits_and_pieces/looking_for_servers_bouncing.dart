@@ -15,9 +15,9 @@ class looking_for_servers_bouncing extends StatelessWidget {
         decoration: BoxDecoration(
           color: Color(0xFFEEEEEE),
         ),
-        child: Stack(children: [
+        child: Stack(children: const [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Text(
                 "Looking for servers..."),
           ),
@@ -26,7 +26,7 @@ class looking_for_servers_bouncing extends StatelessWidget {
             child: LoadingIndicator(
               indicatorType: Indicator
                   .ballTrianglePathColored,
-              colors: [
+              colors: const [
                 Colors.red,
                 Colors.green,
                 Colors.blue

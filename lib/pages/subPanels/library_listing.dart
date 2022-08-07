@@ -35,13 +35,11 @@ class _LibraryListingState extends State<LibraryListing> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
 
- 
-
-    return BlocBuilder<LibraryBloc, LibraryState>(
-      builder: (context, state) {
-        if (state is LibraryInitial || state is LibraryLoading) {
-          return Center(child: CircularProgressIndicator());
-        } else {
+    return BlocBuilder<LibraryBloc, LibraryState>(builder: (context, state) {
+      if (state is LibraryInitial || state is LibraryLoading) {
+        return Center(child: CircularProgressIndicator());
+      } else {
+        if (state is LibraryLoaded) {
           return Column(
             children: [
               Row(
@@ -58,7 +56,9 @@ class _LibraryListingState extends State<LibraryListing> {
                           'textController',
                           Duration(milliseconds: 2000),
                           () => {
-                            context.read<LibraryBloc>().add(SearchLibrary(textValue))
+                            context
+                                .read<LibraryBloc>()
+                                .add(SearchLibrary(textValue))
                           },
                           // () => setState(() {}),
                         ),
@@ -110,12 +110,15 @@ class _LibraryListingState extends State<LibraryListing> {
               ),
             ],
           );
+        } else {
+          return Container();
         }
-      },
-    );
+      }
+    });
   }
 
   Padding myLibraryItems(BuildContext context, LibraryState state, int index) {
+    var s = state as LibraryLoaded;
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
       child: Row(
@@ -129,7 +132,7 @@ class _LibraryListingState extends State<LibraryListing> {
                 onPressed: () => {
                   context.read<PresentationBloc>().add(
                       PresentationEventLoadSong(
-                          state.library.lib[index].itemName, const [], false))
+                          s.library.lib[index].itemName!, const [], false))
                 },
                 // onPressed: () {},
                 child: Align(
@@ -199,12 +202,8 @@ class _LibraryListingState extends State<LibraryListing> {
   }
 
   Text LibraryItem(LibraryState state, int index) {
-    //Color unCachedBColour = Colors.white;
-    //Color CachedBColour = Colors.green.shade200;
-    // if (state.library.lib[index].inCache) {}
-    // if (state.library.lib[index].itemName == state.currentSong) {
-    //return Text("playing around");
-    return Text(libReformatText(state.library.lib[index]),
+    var s = state as LibraryLoaded;
+    return Text(libReformatText(s.library.lib[index]),
         style: TextStyle(color: Colors.black));
 
     // return Text(libReformatText(state.library.lib[index]),
@@ -215,10 +214,6 @@ class _LibraryListingState extends State<LibraryListing> {
     String libName = library.itemName.replaceAll('.pro6', '').trim();
     var temp = libName.split('/');
     libName = temp[temp.length - 1];
-
-    // if (library.inCache) {
-    //   libName = libName + " YAY";
-    // }
 
     return libName;
   }

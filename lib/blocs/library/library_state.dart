@@ -1,46 +1,27 @@
 part of 'library_bloc.dart';
 
+@immutable
 abstract class LibraryState extends Equatable {
-  LibraryState();
-
-  get library => this.library;
-
-  get currentSong => this.currentSong;
-
-  //Library get original => this.original;
-}
-
-class LibraryInitial extends LibraryState {
+  const LibraryState();
   @override
   List<Object> get props => [];
 }
 
-class LibraryLoading extends LibraryState {
-  @override
-  List<Object> get props => [];
-}
+class LibraryInitial extends LibraryState {}
+
+class LibraryLoading extends LibraryState {}
 
 class LibraryLoaded extends LibraryState {
-  @override
-  Library library;
-  @override
-  String currentSong = "";
+  final Library library;
+  final String currentSong;
 
-  //Library? original;
-
-  LibraryLoaded({
+  const LibraryLoaded({
     required this.library,
     required this.currentSong,
-  }) {
-        this.library = library;
-    this.currentSong = currentSong;
-  }
+  });
 
   @override
-  List<Object> get props => [library];
+  List<Object> get props => [library, currentSong];
 }
 
-class LibraryError extends LibraryState {
-  @override
-  List<Object> get props => [];
-}
+class LibraryError extends LibraryState {}
