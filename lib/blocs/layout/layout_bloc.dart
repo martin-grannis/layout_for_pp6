@@ -13,7 +13,8 @@ class LayoutBloc extends Bloc<LayoutEvent, LayoutState> {
   PlaylistsListingBloc? playlistListingBloc;
 
   LayoutBloc({subscription, required PlaylistsListingBloc playlistListingBloc})
-      : super(LayoutInitial()) {
+      //: super(LayoutInitial()) {
+      : super(LayoutCurrent(leftWindowStatus: 0, lockedSplit: false)) {
     // listeners
     on<ListenPlaylistListing>((event, emit) {
       subscription =
@@ -27,12 +28,27 @@ class LayoutBloc extends Bloc<LayoutEvent, LayoutState> {
 // event handlers
 
     on<LayoutEventChangeLayout>((event, emit) {
-      emit(state.copyWith(leftWindowStatus: event.newLayout));
+      if (state is LayoutCurrent) {
+        var s = state as LayoutCurrent;
+        emit(s.copyWith(leftWindowStatus: event.newLayout));
+      }
+    });
+
+    on<LockSplitPoint>((event, emit) {
+      if (state is LayoutCurrent) {
+        var s = state as LayoutCurrent;
+        var t = s.copyWith(lockedSplit: event.lockedSplit);
+        emit(t);
+      }
     });
   }
   @override
   void onTransition(Transition<LayoutEvent, LayoutState> transition) {
     super.onTransition(transition);
-    debugPrint("${transition.currentState}\n${transition.nextState}\n\n");
+    var t = transition.currentState;
+    var n = transition.nextState;
+
+    debugPrint("PRE: ${t.leftWindowStatus}\n${t.lockedSplit}\n\n");
+    debugPrint("POST: ${n.leftWindowStatus}\n${n.lockedSplit}\n\n");
   }
 }

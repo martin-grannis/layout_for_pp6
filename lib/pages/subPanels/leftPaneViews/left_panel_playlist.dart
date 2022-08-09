@@ -104,6 +104,7 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
             Expanded(
               flex: 20,
               child: TextButton(
+
                 onPressed: (() {}),
                 child: Align(
                   alignment: Alignment.centerLeft,

@@ -74,6 +74,8 @@ Library process_library_request(dynamic json) {
       ll.lib.add(LibraryItems(itemName: name));
       //newMap['inCache'] = false;
     }
+    // finally sort into alphabetical order
+    ll.lib.sort((a,b)=> a.itemName!.compareTo(b.itemName!) );
   } catch (e) {
     print(e.toString());
   }

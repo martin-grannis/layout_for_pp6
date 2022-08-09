@@ -17,7 +17,7 @@ class AppTheme {
   static const Color dismissibleBackground = Color(0xFF364A54);
   static const Color chipBackground = Color(0xFFEEF1F3);
   static const Color spacer = Color(0xFFF2F2F2);
-  static const String fontName = 'Outfit';
+  static const String fontName = 'Roboto';
   static const Color primaryBackground = Color(0xFFF1F4F8);
 
   static const TextTheme textTheme = TextTheme(
@@ -93,6 +93,16 @@ class AppTheme {
     fontSize: 12,
     letterSpacing: 0.2,
     color: lightText, // was lightText
+  );
+
+  static const TextStyle libraryListing = TextStyle(
+    // Caption -> caption
+    fontFamily: fontName,
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    //letterSpacing: 0.2,
+    color: Color.fromARGB(255, 0, 0, 0)
+    //color: lightText, // was lightText
   );
 }
 

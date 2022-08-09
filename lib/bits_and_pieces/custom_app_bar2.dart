@@ -15,7 +15,7 @@ class CustomAppBar2 extends StatelessWidget with PreferredSizeWidget {
   PreferredSize build(BuildContext context) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80.0),
-      child: const AppBarContent(),
+      child: AppBarContent(),
     );
   }
 
@@ -24,7 +24,7 @@ class CustomAppBar2 extends StatelessWidget with PreferredSizeWidget {
 }
 
 class AppBarContent extends StatelessWidget {
-  const AppBarContent({Key? key}) : super(key: key);
+  AppBarContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -138,18 +138,27 @@ class AppBarContent extends StatelessWidget {
                                       mainAxisSize: MainAxisSize.max,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
-                                      children: const [
+                                      children: [
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 0, 0, 8),
-                                          child: Text(
-                                            'Mac Server 2 (spare) on part 49442',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w300,
-                                            ),
+                                          child: BlocBuilder<PP6_ConnectionBloc, PP6_ConnectionState>(
+                                            builder: (context, state) {
+                                              final server_details = state
+                                  .host_server.name.isNotEmpty
+                              ? '${state.host_server.name} on port ${state.host_server.port}'
+                              : '<nothing>';
+
+                                              return Text(
+                                                '${server_details}',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
                                         // Column(

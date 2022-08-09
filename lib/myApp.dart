@@ -73,6 +73,7 @@ class _AppViewState extends State<AppView> {
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        //textTheme: AppTheme,
         primarySwatch: Colors.blue,
         textTheme: AppTheme.textTheme,
         fontFamily: 'Roboto',

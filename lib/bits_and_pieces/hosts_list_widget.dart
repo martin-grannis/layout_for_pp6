@@ -5,7 +5,7 @@ import 'package:pp6_layout/dialogs/get_host_dialog_form.dart';
 
 import 'package:pp6_layout/dialogs/manual_connection_dialog.dart';
 
-import '../models/host.dart';
+//import '../models/host.dart';
 
 //import 'package:web_socket_demo/flutterflow/flutter_flow_theme.dart';
 

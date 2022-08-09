@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:pp6_layout/bits_and_pieces/settingsWidgetHeaderBar.dart';
+import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
@@ -263,11 +265,19 @@ class _SettingsState extends State<Settings> {
                       padding: EdgeInsetsDirectional.fromSTEB(6, 0, 0, 0),
                       child: Align(
                         alignment: AlignmentDirectional(-1, 0),
-                        child: Checkbox(
-                          value: _lockedSplit,
-                          onChanged: (val) {
-                            setState(() => _lockedSplit = val!);
-                            this.prefs.setBool("_lockedSplit", val!);
+                        child: BlocBuilder<LayoutBloc, LayoutState>(
+                          builder: (context, state) {
+                            return Checkbox(
+                              value: state.lockedSplit,
+                              onChanged: (val) {
+                                setState(() => _lockedSplit = val!);
+                                var lb = BlocProvider.of<LayoutBloc>(context);
+                                context.read<LayoutBloc>().add(LockSplitPoint(
+                                    //splitPoint: this._controller.areas[0].weight!));
+                                    lockedSplit: val == 1));
+                                this.prefs.setBool("_lockedSplit", val!);
+                              },
+                            );
                           },
                         ),
                       )),
@@ -275,51 +285,48 @@ class _SettingsState extends State<Settings> {
               ],
             ),
 
-
-            Visibility(
-              visible: _lockedSplit,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 40, 0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
-                          Text(
-                            'Split point',
-                            textAlign: TextAlign.start,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                        child: Align(
-                          alignment: AlignmentDirectional(-1, 0),
-                          child: Slider.adaptive(
-                            max: 100,
-                            min: 0,
-                            value: _splitPoint,
-                            onChanged: (val) {
-                              setState(() => _splitPoint = val);
-                              this.prefs.setDouble("_splitPoint", val);
-                            },
-                          ),
-                        )),
-                  ),
-                ],
-              ),
-            )
-
-
+            // Visibility(
+            //   visible: _lockedSplit,
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.max,
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     children: [
+            //       Expanded(
+            //         flex: 5,
+            //         child: Padding(
+            //           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 40, 0),
+            //           child: Column(
+            //             mainAxisSize: MainAxisSize.max,
+            //             crossAxisAlignment: CrossAxisAlignment.end,
+            //             children: const [
+            //               Text(
+            //                 'Split point',
+            //                 textAlign: TextAlign.start,
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //       // Expanded(
+            //       //   flex: 2,
+            //       //   child: Padding(
+            //       //       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+            //       //       child: Align(
+            //       //         alignment: AlignmentDirectional(-1, 0),
+            //       //         child: Slider.adaptive(
+            //       //           max: 100,
+            //       //           min: 0,
+            //       //           value: _splitPoint,
+            //       //           onChanged: (val) {
+            //       //             setState(() => _splitPoint = val);
+            //       //             this.prefs.setDouble("_splitPoint", val);
+            //       //           },
+            //       //         ),
+            //       //       )),
+            //       // ),
+            //     ],
+            //   ),
+            // )
           ],
         ));
   }

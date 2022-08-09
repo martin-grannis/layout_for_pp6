@@ -4,11 +4,9 @@ part of 'layout_bloc.dart';
 abstract class LayoutEvent extends Equatable {
   @override
   List<Object?> get props => [];
-
 }
 
 class LayoutEventChangeLayout extends LayoutEvent {
-  
   // 0 == tabbed focus Left
   // 1 == tabbed focus Right
   // 2 == listing
@@ -22,8 +20,12 @@ class LayoutEventChangeLayout extends LayoutEvent {
   List<Object?> get props => [newLayout];
 }
 
-
-class ListenPlaylistListing extends LayoutEvent {
-
+class LockSplitPoint extends LayoutEvent {
+  //final double splitPoint;
+  final bool lockedSplit;
+  LockSplitPoint({
+    required this.lockedSplit,
+  });
 }
 
+class ListenPlaylistListing extends LayoutEvent {}
