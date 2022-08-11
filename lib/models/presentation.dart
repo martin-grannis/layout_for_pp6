@@ -185,7 +185,7 @@ class CacheUpdate {
 class SinkMessage {
   String type;
   String payload;
-  CacheUpdate? cu;
+  CacheUpdate cu;
 
   SinkMessage(
     this.type,

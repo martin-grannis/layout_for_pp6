@@ -5,6 +5,8 @@ abstract class FilteredLibraryState extends Equatable {
 
   @override
   List<Object> get props => [];
+
+  
 }
 
 class FilteredLibraryLoadInProgress extends FilteredLibraryState {}

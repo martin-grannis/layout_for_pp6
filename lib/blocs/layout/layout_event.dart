@@ -21,10 +21,11 @@ class LayoutEventChangeLayout extends LayoutEvent {
 }
 
 class LockSplitPoint extends LayoutEvent {
-  //final double splitPoint;
-  final bool lockedSplit;
+  final double? splitPoint;
+  final bool? lockedSplit;
   LockSplitPoint({
-    required this.lockedSplit,
+     this.lockedSplit,
+      this.splitPoint,
   });
 }
 

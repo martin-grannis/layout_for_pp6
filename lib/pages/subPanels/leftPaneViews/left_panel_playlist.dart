@@ -3,9 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pp6_layout/bits_and_pieces/colours.dart';
 import 'package:pp6_layout/bits_and_pieces/playlistHeadingWidget.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
+import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
+import 'package:pp6_layout/theme/app_theme.dart';
 
 class LeftPanelPlaylist extends StatefulWidget {
   const LeftPanelPlaylist({Key? key}) : super(key: key);
@@ -35,27 +38,33 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Expanded(
                   flex: 5,
-                  child: TextButton(
-                    onPressed: (() {
-                      var nextPage = state.fromTop ? 1 : 2; 
-                      BlocProvider.of<LayoutBloc>(context)
-                          .add(LayoutEventChangeLayout(newLayout: nextPage));
-                      // else playlist_listing = previousList, and previouspreviouslist
-                    }),
-                    child: Text("back",
-                        style: TextStyle(decoration: TextDecoration.underline)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: TextButton(
+                      onPressed: (() {
+                        var nextPage = state.fromTop ? 1 : 2;
+                        BlocProvider.of<LayoutBloc>(context)
+                            .add(LayoutEventChangeLayout(newLayout: nextPage));
+                        // else playlist_listing = previousList, and previouspreviouslist
+                      }),
+                      child: Text("back",
+                          style:
+                              TextStyle(decoration: TextDecoration.underline)),
+                    ),
                   ),
                 ),
                 Expanded(
                   flex: 35,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(28, 20, 0, 0),
                     child: Row(
                       children: [
-                        Text("Playlist: "),
+                        Text("Playlist: ",
+                            style: TextStyle(color: lighten(MyColors.myRed))),
                         Text("${state.playlist.playlistName}",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                            style: const TextStyle(
+                                color: MyColors.myRed,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -104,13 +113,16 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
             Expanded(
               flex: 20,
               child: TextButton(
-
-                onPressed: (() {}),
+                onPressed: () => {
+                  context.read<PresentationBloc>().add(
+                      PresentationEventLoadSong(
+                          state.playlist.playlist![index].playlistItemName!,
+                          const [],
+                          false))
+                },
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    str,
-                  ),
+                  child: Text(str, style: AppTheme.libraryListing),
                 ),
               ),
             ),

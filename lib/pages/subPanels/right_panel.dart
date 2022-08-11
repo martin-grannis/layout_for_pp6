@@ -2,6 +2,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
 
 
@@ -122,8 +123,8 @@ class _rightPanelState extends State<RightPanel> {
             state.currentPresentation.presentationName, index)),
         
         // TODO 
-        // context.read<LibraryBloc>().add(LibraryCurrentlyShowingChanged(
-        //     currentSongPath: state.currentPresentation.presentationName)),
+        context.read<LibraryBloc>().add(LibraryCurrentlyShowingChanged(
+            currentSongPath: state.currentPresentation.presentationName)),
       },
       child: Container(
         //height: 230,

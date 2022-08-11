@@ -14,7 +14,8 @@ class LayoutBloc extends Bloc<LayoutEvent, LayoutState> {
 
   LayoutBloc({subscription, required PlaylistsListingBloc playlistListingBloc})
       //: super(LayoutInitial()) {
-      : super(LayoutCurrent(leftWindowStatus: 0, lockedSplit: false)) {
+      : super(LayoutCurrent(
+            leftWindowStatus: 0, lockedSplit: false, splitPoint: .5)) {
     // listeners
     on<ListenPlaylistListing>((event, emit) {
       subscription =
@@ -35,9 +36,17 @@ class LayoutBloc extends Bloc<LayoutEvent, LayoutState> {
     });
 
     on<LockSplitPoint>((event, emit) {
+      double sp = -1;
       if (state is LayoutCurrent) {
         var s = state as LayoutCurrent;
-        var t = s.copyWith(lockedSplit: event.lockedSplit);
+        if (event.splitPoint != null) {
+          sp = event.splitPoint as double;
+        } else {
+          sp = -1;
+        }
+        var t = s.copyWith(
+            lockedSplit: event.lockedSplit, splitPoint: event.splitPoint);
+
         emit(t);
       }
     });

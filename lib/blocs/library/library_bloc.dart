@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pp6_layout/models/library.dart';
+import 'package:pp6_layout/models/presentation.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
 part 'library_event.dart';
@@ -16,6 +17,36 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       : _connectionRepository = connectionRepository,
         super(LibraryInitial()) {
     /// listeners
+
+    StreamSubscription<SinkMessage> _Library_Presentation_StatusSubscription =
+        _connectionRepository.Updates.listen(
+            //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
+            (status) {
+      //emit(LibraryLoading());
+      //String a = "asd";
+// decode the message
+      if (status.type == "CU") {
+        var s = state as LibraryLoaded;
+        emit(LibraryLoaded(
+          library: s.library
+              .copyWithForCacheUpdate(library: s.library, cu: status.cu),
+          currentSong: s.currentSong,
+          //isLoaded: s.isLoaded,
+        ));
+        return;
+      }
+    });
+
+    on<LibraryCurrentlyShowingChanged>((event, emit) {
+      var s = state as LibraryLoaded;
+      List<LibraryItems> l = List<LibraryItems>.from(s.library.lib);
+      Library ll = Library(lib: l);
+      emit(LibraryLoaded(
+          library: ll,
+          currentSong: event.currentSongPath,
+          //isLoaded: state.isLoaded
+          ));
+    });
 
     // StreamSubscription<PP6_ConnectionStatus>? _PP6_ConnectionStatusSubscription;
     //     _PP6_ConnectionStatusSubscription = _connectionRepository.statusREPO.listen(
@@ -75,7 +106,7 @@ Library process_library_request(dynamic json) {
       //newMap['inCache'] = false;
     }
     // finally sort into alphabetical order
-    ll.lib.sort((a,b)=> a.itemName!.compareTo(b.itemName!) );
+    ll.lib.sort((a, b) => a.itemName!.compareTo(b.itemName!));
   } catch (e) {
     print(e.toString());
   }

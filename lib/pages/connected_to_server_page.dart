@@ -31,7 +31,7 @@ class _ConnectToServerPageState extends State<ConnectToServerPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   //bool _isResizable = true;
 
-  MultiSplitViewController _controller = MultiSplitViewController();
+  MultiSplitViewController _controller = MultiSplitViewController(areas: [Area(minimalWeight: .38), Area(minimalWeight: .3)]);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +69,7 @@ class _ConnectToServerPageState extends State<ConnectToServerPage> {
                           // ),
                         );
                       }
+                      // if spluitPoint is - 1
                       return Container(
                         color: dragging ? Colors.red[300] : Colors.grey[100],
                         child: Icon(
@@ -92,7 +93,7 @@ class _ConnectToServerPageState extends State<ConnectToServerPage> {
                         //   _isResizable;
                         // });
                         return context.read<LayoutBloc>().add(LockSplitPoint(
-                            //splitPoint: this._controller.areas[0].weight!));
+                            splitPoint: this._controller.areas[0].weight!,
                             lockedSplit: true));
                       }
                       return print('pressedCancel');

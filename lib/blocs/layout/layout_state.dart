@@ -9,7 +9,7 @@ abstract class LayoutState extends Equatable {
   //get splitPoint => this.splitPoint;
   get lockedSplit => this.lockedSplit;
 
-  
+  get splitPoint => this.splitPoint;
 }
 
 // class LayoutInitial extends LayoutState {
@@ -27,27 +27,26 @@ class LayoutCurrent extends LayoutState {
 
   @override
   final int leftWindowStatus;
-  //final double splitPoint;
+  final double splitPoint;
   final bool lockedSplit;
 
   LayoutCurrent({
     required this.leftWindowStatus,
-    //required this.splitPoint,
+    required this.splitPoint,
     required this.lockedSplit,
   });
 
-LayoutCurrent copyWith({
+  LayoutCurrent copyWith({
     int? leftWindowStatus,
     double? splitPoint,
     bool? lockedSplit,
   }) {
     return LayoutCurrent(
       leftWindowStatus: leftWindowStatus ?? this.leftWindowStatus,
-      //splitPoint: splitPoint ?? this.splitPoint,
+      splitPoint: splitPoint ?? this.splitPoint,
       lockedSplit: lockedSplit ?? this.lockedSplit,
     );
   }
-
 
   @override
   List<Object?> get props => [leftWindowStatus, lockedSplit];

@@ -11,6 +11,15 @@ class LoadLibraryfromAPI extends LibraryEvent {}
 
 class ResetLibraryToInitial extends LibraryEvent {}
 
+
+
+class LibraryCurrentlyShowingChanged extends LibraryEvent {
+  late final String currentSongPath;
+  LibraryCurrentlyShowingChanged({
+    required this.currentSongPath,
+  });
+}
+
 class SearchLibrary extends LibraryEvent {
   final String value;
 

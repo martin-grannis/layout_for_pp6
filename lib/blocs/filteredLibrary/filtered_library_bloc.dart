@@ -22,7 +22,18 @@ class FilteredLibraryBloc
 // listening
     librarySubscription = myLibraryBloc.stream.listen((state) {
       if (state is LibraryLoaded) {
-        add(LibraryUpdated((myLibraryBloc.state as LibraryLoaded).library));
+        //add(LibraryUpdated((myLibraryBloc.state as LibraryLoaded).library));
+        var ms = myLibraryBloc.state as LibraryLoaded;
+        if (this.state is FilteredLibraryLoadSuccess){  
+          var s = this.state as FilteredLibraryLoadSuccess;
+            add(LibraryUpdated(ms.library, s.activeFilter, ms.currentSong));
+        }
+        else {
+            add(LibraryUpdated(ms.library, "", ms.currentSong));
+        }
+        
+
+        
       }
     });
 
@@ -43,7 +54,9 @@ class FilteredLibraryBloc
       }
     });
     on<LibraryUpdated>((LibraryUpdated event, emit) {
-      emit(FilteredLibraryLoadSuccess(event.library, "",""));
+      //var s = state as FilteredLibraryLoadInProgress;
+      emit(FilteredLibraryLoadSuccess(event.library, event.activeFilter, event.currentSong));
+      //emit(FilterUpdated();
     });
   }
 }

@@ -22,7 +22,7 @@ class _LibraryListingState extends State<LibraryListing> {
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController();
+
     var bp_l = BlocProvider.of<LibraryBloc>(context);
     if (bp_l.state is LibraryInitial) {
       bp_l.add(LoadLibraryfromAPI());
@@ -34,6 +34,7 @@ class _LibraryListingState extends State<LibraryListing> {
 
   @override
   Widget build(BuildContext context) {
+    textController = TextEditingController();
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
 
@@ -43,6 +44,8 @@ class _LibraryListingState extends State<LibraryListing> {
         return Center(child: CircularProgressIndicator());
       } else {
         if (state is FilteredLibraryLoadSuccess) {
+          BlocProvider.of<FilteredLibraryBloc>(context)
+              .add(FilterUpdated(state.activeFilter));
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -54,6 +57,8 @@ class _LibraryListingState extends State<LibraryListing> {
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(80, 10, 80, 0),
                         child: TextFormField(
+                          //initialValue: "",
+                          //initialValue: state.activeFilter.length>0 ? state.activeFilter: "",
                           style: TextStyle(color: Colors.red),
                           controller: textController,
                           onChanged: (filter) => EasyDebounce.debounce(
@@ -70,7 +75,7 @@ class _LibraryListingState extends State<LibraryListing> {
                           ),
                           autofocus: false,
                           obscureText: false,
-          
+
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -101,7 +106,7 @@ class _LibraryListingState extends State<LibraryListing> {
                                   )
                                 : null,
                           ),
-          //                        style: Theme.of(context).textTheme.bodyText1,
+                          //                        style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                     ),
@@ -112,7 +117,7 @@ class _LibraryListingState extends State<LibraryListing> {
                   width: w,
                   height: h - 146,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                      shrinkWrap: true,
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       scrollDirection: Axis.vertical,
                       primary: true,

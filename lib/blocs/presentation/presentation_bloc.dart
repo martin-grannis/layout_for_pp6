@@ -43,8 +43,8 @@ class PresentationBloc extends Bloc<PresentationEvent, PresentationState> {
     await _connectionRepository.showPresentationByIndex(event.this_presentation_name, event.this_index);
 
     // no state changes (erm is that right?) so no emit here
-    // emit(PresentationLoadedState(
-    //     currentPresentation: this_presentation!, setAsCurrentSong: true));
+     //emit(PresentationLoadedState(
+         //currentPresentation: this_presentation_name!, setAsCurrentSong: true));
   
   
   }

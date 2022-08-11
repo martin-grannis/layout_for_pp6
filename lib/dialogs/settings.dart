@@ -273,7 +273,7 @@ class _SettingsState extends State<Settings> {
                                 setState(() => _lockedSplit = val!);
                                 var lb = BlocProvider.of<LayoutBloc>(context);
                                 context.read<LayoutBloc>().add(LockSplitPoint(
-                                    //splitPoint: this._controller.areas[0].weight!));
+                                    //splitPoint: this._controller.areas[0].weight!,
                                     lockedSplit: val == 1));
                                 this.prefs.setBool("_lockedSplit", val!);
                               },

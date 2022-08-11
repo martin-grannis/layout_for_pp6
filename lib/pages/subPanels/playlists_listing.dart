@@ -4,10 +4,12 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pp6_layout/bits_and_pieces/colours.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
 import 'package:pp6_layout/blocs/playlists_listing/playlists_listing_bloc.dart';
 import 'package:pp6_layout/models/playlist.dart';
+import 'package:pp6_layout/theme/app_theme.dart';
 
 class PlaylistsListing extends StatefulWidget {
   const PlaylistsListing({Key? key}) : super(key: key);
@@ -48,57 +50,62 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
         if (state is PlaylistsInitial) {
           return Center(child: CircularProgressIndicator());
         } else if (state is PlaylistsLoaded) {
-          return Column(
-            children: [
-              Row(children: [
-                Expanded(
-                  flex: 5,
-                  child: state.history.history!.length > 1
-                      ? TextButton(
-                          onPressed: (() {
-                            context
-                                .read<PlaylistsListingBloc>()
-                                .add(LoadPlaylistUpwards());
-                            // else playlist_listing = previousList, and previouspreviouslist
-                          }),
-                          child: Text("back",
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline)),
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(children: [
+                  Expanded(
+                    flex: 5,
+                    child: state.history.history!.length > 1
+                        ? Padding(
+                           padding: const EdgeInsets.fromLTRB(0, 20, 0,0),
+                          child: TextButton(
+                              onPressed: (() {
+                                context
+                                    .read<PlaylistsListingBloc>()
+                                    .add(LoadPlaylistUpwards());
+                                // else playlist_listing = previousList, and previouspreviouslist
+                              }),
+                              child: Text("back",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline)),
+                            ),
                         )
-                      : Container(),
-                ),
-                Expanded(
-                  flex: 35,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                    child: Row(
-                      children: [
-                        Text("Playlist Folder: "),
-                        Text("${state.breadcrumbs}",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
+                        : Container(),
                   ),
-                )
-              ]),
-              Container(
-                //color:Colors.red,
-                width: w,
-                height: h - 146,
-                child: ListView.builder(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    scrollDirection: Axis.vertical,
-                    primary: false,
-                    itemCount: state.playlist_list.length > 0
-                        ? state.playlist_list.length
-                        : 0,
-                    //itemCount: 0, // testing
-                    itemBuilder: (BuildContext context, int index) {
-                      return myPlaylist_listingItems(context, state, index);
-                    }),
-              ),
-            ],
+                  Expanded(
+                    flex: 35,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(28, 20, 0, 0),
+                      child: Row(
+                        children: [
+                          Text("Playlist Folder: ", style: TextStyle(color: Colors.green)),
+                          Text("${state.breadcrumbs}",
+                              style:
+                                  const TextStyle(color:Colors.green,fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                  )
+                ]),
+                Container(
+                  //color:Colors.red,
+                  width: w,
+                  height: h - 146,
+                  child: ListView.builder(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      scrollDirection: Axis.vertical,
+                      primary: false,
+                      itemCount: state.playlist_list.length > 0
+                          ? state.playlist_list.length
+                          : 0,
+                      //itemCount: 0, // testing
+                      itemBuilder: (BuildContext context, int index) {
+                        return myPlaylist_listingItems(context, state, index);
+                      }),
+                ),
+              ],
+            ),
           );
         }
         return const Text(
@@ -111,9 +118,9 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
       child: Container(
-        color: state.playlist_list[index].playlistType == "playlistTypeGroup"
-            ? Colors.green
-            : Colors.white,
+        // color: state.playlist_list[index].playlistType == "playlistTypeGroup"
+        //     ? Colors.green
+        //     : Colors.white,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,54 +130,62 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                 padding: EdgeInsetsDirectional.fromSTEB(
                     state.playlist_list[index].playlistType ==
                             "playlistTypeGroup"
-                        ? 80
-                        : 60,
+                        ? 90
+                        : 75,
                     0,
                     0,
                     0),
-                child: TextButton(
-                  onPressed: () => {
-                    // fire leftpane change to panel 1
-                    // fire  playlistsBloc folderChanged (also send ifTop)- send the playlists list from this level
-                    // ie the children of this item become the top level ion the pane.
+                child: Row(
+                  children: [
+                    Visibility(
+                      visible: state.playlist_list[index].playlistType ==
+                            "playlistTypeGroup",
+                      child: Icon(Icons.folder, color: MyColors.myRed,) ),
+                    TextButton(
+                      onPressed: () => {
+                        // fire leftpane change to panel 1
+                        // fire  playlistsBloc folderChanged (also send ifTop)- send the playlists list from this level
+                        // ie the children of this item become the top level ion the pane.
 
-                    if (state.playlist_list[index].playlistType ==
-                        "playlistTypeGroup")
-                      {
-                        //     // is a folder name
-                        BlocProvider.of<PlaylistsListingBloc>(context).add(
-                          LoadPlaylistDownwards(
-                            playlist_list: state.playlist_list[index].playlist,
-                            clickedItemName:
-                                state.playlist_list[index].playlistName,
-                          ),
-                        ),
-                        BlocProvider.of<LayoutBloc>(context).add(
-                            LayoutEventChangeLayout(
-                                newLayout: 2)), // playlist listing in left pane
-                      }
-                    else
-                      {
-                        //send a playlistgItemselected event
-                        BlocProvider.of<PlaylistBloc>(context).add(
-                            PlaylistLoad(playlist: state.playlist_list[index], fromTop: state.history.history.length==1)),
-                        BlocProvider.of<LayoutBloc>(context).add(
-                            LayoutEventChangeLayout(
-                                newLayout: 3)), // playlist in left pane
-                      }
-                  },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    // child: state.currentSong == state.library[index].itemName ? Text(libReformatText(
-                    //     state.library[index])): Text("CURRENT"),
-                    child: PlaylistsItem(state, index),
-                    //child: Text(state.myPlaylist[index].playlistName),
-                  ),
-                  // style: FlutterFlowTheme.of(context).bodyText1.override(
-                  //       fontFamily: 'Poppins',
-                  //       fontSize: 16,
-                  //       fontWeight: FontWeight.normal,
-                  //     ),
+                        if (state.playlist_list[index].playlistType ==
+                            "playlistTypeGroup")
+                          {
+                            //     // is a folder name
+                            BlocProvider.of<PlaylistsListingBloc>(context).add(
+                              LoadPlaylistDownwards(
+                                playlist_list: state.playlist_list[index].playlist,
+                                clickedItemName:
+                                    state.playlist_list[index].playlistName,
+                              ),
+                            ),
+                            BlocProvider.of<LayoutBloc>(context).add(
+                                LayoutEventChangeLayout(
+                                    newLayout: 2)), // playlist listing in left pane
+                          }
+                        else
+                          {
+                            //send a playlistgItemselected event
+                            BlocProvider.of<PlaylistBloc>(context).add(
+                                PlaylistLoad(playlist: state.playlist_list[index], fromTop: state.history.history.length==1)),
+                            BlocProvider.of<LayoutBloc>(context).add(
+                                LayoutEventChangeLayout(
+                                    newLayout: 3)), // playlist in left pane
+                          }
+                      },
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        // child: state.currentSong == state.library[index].itemName ? Text(libReformatText(
+                        //     state.library[index])): Text("CURRENT"),
+                        child: PlaylistsItem(state, index),
+                        //child: Text(state.myPlaylist[index].playlistName),
+                      ),
+                      // style: FlutterFlowTheme.of(context).bodyText1.override(
+                      //       fontFamily: 'Poppins',
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.normal,
+                      //     ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -228,27 +243,31 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
   }
 
   Padding PlaylistsItem(state, int index) {
+    String songName = state.playlist_list[index].playlistName.replaceAll('.pro6', '').trim();
+    var temp = songName.split('/');
+    songName = temp[temp.length - 1];
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Text(
-          playlist_reformatText(state.playlist_list[index], state, index),
-          
+          '${songName}',
+          style: AppTheme.libraryListing
         ));
   }
 
-  String playlist_reformatText(playlistItem, state, index) {
-    String songName = playlistItem.playlistName.replaceAll('.pro6', '').trim();
-    var temp = songName.split('/');
-    songName = temp[temp.length - 1];
+  // String playlist_reformatText(playlistItem, state, index) {
+  //   String songName = playlistItem.playlistName.replaceAll('.pro6', '').trim();
+  //   var temp = songName.split('/');
+  //   songName = temp[temp.length - 1];
 
-    // if (library.inCache) {
-    //   libName = libName + " YAY";
-    // }
-    String txt = "";
-    if (state.playlist_list[index].playlistType == "playlistTypeGroup") {
-      txt = " > ";
-    }
+  //   // if (library.inCache) {
+  //   //   libName = libName + " YAY";
+  //   // }
+  //   //String txt = "";
+  //   // if (state.playlist_list[index].playlistType == "playlistTypeGroup") {
+  //   //   txt = " > ";
+  //   // }
 
-    return "${txt} ${songName}";
-  }
+  //   //return "${txt} ${songName}";
+  //   return "${songName}";
+  // }
 }

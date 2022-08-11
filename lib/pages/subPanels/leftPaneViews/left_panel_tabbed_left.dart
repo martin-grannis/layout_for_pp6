@@ -49,10 +49,10 @@ class _LeftPanelTabbedLeftState extends State<LeftPanelTabbedLeft>
         child: Container(
           //alignment: Alignment.center,
           //color: const Color.fromARGB(255, 244, 244, 244),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(150, 20, 150, 0),
-            //padding: EdgeInsets.zero,
-            child: myTabBar(_tabController),
+          child: Column(
+            children: [
+              myTabBar(_tabController, context),
+            ],
           ),
         ),
       ),

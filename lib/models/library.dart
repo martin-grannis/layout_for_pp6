@@ -27,7 +27,7 @@ class Library {
   @override
   String toString() => 'LBloc length ${this.lib.length}';
 
-  Library copyWithForCacheUpdate({required library, required CacheUpdate cu}) {
+  Library copyWithForCacheUpdate({required library, CacheUpdate? cu}) {
     //Library l = Library(lib: []);
     
     final List<LibraryItems> newLib = List<LibraryItems>.from(library.lib);
@@ -35,12 +35,12 @@ class Library {
     int tmp = -1;
     try {
       // print(this.library.length);
-      tmp = newLib.indexWhere((e) => e.itemName == cu.presentation_name);
+      tmp = newLib.indexWhere((e) => e.itemName == cu!.presentation_name);
     } catch (e) {
       print(e.toString());
     }
     if (tmp != -1) {
-      newLib[tmp].inCache = cu.added;
+      newLib[tmp].inCache = cu!.added;
 
 
     }

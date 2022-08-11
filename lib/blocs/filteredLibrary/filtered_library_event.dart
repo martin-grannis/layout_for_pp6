@@ -21,12 +21,16 @@ class FilterUpdated extends FilteredLibraryEvent {
 
 class LibraryUpdated extends FilteredLibraryEvent {
   final library;
+  final activeFilter;
 
-  const LibraryUpdated(this.library);
+  final currentSong;
+  
+  //const LibraryUpdated(this.library, this.currentSong);
+  const LibraryUpdated(this.library, this.activeFilter, this.currentSong);
 
   @override
-  List<Object> get props => [library];
+  List<Object> get props => [library, currentSong, activeFilter];
 
   @override
-  String toString() => 'TodosUpdated { library: $library }';
+  String toString() => 'TodosUpdated { library: }';
 }
