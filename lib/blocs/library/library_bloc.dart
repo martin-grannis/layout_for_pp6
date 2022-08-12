@@ -42,10 +42,10 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       List<LibraryItems> l = List<LibraryItems>.from(s.library.lib);
       Library ll = Library(lib: l);
       emit(LibraryLoaded(
-          library: ll,
-          currentSong: event.currentSongPath,
-          //isLoaded: state.isLoaded
-          ));
+        library: ll,
+        currentSong: event.currentSongPath,
+        //isLoaded: state.isLoaded
+      ));
     });
 
     // StreamSubscription<PP6_ConnectionStatus>? _PP6_ConnectionStatusSubscription;
@@ -75,6 +75,16 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     //   emit(LibraryLoaded(
     //       library: filtered_library, currentSong: state.currentSong));
     // });
+  }
+
+  @override
+  void onTransition(Transition<LibraryEvent, LibraryState> transition) {
+    super.onTransition(transition);
+    var t = transition.currentState;
+    var n = transition.nextState;
+
+    debugPrint("PRE: ${t}\n\n");
+    debugPrint("POST: ${n}\n\n");
   }
 }
 
