@@ -215,9 +215,9 @@ class _LibraryListingState extends State<LibraryListing> {
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  color: state.filteredLibrary.lib[index].inCache
-                      ? Colors.green
-                      : Colors.white,
+                  //color: state.filteredLibrary.lib[index].inCache
+                    //  ? Colors.green
+                     // : Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Align(
@@ -225,7 +225,7 @@ class _LibraryListingState extends State<LibraryListing> {
                   child: Icon(
                     Icons.check,
                     color: Colors.white,
-                    size: state.filteredLibrary.lib[index].inCache ? 20 : 0,
+                   // size: state.filteredLibrary.lib[index].inCache ? 20 : 0,
                   ),
                 ),
               ),

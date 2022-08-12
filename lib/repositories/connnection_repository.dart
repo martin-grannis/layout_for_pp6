@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-//import 'dart:ui';
+import 'dart:ui';
 
 //Import 'package:image/image.dart' as Image;
 
 //import 'package:flutter/widgets.dart';
 import 'package:flutter/painting.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
 import 'package:pp6_layout/models/host.dart';
 import 'package:pp6_layout/models/presentation.dart';
 import 'package:pp6_layout/repositories/websockets_repository.dart';
@@ -25,6 +26,13 @@ class PP6_ConnectionStatusMessage {
 }
 
 class ConnectionRepository {
+// get the CacheBloc instance
+  
+  final CacheBloc myCacheBloc;
+  
+  ConnectionRepository({
+    required this.myCacheBloc,
+  });
   //late final WebsocketService _wss;
   final handle_secure_storage hss = handle_secure_storage();
 
@@ -46,37 +54,35 @@ class ConnectionRepository {
   ///caching
   ///
 
-  List<PresentationCacheItem> songCache = [];
+  //List<PresentationCacheItem> songCache = [];
 
-  int maxSongs = 25;
+//  int maxSongs = 25;
 
   ///
 
-Future<void> UpdateKnownHostPassword(Host h) async {
+  Future<void> UpdateKnownHostPassword(Host h) async {
     List<Host> lh = await hss.retrieve_known_hosts();
     int l = lh.indexWhere((item) => item.name == h.name);
-    
+
     if (l != -1) {
       // remove it
       lh.removeAt(l);
     }
-    
+
     lh.add(h);
 
     await hss.save_known_hosts(lh);
   }
 
-
-
   Future<void> hostNameSave(Host h) async {
     List<Host> lh = await hss.retrieve_saved_hosts();
     int l = lh.indexWhere((item) => item.name == h.name);
-    
+
     if (l != -1) {
       // remove it
       lh.removeAt(l);
     }
-    
+
     lh.add(h);
 
     await hss.save_saved_hosts(lh);
@@ -134,13 +140,13 @@ Future<void> UpdateKnownHostPassword(Host h) async {
   Future<Presentation?> getPresentation(String this_song) async {
     // is it in the cache?
     // yes - return the presentation from cache
-    int pos = songCache.indexWhere(
-        (element) => element.presentation!.presentationName == this_song);
-    if (pos >= 0) {
-      return songCache[pos].presentation;
-      // inform pp6 that we have switched songs
-      //
-    }
+    // int pos = songCache.indexWhere(
+    //     (element) => element.presentation!.presentationName == this_song);
+    // if (pos >= 0) {
+    //   return songCache[pos].presentation;
+    //   // inform pp6 that we have switched songs
+    //   //
+    // }
     // no - load it - add to cache
     String song_request_response = await _wss.presentationRequest(this_song);
     // String result = await _wss.getPlaylists();
@@ -149,13 +155,7 @@ Future<void> UpdateKnownHostPassword(Host h) async {
     Presentation this_presentation = Presentation.fromJson(scan_decoded);
     this_presentation.presentationName = this_song;
 
-// find decoding images and add to GroupSlidesObject
-
-    // List<MySlideGroup> lsg = [];
-    // List<MySlide> ls = [];
     int slideCounter = 0;
-    // MySlide ms = MySlide();
-    // MySlideGroup msg = MySlideGroup();
 
     this_presentation.presentationSlideGroups!.forEach(
       (slideGroupElement) {
@@ -169,10 +169,6 @@ Future<void> UpdateKnownHostPassword(Host h) async {
           //ls.add(ms);
           slideCounter++;
         });
-        //msg.myDecodedSlides = ls;
-        //ls = []; // reset the slide list
-        //lsg.add(msg);
-        //msg = MySlideGroup();
       },
     );
 
@@ -185,22 +181,22 @@ Future<void> UpdateKnownHostPassword(Host h) async {
 // add to cache
     PresentationCacheItem pci =
         PresentationCacheItem(this_presentation, DateTime.now());
-    songCache.add(pci);
-    _controller2.sink.add(SinkMessage(
-        "CU", "", CacheUpdate(pci.presentation!.presentationName!, true)));
+    //songCache.add(pci);
+    //_controller2.sink.add(SinkMessage(
+      //  "CU", "", CacheUpdate(pci.presentation!.presentationName!, true)));
     // cu.added = false;
     // cu.presentation_name = "";
 
-    if (songCache.length > maxSongs) {
-      songCache.sort((a, b) => b.date_time!.compareTo(a.date_time!));
-      PresentationCacheItem nm = songCache.last;
-      songCache.removeLast();
+    // if (songCache.length > maxSongs) {
+    //   songCache.sort((a, b) => b.date_time!.compareTo(a.date_time!));
+    //   PresentationCacheItem nm = songCache.last;
+    //   songCache.removeLast();
 
-      _controller2.sink
-          //.add(CacheUpdate(nm.presentation!.presentationName!, false));
-          .add(SinkMessage("CU", "",
-              CacheUpdate(nm.presentation!.presentationName!, false)));
-    }
+    //   _controller2.sink
+    //       //.add(CacheUpdate(nm.presentation!.presentationName!, false));
+    //       .add(SinkMessage("CU", "",
+    //           CacheUpdate(nm.presentation!.presentationName!, false)));
+    // }
 
     String presentationSlideIndex = await _wss.presentationSlideIndex();
 

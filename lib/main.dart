@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pp6_layout/blocs/PP6_connection/PP6_connection_bloc.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
 import 'package:pp6_layout/blocs/filteredLibrary/filtered_library_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
@@ -15,9 +16,16 @@ import 'package:pp6_layout/pages/connected_to_server_page.dart';
 import 'package:pp6_layout/pages/network_failure_page.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
-ConnectionRepository connectionRepository = ConnectionRepository();
+CacheBloc myCacheBloc = CacheBloc(currentSong: '', itemNames: []);
+
+ConnectionRepository connectionRepository = ConnectionRepository(myCacheBloc: myCacheBloc);
+
 PlaylistsListingBloc _playlistListingbloc =
     PlaylistsListingBloc(connectionRepository: connectionRepository);
+// LibraryBloc _filteredLibraryBloc =
+//     LibraryBloc(connectionRepository: connectionRepository);
+
+
 // LibraryBloc _filteredLibraryBloc =
 //     LibraryBloc(connectionRepository: connectionRepository);
 
@@ -57,7 +65,7 @@ void main() => runApp(
           ),
         ],
         child: MyApp(
-          connectionRepository: ConnectionRepository(),
+          connectionRepository: connectionRepository,
         ),
       ),
     );

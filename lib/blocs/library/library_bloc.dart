@@ -18,24 +18,24 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         super(LibraryInitial()) {
     /// listeners
 
-    StreamSubscription<SinkMessage> _Library_Presentation_StatusSubscription =
-        _connectionRepository.Updates.listen(
-            //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
-            (status) {
-      //emit(LibraryLoading());
-      //String a = "asd";
-// decode the message
-      if (status.type == "CU") {
-        var s = state as LibraryLoaded;
-        emit(LibraryLoaded(
-          library: s.library
-              .copyWithForCacheUpdate(library: s.library, cu: status.cu),
-          currentSong: s.currentSong,
-          //isLoaded: s.isLoaded,
-        ));
-        return;
-      }
-    });
+//     StreamSubscription<SinkMessage> _Library_Presentation_StatusSubscription =
+//         _connectionRepository.Updates.listen(
+//             //(status) => add(PP6_ConnectionStatusChanged(status, Host.empty)),
+//             (status) {
+//       //emit(LibraryLoading());
+//       //String a = "asd";
+// // decode the message
+//       if (status.type == "CU") {
+//         var s = state as LibraryLoaded;
+//         emit(LibraryLoaded(
+//           library: s.library
+//               .copyWithForCacheUpdate(library: s.library, cu: status.cu),
+//           currentSong: s.currentSong,
+//           //isLoaded: s.isLoaded,
+//         ));
+//         return;
+//       }
+//     });
 
     on<LibraryCurrentlyShowingChanged>((event, emit) {
       var s = state as LibraryLoaded;

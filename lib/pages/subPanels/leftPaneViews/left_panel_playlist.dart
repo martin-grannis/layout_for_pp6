@@ -112,20 +112,20 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
         "playlistItemTypePresentation") {
       // we got a presentation
 
-      var ls = BlocProvider.of<LibraryBloc>(context).state as LibraryLoaded;
-      List<LibraryItems> l = ls.library.lib;
-      String curSong = ls.currentSong;
-      var amICurrent = (strSave == curSong);
-      var libSong = l.firstWhere((element) {
-          return element.itemName == strSave;
+      // var ls = BlocProvider.of<LibraryBloc>(context).state as LibraryLoaded;
+      // List<LibraryItems> l = ls.library.lib;
+      // String curSong = ls.currentSong;
+      // var amICurrent = (strSave == curSong);
+      // var libSong = l.firstWhere((element) {
+      //     return element.itemName == strSave;
         // if (element != null) {
         //   //print(element);
         
         // } else {
         //   return false;
         // }
-      });
-      var inCache = libSong.inCache;
+      //});
+      //var inCache = libSong.inCache;
 
       return Padding(
         padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
@@ -150,8 +150,8 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                 ),
               ),
             ),
-            Expanded(child: inCache ? Text("C") : Text("")),
-            Expanded(child: amICurrent ? Text("IAM") : Text("")),
+            // Expanded(child: inCache ? Text("C") : Text("")),
+            // Expanded(child: amICurrent ? Text("IAM") : Text("")),
           ],
         ),
       );
