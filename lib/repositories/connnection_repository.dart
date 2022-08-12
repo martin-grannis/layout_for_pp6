@@ -27,9 +27,9 @@ class PP6_ConnectionStatusMessage {
 
 class ConnectionRepository {
 // get the CacheBloc instance
-  
-  final CacheBloc myCacheBloc;
-  
+
+  final CacheBlocBloc myCacheBloc;
+
   ConnectionRepository({
     required this.myCacheBloc,
   });
@@ -139,6 +139,12 @@ class ConnectionRepository {
 
   Future<Presentation?> getPresentation(String this_song) async {
     // is it in the cache?
+    var s = this.myCacheBloc.state as CacheBloc;
+    int pos = s.songCache.indexWhere((element) => element.presentation!.presentationName== this_song);
+    if (pos >= 0) {
+      return s.songCache[pos].presentation;
+    }
+
     // yes - return the presentation from cache
     // int pos = songCache.indexWhere(
     //     (element) => element.presentation!.presentationName == this_song);
@@ -154,6 +160,10 @@ class ConnectionRepository {
         jsonDecode(song_request_response)['presentation'];
     Presentation this_presentation = Presentation.fromJson(scan_decoded);
     this_presentation.presentationName = this_song;
+
+    // add song to Cache
+    this.myCacheBloc.add(addCacheItem(
+        cacheItem: PresentationCacheItem(this_presentation, DateTime.now())));
 
     int slideCounter = 0;
 
@@ -179,11 +189,11 @@ class ConnectionRepository {
 // end decoding image
 
 // add to cache
-    PresentationCacheItem pci =
-        PresentationCacheItem(this_presentation, DateTime.now());
+    // PresentationCacheItem pci =
+    //     PresentationCacheItem(this_presentation, DateTime.now());
     //songCache.add(pci);
     //_controller2.sink.add(SinkMessage(
-      //  "CU", "", CacheUpdate(pci.presentation!.presentationName!, true)));
+    //  "CU", "", CacheUpdate(pci.presentation!.presentationName!, true)));
     // cu.added = false;
     // cu.presentation_name = "";
 

@@ -16,7 +16,7 @@ import 'package:pp6_layout/pages/connected_to_server_page.dart';
 import 'package:pp6_layout/pages/network_failure_page.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
-CacheBloc myCacheBloc = CacheBloc(currentSong: '', itemNames: []);
+CacheBlocBloc myCacheBloc = CacheBlocBloc();
 
 ConnectionRepository connectionRepository = ConnectionRepository(myCacheBloc: myCacheBloc);
 
@@ -32,6 +32,9 @@ PlaylistsListingBloc _playlistListingbloc =
 void main() => runApp(
       MultiBlocProvider(
         providers: [
+          BlocProvider(
+              create: (context) =>
+                  myCacheBloc),
           BlocProvider(
               create: (context) =>
                   LibraryBloc(connectionRepository: connectionRepository)),

@@ -8,16 +8,16 @@ abstract class CacheBlocEvent extends Equatable {
 }
 
 class addCacheItem extends CacheBlocEvent {
-  final String itemName;
+  final PresentationCacheItem cacheItem;
   const addCacheItem({
-    required this.itemName,
+    required this.cacheItem,
   });
 }
 
-class deleteCacheItem extends CacheBlocEvent {
-  final String itemName;
-  const deleteCacheItem({
-    required this.itemName,
-  });
-}
+// class deleteCacheItem extends CacheBlocEvent {
+//   final String itemName;
+//   const deleteCacheItem({
+//     required this.itemName,
+//   });
+// }
 
