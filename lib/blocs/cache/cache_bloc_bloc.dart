@@ -13,6 +13,11 @@ class CacheBlocBloc extends Bloc<CacheBlocEvent, CacheBlocState> {
       emit(newState);
     });
 
+    on<setCurrentSong>((event, emit) {
+      var s = state as CacheBloc;
+      emit(s.copyWith(currentSong: event.songName));
+    });
+
     // on<deleteCacheItem>((event, emit) {
     //   var s = state as CacheBloc;
     //   var newState = s.deleteCacheItem(itemName: event.itemName);

@@ -12,22 +12,20 @@ abstract class CacheBlocState extends Equatable {
 class CacheBloc extends CacheBlocState {
   final String currentSong;
   final List<PresentationCacheItem> songCache;
-  const CacheBloc( {
+  const CacheBloc({
     required this.songCache,
     required this.currentSong,
-     
   });
 
   @override
   List<Object> get props => [songCache, currentSong];
-  
+
   CacheBloc addCacheItem({
     String? currentSong,
 //    List<String>? itemNames,
     PresentationCacheItem? songItem,
   }) {
-    
-    List<PresentationCacheItem>  newL = [...this.songCache, songItem!];
+    List<PresentationCacheItem> newL = [...this.songCache, songItem!];
 
     return CacheBloc(
       currentSong: currentSong ?? this.currentSong,
@@ -35,6 +33,15 @@ class CacheBloc extends CacheBlocState {
     );
   }
 
+  CacheBloc copyWith({
+    String? currentSong,
+    List<PresentationCacheItem>? songCache,
+  }) {
+    return CacheBloc(
+      currentSong: currentSong ?? this.currentSong,
+      songCache: songCache ?? this.songCache,
+    );
+  }
 //   CacheBloc deleteCacheItem({
 //     String? currentSong,
 // //    List<String>? itemNames,
@@ -49,12 +56,13 @@ class CacheBloc extends CacheBlocState {
 //     );
 //   }
 
-  bool inCache(PresentationCacheItem item) {
-    var tmp = this.songCache.indexWhere((element) => element == item);
+  bool inCache(String item) {
+    var tmp = this.songCache.indexWhere(
+        (element) => element.presentation!.presentationName == item);
     return tmp != -1; // -1 means not there
   }
 
-  String getCurrentSong() {
-    return currentSong;
+  bool amICurrentSong(String item) {
+    return (currentSong == item);
   }
 }

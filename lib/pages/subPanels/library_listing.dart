@@ -3,6 +3,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
 import 'package:pp6_layout/blocs/filteredLibrary/filtered_library_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
@@ -142,6 +143,9 @@ class _LibraryListingState extends State<LibraryListing> {
   Padding myLibraryItems(
       BuildContext context, FilteredLibraryState state, int index) {
     var s = state as FilteredLibraryLoadSuccess;
+    var cbb = BlocProvider.of<CacheBlocBloc>(context).state as CacheBloc;
+    var currentSong = cbb.amICurrentSong(s.filteredLibrary.lib[index].itemName!);
+    var inCache = cbb.inCache(s.filteredLibrary.lib[index].itemName!);
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 15, 0),
       child: Container(
@@ -189,8 +193,7 @@ class _LibraryListingState extends State<LibraryListing> {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                    color: state.currentSong ==
-                            state.filteredLibrary.lib[index].itemName
+                    color: currentSong
                         ? Colors.red
                         : Colors.white,
                     shape: BoxShape.circle,
@@ -200,8 +203,7 @@ class _LibraryListingState extends State<LibraryListing> {
                     child: Icon(
                       Icons.tv_outlined,
                       color: Colors.white,
-                      size: state.currentSong ==
-                              state.filteredLibrary.lib[index].itemName
+                      size: currentSong
                           ? 20
                           : 0,
                     ),
@@ -215,9 +217,9 @@ class _LibraryListingState extends State<LibraryListing> {
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  //color: state.filteredLibrary.lib[index].inCache
-                    //  ? Colors.green
-                     // : Colors.white,
+                  color: inCache
+                   ? Colors.green
+                  : Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Align(
@@ -225,7 +227,7 @@ class _LibraryListingState extends State<LibraryListing> {
                   child: Icon(
                     Icons.check,
                     color: Colors.white,
-                   // size: state.filteredLibrary.lib[index].inCache ? 20 : 0,
+                    // size: state.filteredLibrary.lib[index].inCache ? 20 : 0,
                   ),
                 ),
               ),

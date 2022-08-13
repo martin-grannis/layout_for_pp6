@@ -14,6 +14,14 @@ class addCacheItem extends CacheBlocEvent {
   });
 }
 
+class setCurrentSong extends CacheBlocEvent {
+  final String songName;
+  const setCurrentSong({
+    required this.songName,
+  });
+}
+
+
 // class deleteCacheItem extends CacheBlocEvent {
 //   final String itemName;
 //   const deleteCacheItem({

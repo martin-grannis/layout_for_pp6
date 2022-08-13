@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
+import 'package:pp6_layout/main.dart';
 import 'package:pp6_layout/models/library.dart';
 import 'package:pp6_layout/models/presentation.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
@@ -39,13 +41,17 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
 
     on<LibraryCurrentlyShowingChanged>((event, emit) {
       var s = state as LibraryLoaded;
-      List<LibraryItems> l = List<LibraryItems>.from(s.library.lib);
-      Library ll = Library(lib: l);
-      emit(LibraryLoaded(
-        library: ll,
-        currentSong: event.currentSongPath,
-        //isLoaded: state.isLoaded
-      ));
+      var cbb = myCacheBloc;
+      // add evnt on cachebloc
+      cbb.add(setCurrentSong(songName: event.currentSongPath));
+
+      // List<LibraryItems> l = List<LibraryItems>.from(s.library.lib);
+      // Library ll = Library(lib: l);
+      // emit(LibraryLoaded(
+      //   library: ll,
+      //   currentSong: event.currentSongPath,
+      //   //isLoaded: state.isLoaded
+      // ));
     });
 
     // StreamSubscription<PP6_ConnectionStatus>? _PP6_ConnectionStatusSubscription;
