@@ -15,3 +15,5 @@ class PlaylistLoad extends PlaylistEvent {
     required this.fromTop,
   });
 }
+
+class preloadAll extends PlaylistEvent {}

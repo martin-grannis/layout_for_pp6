@@ -16,6 +16,16 @@ class PresentationEventLoadSong extends PresentationEvent {
       this.this_presentation, this.nextTwoSongs, this.RequestFromLibrary);
 }
 
+
+class PresentationEventLoadSongArray extends PresentationEvent {
+  List<Playlist> passed_in_presentations;
+  
+  PresentationEventLoadSongArray(
+      this.passed_in_presentations);
+}
+
+
+
 class PresentationEventShowSong extends PresentationEvent {
   final String this_presentation_name;
   final int this_index;

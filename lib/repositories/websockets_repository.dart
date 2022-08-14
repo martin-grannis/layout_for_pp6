@@ -139,9 +139,9 @@ class WebsocketService {
 //     }
 
     final scanData = await waitForReply(channel);
-    // final scanData2 = await waitForReply(channel);
-
     return scanData;
+
+    // final scanData2 = await waitForReply(channel);
   }
 
   presentationShowRequest(this_song, slideNo) async {
@@ -178,9 +178,15 @@ void sendData(IOWebSocketChannel channel, String s) {
 }
 
 dynamic waitForReply(IOWebSocketChannel channel) async {
-  final scanData = await streamController.stream.first;
+  //var scanData = "";
+  //var o = {"action": "", "error": "", "authenticated": "", "controller": ""};
 
+  try {
+  final scanData = await streamController.stream.first;
   var o = jsonDecode(scanData);
+  
+
+  
 
   // for (int i = 0; i < o.length; i++) {
   //   var obj = o[i] as Map();
@@ -217,4 +223,9 @@ dynamic waitForReply(IOWebSocketChannel channel) async {
 
   //print("reply: ${o}  \n\n");
   return scanData;
+
+  } catch (e) {
+    print(e.toString());
+  }
+
 }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pp6_layout/bits_and_pieces/colours.dart';
 import 'package:pp6_layout/bits_and_pieces/playlistHeadingWidget.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
@@ -30,7 +31,7 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
 
-    return BlocBuilder<LibraryBloc, LibraryState>(
+    return BlocBuilder<CacheBlocBloc, CacheBlocState>(
       builder: (ctxL, lState) {
         return BlocBuilder<PlaylistBloc, PlaylistState>(
           builder: (context, state) {
@@ -73,7 +74,14 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    Expanded(
+                      flex: 5,
+                        child: TextButton(
+                      onPressed: () =>
+                          {context.read<PlaylistBloc>().add(preloadAll())},
+                      child: Text("PreLoad all"),
+                    )),
                   ]),
                   Container(
                     //color:Colors.red,
@@ -104,9 +112,14 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
   }
 
   PlaylistItem(PlaylistState state, int index) {
+    //var s = state as PlaylistLoaded;
     String? str = state.playlist.playlist![index].playlistItemName;
     String? strSave = str;
     str = str!.replaceAll(".pro6", "");
+
+    var cbb = BlocProvider.of<CacheBlocBloc>(context).state as CacheBloc;
+    var currentSong = cbb.amICurrentSong(strSave!);
+    var inCache = cbb.inCache(strSave);
 
     if (state.playlist.playlist![index].playlistItemType ==
         "playlistItemTypePresentation") {
@@ -118,12 +131,12 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
       // var amICurrent = (strSave == curSong);
       // var libSong = l.firstWhere((element) {
       //     return element.itemName == strSave;
-        // if (element != null) {
-        //   //print(element);
-        
-        // } else {
-        //   return false;
-        // }
+      // if (element != null) {
+      //   //print(element);
+
+      // } else {
+      //   return false;
+      // }
       //});
       //var inCache = libSong.inCache;
 
@@ -150,8 +163,8 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                 ),
               ),
             ),
-            // Expanded(child: inCache ? Text("C") : Text("")),
-            // Expanded(child: amICurrent ? Text("IAM") : Text("")),
+            Expanded(child: inCache ? Text("C") : Text("")),
+            Expanded(child: currentSong ? Text("IAM") : Text("")),
           ],
         ),
       );

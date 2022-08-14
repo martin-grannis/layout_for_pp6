@@ -35,6 +35,10 @@ void main() => runApp(
           BlocProvider(
               create: (context) =>
                   myCacheBloc),
+                  BlocProvider(
+            create: (context) =>
+                PresentationBloc(connectionRepository: connectionRepository),
+          ),
           BlocProvider(
               create: (context) =>
                   LibraryBloc(connectionRepository: connectionRepository)),
@@ -46,7 +50,7 @@ void main() => runApp(
             create: (context) => NetworkBloc()..add(ListenConnection()),
           ),
           BlocProvider(
-            create: (context) => PlaylistBloc(),
+            create: (context) => PlaylistBloc(myPresentationBloc:  BlocProvider.of<PresentationBloc>(context)),
           ),
           BlocProvider(
             create: (context) =>
@@ -62,10 +66,7 @@ void main() => runApp(
                 PP6_ConnectionBloc(connectionRepository: connectionRepository)
                   ..add(PP6_Initialise()),
           ),
-          BlocProvider(
-            create: (context) =>
-                PresentationBloc(connectionRepository: connectionRepository),
-          ),
+          
         ],
         child: MyApp(
           connectionRepository: connectionRepository,
