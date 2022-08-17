@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pp6_layout/bits_and_pieces/colours.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
 import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
 import 'package:pp6_layout/blocs/playlist/playlist_bloc.dart';
 import 'package:pp6_layout/blocs/playlists_listing/playlists_listing_bloc.dart';
@@ -58,8 +59,8 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                     flex: 5,
                     child: state.history.history!.length > 1
                         ? Padding(
-                           padding: const EdgeInsets.fromLTRB(0, 20, 0,0),
-                          child: TextButton(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: TextButton(
                               onPressed: (() {
                                 context
                                     .read<PlaylistsListingBloc>()
@@ -70,7 +71,7 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                                   style: TextStyle(
                                       decoration: TextDecoration.underline)),
                             ),
-                        )
+                          )
                         : Container(),
                   ),
                   Expanded(
@@ -79,10 +80,12 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                       padding: const EdgeInsets.fromLTRB(28, 20, 0, 0),
                       child: Row(
                         children: [
-                          Text("Playlist Folder: ", style: TextStyle(color: Colors.green)),
+                          Text("Playlist Folder: ",
+                              style: TextStyle(color: Colors.green)),
                           Text("${state.breadcrumbs}",
-                              style:
-                                  const TextStyle(color:Colors.green,fontWeight: FontWeight.bold)),
+                              style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -138,9 +141,12 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                 child: Row(
                   children: [
                     Visibility(
-                      visible: state.playlist_list[index].playlistType ==
+                        visible: state.playlist_list[index].playlistType ==
                             "playlistTypeGroup",
-                      child: Icon(Icons.folder, color: MyColors.myRed,) ),
+                        child: Icon(
+                          Icons.folder,
+                          color: MyColors.myRed,
+                        )),
                     TextButton(
                       onPressed: () => {
                         // fire leftpane change to panel 1
@@ -153,23 +159,32 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
                             //     // is a folder name
                             BlocProvider.of<PlaylistsListingBloc>(context).add(
                               LoadPlaylistDownwards(
-                                playlist_list: state.playlist_list[index].playlist,
+                                playlist_list:
+                                    state.playlist_list[index].playlist,
                                 clickedItemName:
                                     state.playlist_list[index].playlistName,
                               ),
                             ),
                             BlocProvider.of<LayoutBloc>(context).add(
                                 LayoutEventChangeLayout(
-                                    newLayout: 2)), // playlist listing in left pane
+                                    newLayout:
+                                        2)), // playlist listing in left pane
                           }
                         else
                           {
                             //send a playlistgItemselected event
                             BlocProvider.of<PlaylistBloc>(context).add(
-                                PlaylistLoad(playlist: state.playlist_list[index], fromTop: state.history.history.length==1)),
+                                PlaylistLoad(
+                                    playlist: state.playlist_list[index],
+                                    fromTop:
+                                        state.history.history.length == 1)),
                             BlocProvider.of<LayoutBloc>(context).add(
                                 LayoutEventChangeLayout(
                                     newLayout: 3)), // playlist in left pane
+                            BlocProvider.of<CacheBlocBloc>(context).add(
+                                setLastSelectedPlaylist(
+                                    playlistName:
+                                        "${state.breadcrumbs}/${state.playlist_list[index].playlistName}")),
                           }
                       },
                       child: Align(
@@ -243,15 +258,19 @@ class _PlaylistsListingState extends State<PlaylistsListing> {
   }
 
   Padding PlaylistsItem(state, int index) {
-    String songName = state.playlist_list[index].playlistName.replaceAll('.pro6', '').trim();
+    var cbp = BlocProvider.of<CacheBlocBloc>(context).state as CacheBloc;
+    String songName =
+        state.playlist_list[index].playlistName.replaceAll('.pro6', '').trim();
     var temp = songName.split('/');
     songName = temp[temp.length - 1];
+    var fullPlaylistName =
+        "${state.breadcrumbs}/${state.playlist_list[index].playlistName}";
+    if (fullPlaylistName == cbp.currentPlaylist) {
+      songName = songName + "CCC";
+    }
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: Text(
-          '${songName}',
-          style: AppTheme.libraryListing
-        ));
+        child: Text('${songName}', style: AppTheme.libraryListing));
   }
 
   // String playlist_reformatText(playlistItem, state, index) {

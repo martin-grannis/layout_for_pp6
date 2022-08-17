@@ -21,6 +21,15 @@ class setCurrentSong extends CacheBlocEvent {
   });
 }
 
+class setLastSelectedPlaylist extends CacheBlocEvent {
+  final String playlistName;
+  const setLastSelectedPlaylist({
+    required this.playlistName,
+  });
+}
+
+class setCurrentPlaylist extends CacheBlocEvent {}
+
 
 // class deleteCacheItem extends CacheBlocEvent {
 //   final String itemName;

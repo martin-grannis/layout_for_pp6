@@ -18,24 +18,20 @@ import 'package:pp6_layout/repositories/connnection_repository.dart';
 
 CacheBlocBloc myCacheBloc = CacheBlocBloc();
 
-ConnectionRepository connectionRepository = ConnectionRepository(myCacheBloc: myCacheBloc);
+ConnectionRepository connectionRepository =
+    ConnectionRepository(myCacheBloc: myCacheBloc);
+
+// PlaylistsListingBloc _playlistListingbloc =
+//     PlaylistsListingBloc(connectionRepository: connectionRepository, cacheCacheBloc: myCacheBloc)..add(listen2CacheBloc());
 
 PlaylistsListingBloc _playlistListingbloc =
     PlaylistsListingBloc(connectionRepository: connectionRepository);
-// LibraryBloc _filteredLibraryBloc =
-//     LibraryBloc(connectionRepository: connectionRepository);
-
-
-// LibraryBloc _filteredLibraryBloc =
-//     LibraryBloc(connectionRepository: connectionRepository);
 
 void main() => runApp(
       MultiBlocProvider(
         providers: [
+          BlocProvider(create: (context) => myCacheBloc),
           BlocProvider(
-              create: (context) =>
-                  myCacheBloc),
-                  BlocProvider(
             create: (context) =>
                 PresentationBloc(connectionRepository: connectionRepository),
           ),
@@ -50,23 +46,20 @@ void main() => runApp(
             create: (context) => NetworkBloc()..add(ListenConnection()),
           ),
           BlocProvider(
-            create: (context) => PlaylistBloc(myPresentationBloc:  BlocProvider.of<PresentationBloc>(context)),
+            create: (context) => PlaylistBloc(
+                myPresentationBloc: BlocProvider.of<PresentationBloc>(context)),
           ),
           BlocProvider(
             create: (context) =>
                 LayoutBloc(playlistListingBloc: _playlistListingbloc)
                   ..add(ListenPlaylistListing()),
           ),
-          BlocProvider(create: (context) => _playlistListingbloc
-              // create: (context) => PlaylistsListingBloc(
-              //     connectionRepository: connectionRepository),
-              ),
+          BlocProvider(create: (context) => _playlistListingbloc),
           BlocProvider(
             create: (context) =>
                 PP6_ConnectionBloc(connectionRepository: connectionRepository)
                   ..add(PP6_Initialise()),
           ),
-          
         ],
         child: MyApp(
           connectionRepository: connectionRepository,

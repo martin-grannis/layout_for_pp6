@@ -11,34 +11,45 @@ abstract class CacheBlocState extends Equatable {
 
 class CacheBloc extends CacheBlocState {
   final String currentSong;
+  final String lastSelectedPlaylist;
+  final String currentPlaylist;
   final List<PresentationCacheItem> songCache;
   const CacheBloc({
+    required this.lastSelectedPlaylist,
     required this.songCache,
     required this.currentSong,
+    required this.currentPlaylist,
   });
 
   @override
-  List<Object> get props => [songCache, currentSong];
+  List<Object> get props => [songCache, currentSong, currentPlaylist, lastSelectedPlaylist];
 
   CacheBloc addCacheItem({
-    String? currentSong,
+    //String? currentPlaylist,
+    //String? currentSong,
 //    List<String>? itemNames,
     PresentationCacheItem? songItem,
   }) {
     List<PresentationCacheItem> newL = [...this.songCache, songItem!];
 
     return CacheBloc(
-      currentSong: currentSong ?? this.currentSong,
+      lastSelectedPlaylist: this.lastSelectedPlaylist,
+      currentSong: this.currentSong,
+      currentPlaylist: this.currentPlaylist,
       songCache: newL,
     );
   }
 
   CacheBloc copyWith({
     String? currentSong,
+    String? currentPlaylist,
+    String? lastSelectedPlaylist,
     List<PresentationCacheItem>? songCache,
   }) {
     return CacheBloc(
       currentSong: currentSong ?? this.currentSong,
+      currentPlaylist: currentPlaylist ?? this.currentPlaylist,
+      lastSelectedPlaylist: lastSelectedPlaylist ?? this.lastSelectedPlaylist,
       songCache: songCache ?? this.songCache,
     );
   }

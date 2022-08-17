@@ -2,6 +2,7 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pp6_layout/blocs/cache/cache_bloc_bloc.dart';
 import 'package:pp6_layout/blocs/library/library_bloc.dart';
 import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
 
@@ -121,8 +122,7 @@ class _rightPanelState extends State<RightPanel> {
       onTap: () => {
         context.read<PresentationBloc>().add(PresentationEventShowSong(
             state.currentPresentation.presentationName, index)),
-        
-        // TODO 
+        context.read<CacheBlocBloc>().add(setCurrentPlaylist()),
         context.read<LibraryBloc>().add(LibraryCurrentlyShowingChanged(
             currentSongPath: state.currentPresentation.presentationName)),
       },

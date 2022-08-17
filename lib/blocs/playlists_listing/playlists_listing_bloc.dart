@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pp6_layout/blocs/layout/layout_bloc.dart';
+import 'package:pp6_layout/blocs/presentation/presentation_bloc.dart';
 import 'package:pp6_layout/models/playlist.dart';
 import 'package:pp6_layout/repositories/connnection_repository.dart';
 
@@ -13,9 +13,29 @@ part 'playlists_listing_state.dart';
 class PlaylistsListingBloc
     extends Bloc<PlaylistsListingEvent, PlaylistsListingState> {
   final ConnectionRepository _connectionRepository;
-  PlaylistsListingBloc({required ConnectionRepository connectionRepository})
+  //StreamSubscription? subscription;
+  //final PresentationBloc _presentation
+
+  PlaylistsListingBloc(
+      {required ConnectionRepository connectionRepository,
+     // required cacheCacheBloc
+      })
       : _connectionRepository = connectionRepository,
         super(PlaylistsInitial()) {
+    // listeners
+   // on<listen2CacheBloc>((event, emit) {
+      //subscription = cacheCacheBloc.streamController.stream.listen((songName) {
+        //if (songName) {
+        //  add(currentSongChanged(songName));
+        ////}
+      //});
+    //});
+
+    on<currentSongChanged>((event, emit) {
+      var t = this.state;
+      var stopMe = "now!";
+    });
+
     on<LoadPlaylistsFromAPI>(_loadPlaylists);
     //on<LoadPlaylistFromTop>(_loadPlaylists);
 

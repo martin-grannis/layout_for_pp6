@@ -36,3 +36,11 @@ class LoadPlaylistUpwards extends PlaylistsListingEvent {
   // then emit state with last history and last playlist
 }
 
+class listen2CacheBloc extends PlaylistsListingEvent {}
+
+class currentSongChanged extends PlaylistsListingEvent{
+final songName;
+
+  const currentSongChanged(this.songName);
+
+}

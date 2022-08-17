@@ -59,7 +59,7 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                       ),
                     ),
                     Expanded(
-                      flex: 35,
+                      flex: 25,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(28, 20, 0, 0),
                         child: Row(
@@ -76,7 +76,7 @@ class _LeftPanelPlaylistState extends State<LeftPanelPlaylist>
                       ),
                     ),
                     Expanded(
-                      flex: 5,
+                      flex: 10,
                         child: TextButton(
                       onPressed: () =>
                           {context.read<PlaylistBloc>().add(preloadAll())},
